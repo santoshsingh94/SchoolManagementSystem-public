@@ -1,0 +1,109 @@
+﻿@model IEnumerable<SchoolManagementSystem.Models.Entities.Staff>
+
+@{
+    ViewData["Title"] = "Index";
+}
+
+<p>
+    <a asp-action="Create" class="btn btn-success">Employee Registration</a>
+</p>
+
+<div class="card shadow mb-4">
+    <div class="card-header py-3">
+        <h6 class="m-0 font-weight-bold text-primary">All Employee's</h6>
+    </div>
+    <div class="card-body">
+        <div class="table-responsive ">
+            <table class="table table-bordered " id="dataTable" width="100%" cellspacing="0">
+                <thead>
+                    <tr>
+                        <th>
+                            Employee No.
+                        </th>
+                        <th>
+                            Employee
+                        </th>
+                        <th>
+                            Contact No.
+                        </th>
+                        <th>
+                            Salary
+                        </th>
+                        <th>
+                            Email
+                        </th>
+                        <th>
+                            Address
+                        </th>
+
+                        <th>
+                            @Html.DisplayNameFor(model => model.photo)
+                        </th>
+
+                        <th>
+                            @Html.DisplayNameFor(model => model.IsActive)
+                        </th>
+                        <th>
+                            @Html.DisplayNameFor(model => model.Gender)
+                        </th>
+
+                        <th>Action</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach (var item in Model)
+                    {
+                    <tr>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.StaffId)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.Name)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.ContactNo)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.BasicSalary)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.Email)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.Address)
+                        </td>
+
+                        <td>
+                            <img src="~/image/@item.photo" height="100" width="100" />
+                        </td>
+
+                        <td>
+                            @Html.DisplayFor(modelItem => item.IsActive)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.Gender)
+                        </td>
+
+                        <td class="btn-group">
+                            @{
+                                if (item.DesignationId == 2 || item.DesignationId == 3 || item.DesignationId == 4 || item.DesignationId == 5)
+                                {
+                                    <a asp-action="TeacherReport" asp-controller="TimeTableReports" asp-route-id="@item.StaffId" class="btn btn-primary">Class Time Table</a>
+                                }
+                            }
+
+                            <a asp-action="ExperienceC" asp-controller="EmployeeCertificates" asp-route-id="@item.StaffId" class="btn btn-success">Experience Certificate</a>
+                            <a asp-action="StaffAttendance" asp-controller="AttendanceReports" asp-route-id="@item.StaffId" class="btn btn-info">Attendance Reports</a>
+                            <a asp-action="Edit" asp-route-id="@item.StaffId" class="btn btn-primary">Edit</a>
+                            <a asp-action="Details" asp-route-id="@item.StaffId" class="btn btn-info">Details</a>
+                            <a asp-action="Delete" asp-route-id="@item.StaffId" class="btn btn-danger">Delete</a>
+                            <a asp-action="Resume" asp-route-id="@item.StaffId" class="btn btn-success">Add Resume</a>
+                        </td>
+                    </tr>
+                    }
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
+@*onclick="return confirm('Are you sure to delete this record?')"*@

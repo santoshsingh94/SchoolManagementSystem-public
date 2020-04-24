@@ -1,0 +1,75 @@
+﻿@model IEnumerable<SchoolManagementSystem.Models.Entities.Expense>
+
+@{
+    Layout = null;
+}
+
+<!DOCTYPE html>
+
+<html>
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" />
+    <title>StudentAttendance</title>
+    <script src="~/lib/jquery/dist/jquery.js"></script>
+    <script type="text/javascript">
+        $(document).ready(function () {
+            $('#printbtn').click(function () {
+                window.print();
+            });
+        });
+    </script>
+
+</head>
+<body>
+    <br /><br /><br />
+    <div class="container body-content">
+        <button id="printbtn">Print Report</button>
+        <h3>Expenses Report</h3>
+        <table class="table table-bordered">
+            <thead>
+                <tr>
+                    <th>
+                        Expenses Type
+                    </th>
+                    <th>
+                        Expenses Date
+                    </th>
+                    <th>
+                       Amount
+                    </th>
+                    <th>
+                        Reason
+                    </th>
+                    <th>
+                        User
+                    </th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var item in Model)
+                {
+                    <tr>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.ExpenseType.Name)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.ExpensesDate)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.Amount)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.Reason)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.User.FullName)
+                        </td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+        </div>
+</body>
+</html>

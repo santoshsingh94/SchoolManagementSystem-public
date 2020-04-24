@@ -1,0 +1,91 @@
+﻿@model SchoolManagementSystem.Models.Entities.StudentPromote
+@using SchoolManagementSystem.ViewModels;
+@{
+    Layout = null;
+}
+
+<!DOCTYPE html>
+
+<html>
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" />
+    <meta name="viewport" content="width=device-width" />
+    <link href="~/AdminTemplate/vendor/fontawesome-free/css/fontawesome.css" rel="stylesheet" />
+    <title>School Leaving Certificate</title>
+    <script type="text/javascript">
+        $(document).ready(function () {
+            $('#printbtn').click(function () {
+                window.print();
+            });
+        });
+    </script>
+</head>
+<body>
+    <div class="container">
+
+
+        <form asp-controller="StudentCertificateReports" asp-action="PrintLeavingC" asp-route-id="@Model.StudentId">
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+            <div class="row">
+                <div class="col-md-9">
+                    <div class="d-print-none">
+                        <button type="button" class="btn btn-primary">Save Record</button>
+                        <a href="javascript:window.print()" class="btn btn-default"><i class="fas fa-print"></i>Print</a>
+                        <a href='#' class="btn btn-light">Email<i class="fas fa-envelope-open-text"></i></a>
+                        <input type="submit" value="Submit" class="btn btn-success" />
+                        <h2>@ViewBag.Message</h2>
+                    </div>
+                    <br /><br />
+
+
+
+                    <div class="panel panel-default" style="border:1px solid black;padding:2%">
+                        <div class="panel-body">
+                            <div class="text-center"><h1><b>PRAISE-EL SCHOOLS</b></h1></div>
+                            <div class="text-center">
+                                <img src="~/image/schoolLogo.gif" width="450" />
+                            </div>
+                            <div class="text-center"><p>Govindpuri, Okhla-Phase-II, Cell:8652544148</p></div>
+
+                            <div class="text-center"><p>New Delhi Pin:210200</p></div>
+                            <div class="text-center"><h2><b>SCHOOL LEAVING CERTIFICATE</b></h2></div> <br />
+                            <span class="pull-left"><b>S.No ___________________</b></span>
+                            <br /><br />
+
+                            <div><span style="float:left"><b>Adm.#: @Model.StudentId</b></span><span style="float:right"><b>Date: @DateTime.Now.ToShortDateString()</b></span></div>
+                            <div class="clearfix"></div>
+                            <br />
+                            <div>
+                                Certificate that <span><b>Mr./Miss.</b></span>
+                                <b>@Model.Student.Name</b>
+                                <span>son/daughter</span> of <b> Mr. @Model.Student.FatherName</b> and attended this school up to <b>@Model.ClassTbl.Name</b>,
+                                has paid all the due of the school and was allowed to withdraw his name on the above date.
+                                <span>He</span>/<span>She</span> was studying in class <b> @Model.ClassTbl.Name</b> and passed/failed in the examination for promote to <b> class @Model.ClassTbl.Name</b>.
+                                <br /><br />
+                                <b>Date of birth</b> (in words): <b>@WrittenNumerics.DateToWritten(Model.Student.DateOfBirth)</b>
+                                <br /><b>Date of birth</b> (in figure): <b>@Model.Student.DateOfBirth.ToShortDateString()</b>
+                                <br /><br />
+                                <b>Conduct: Principal Name</b>
+                                <br /><br />
+                                <div><span style="float:left">___________________</span><span style="float:right">___________________</span></div>   <br />
+                                <div>
+                                    <span style="float:left">Prepared by</span><span style="float:right; margin-right:5%">Principal</span>
+                                </div>
+                                <br /><br />
+                            </div>
+                        </div>
+                    </div>
+                    <script src="~/lib/jquery-validation/dist/jquery.validate.js"></script>
+                    <script src="~/lib/jquery/dist/bootstrap-datetimepicker.js"></script>
+                    <script src="~/lib/jquery-validation-unobtrusive/jquery.validate.unobtrusive.js"></script>
+
+                </div>
+            </div>
+            <br /><br />
+
+        </form>
+    </div>
+</body>
+</html>

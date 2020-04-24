@@ -1,0 +1,75 @@
+﻿@model IEnumerable<SchoolManagementSystem.Models.Entities.Annual>
+
+@{
+    ViewData["Title"] = "Promote Fee";
+}
+
+<p>
+    <a asp-action="Create" class="btn btn-success">New Annual/Promote Fee</a>
+</p>
+<div class="card shadow mb-4">
+    <div class="card-header py-3">
+        <h6 class="m-0 font-weight-bold text-primary">All Annual/Promote Fee</h6>
+    </div>
+    <div class="card-body">
+        <div class="table-responsive ">
+            <table class="table table-bordered " id="dataTable" width="100%" cellspacing="0">
+                <thead>
+                    <tr>
+                        <th>
+                            Annuals/Promote Fee Title
+                        </th>
+                        <th>
+                            @Html.DisplayNameFor(model => model.Programe)
+                        </th>
+                        <th>
+                            @Html.DisplayNameFor(model => model.Description)
+                        </th>
+                        <th>
+                            @Html.DisplayNameFor(model => model.Fees)
+                        </th>
+                        <th>
+                            Status (@Html.DisplayNameFor(model => model.IsActive))
+                        </th>
+                        <th>
+                            @Html.DisplayNameFor(model => model.User)
+                        </th>
+
+                        <th> Actions</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach (var item in Model)
+                    {
+                    <tr>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.Title)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.Programe.Name)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.Description)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.Fees)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.IsActive)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.User.FullName)
+                        </td>
+
+                        <td class="btn btn-group">
+                            <a asp-action="Edit" asp-route-id="@item.AnnualId" class="btn btn-primary">Edit</a>
+                            <a asp-action="Details" asp-route-id="@item.AnnualId" class="btn btn-info">Details</a>
+                            <a asp-action="Delete" asp-route-id="@item.AnnualId" class="btn btn-danger">Delete</a>
+                        </td>
+                    </tr>
+                    }
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>

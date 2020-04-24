@@ -1,0 +1,80 @@
+﻿@model SchoolManagementSystem.Models.Entities.Staff;
+@{
+    Layout = null;
+}
+
+<!DOCTYPE html>
+
+<html>
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" />
+    <meta name="viewport" content="width=device-width" />
+    <link href="~/AdminTemplate/vendor/fontawesome-free/css/fontawesome.css" rel="stylesheet" />
+    <title>Employee Experience Certificate</title>
+    <script type="text/javascript">
+        $(document).ready(function () {
+            $('#printbtn').click(function () {
+                window.print();
+            });
+        });
+    </script>
+</head>
+<body>
+    <div class="container">
+        <form asp-controller="EmployeeCertificates" asp-action="ExperienceC" asp-route-id="@Model.StaffId">
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+            <div class="row">
+                <div class="col-md-9">
+                    <div class="d-print-none">
+                        <button type="button" class="bnt btn-primary">Save Record</button>
+                        <a href="javascript:window.print()" class="btn btn-light"><i class="fas fa-print"></i>Print</a>
+                        <a href='#' class="btn btn-light">Email<i class="fas fa-envelope-open-text"></i></a>
+                    </div>
+                    <br /><br />
+                    <div class="panel panel-default" style="border:1px solid black;padding:2%">
+                        <div class="panel-body">
+                            <div class="text-center"><h1><b>PRAISE-EL SCHOOLS</b></h1></div>
+                            <div class="text-center">
+                                <img src="~/image/schoolLogo.gif" width="450" />
+                            </div>
+                            <div class="text-center"><p>Govindpuri, Okhla-Phase-II, Cell:8652544148</p></div>
+
+                            <div class="text-center"><p>New Delhi Pin:210200</p></div>
+                            <div class="text-center"><h2><b>EXPERIENCE CERTIFICATE</b></h2></div> <br />
+                            <span class="pull-left"><b>S.No ___________________</b></span>
+                            <br /><br />
+
+                            <div><span style="float:left"><b>Adm.#: @Model.StaffId</b></span><span style="float:right"><b>Date: @DateTime.Now.ToShortDateString()</b></span></div>
+                            <div class="clearfix"></div>
+                            <br />
+                            <div>
+                                This is certify that
+                                <span><b>Mr/Miss : </b></span>
+                                <b>@Model.Name</b>
+                                worked as <span><b>@Model.Designation.Title</b></span>
+                                in our school from <b>@ViewBag.FromDate ot @ViewBag.ToDate</b> with our entire satisfaction.
+                                During this is certify that <span><b>his/her</b></span> working period we found him a sinceere, honest, hardworking, dedicated employee
+                                with professional attitude and very good job knowledge.
+                                He is ambiable in nature and character is well. We have no objection to allow him in any better position and have no liabilities in our school.
+                                <br /><br />
+                                <b>Conduct: Principal Name</b>
+                                <br /><br />
+                                <div><span style="float:left">___________________</span><span style="float:right">___________________</span></div>   <br />
+                                <div>
+                                    <span style="float:left">Prepared by</span><span style="float:right; margin-right:5%">Principal</span>
+                                </div>
+                                <br /><br />
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+
+        </form>
+    </div>
+
+</body>
+</html>

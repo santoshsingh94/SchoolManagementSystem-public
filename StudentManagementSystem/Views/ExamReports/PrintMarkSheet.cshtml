@@ -1,0 +1,133 @@
+﻿@model IEnumerable<SchoolManagementSystem.Models.Entities.ExamMark>
+@{
+    Layout = null;
+}
+
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" />
+    <title>Mark Sheet</title>
+    <script src="~/lib/jquery/dist/jquery.js"></script>
+    <script type="text/javascript">
+        $(document).ready(function () {
+            $('#printbtn').click(function () {
+                window.print();
+            });
+        });
+    </script>
+
+</head>
+<body>
+    <div class="form-group">
+        <button type="button" class="btn btn-primary">Save Record</button>
+        <button id="printbtn" class="btn btn-default"><i class="fas fa-print"></i>Print</button>
+        <a href='@Url.Action("SendEmail","#")' class="btn btn-default"><i class="fas fa-envelope-open-text"></i></a>
+        <br /><br />
+        <div class="col-md-10">
+            <label class="control-label">Select Exam</label>
+            <select class="form-control" asp-items="ViewBag.ExamId" id="examId" name="examId" required></select>
+        </div>
+    </div>
+
+    <div class="form-group">
+        <label>Enter Promote Id</label>
+        <input type="text" class="form-control form-control-user" id="promoteId" name="promoteId" />
+    </div>
+    <div class="form-group">
+        <input type="submit" value="Get Report" class="btn btn-primary btn-user btn-block" />
+    </div>
+
+    <div class="row">
+        <div class="col-md-10">
+            <div class="fa-cpanel panel-default">
+                <div class="panel-body">
+                    <div class="text-center"><h1><b>PRAISE-EL SCHOOLS</b></h1></div>
+                    <div class="text-center">
+                        <img src="~/image/schoolLogo.gif" width="450" />
+                    </div>
+                    <div class="text-center"><p>Govindpuri, Okhla-Phase-II, Cell:8652544148</p></div>
+                    <div class="text-center"><p>New Delhi Pin:210200</p></div>
+                    <div class="text-center"><h2><b>DETAIL MARKS CERTIFICATE</b></h2></div> <br />
+                    <span class="pull-left"><b>S.No ______________</b></span>
+                    <br />
+                    <div class="clearfix"></div>
+                    <br />
+                    @{ 
+                        float totalMarks = 0;
+                        float obtainMarks = 0;
+                    }
+
+                    <div class="container body-content">
+                        <h3 class="alert-danger">@ViewBag.message</h3>
+                        <form class="user" asp-controller="ExamReports" asp-action="PrintMarkSheet" method="post">
+                        </form>
+
+                        <table class="table table-striped table-condensed table-hover">
+                            <thead>
+                                <tr>
+                                    <th>
+                                        Student
+                                    </th>
+                                    <th>
+                                        Exam
+                                    </th>
+                                    <th>
+                                        Subject
+                                    </th>
+                                    <th>
+                                        Total Marks
+                                    </th>
+
+                                    <th>
+                                        Obtain Marks
+                                    </th>
+
+                                    <th>
+                                        User
+                                    </th>
+
+                                </tr>
+                            </thead>
+                            <tbody>
+                                @foreach (var item in Model)
+                                {
+                                    totalMarks = totalMarks + item.TotalMarks;
+                                    obtainMarks = obtainMarks + item.ObtainMarks;
+
+                                    <tr>
+                                        <td>
+                                            @Html.DisplayFor(modelItem => item.Student.Name)
+                                        </td>
+                                        <td>
+                                            @Html.DisplayFor(modelItem => item.Exam.Title)
+                                        </td>
+                                        <td>
+                                            @Html.DisplayFor(modelItem => item.ClassSubject.Name)
+                                        </td>
+                                        <td>
+                                            @Html.DisplayFor(modelItem => item.TotalMarks)
+                                        </td>
+                                        <td>
+                                            @Html.DisplayFor(modelItem => item.ObtainMarks)
+                                        </td>
+                                        <td>
+                                            @Html.DisplayFor(modelItem => item.User.FullName)
+                                        </td>
+                                    </tr>
+                                }
+                            </tbody>
+                        </table>
+                        <div>
+                            <label>Total Marks: </label>@totalMarks;
+                            <label>Obtain Marks: </label>@obtainMarks;
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</body>
+</html>

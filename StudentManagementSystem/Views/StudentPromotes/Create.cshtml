@@ -1,0 +1,105 @@
+﻿@model SchoolManagementSystem.Models.Entities.StudentPromote
+
+@{
+    ViewData["Title"] = "Create";
+}
+<div class="card mb-4 shadow">
+    <div class="card-header">
+        Student Promotion
+    </div>
+    <div class="card-body">
+        <form asp-action="Create">
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+            <div class="form-group">
+                <label asp-for="StudentId" class="control-label"></label>
+                <select asp-for="StudentId" class="form-control" asp-items="ViewBag.StudentId" id="studentId"><option value="">Select Student</option></select>
+            </div>
+
+            <div class="form-group">
+                <label asp-for="ClassTblId" class="control-label"></label>
+                <select asp-for="ClassTblId" class="form-control" asp-items="ViewBag.ClassTblId" id="classId">></select>
+            </div>
+            <div class="form-group">
+                <label asp-for="SectionId" class="control-label"></label>
+                <select asp-for="SectionId" class="form-control" asp-items="ViewBag.SectionId"></select>
+            </div>
+            <div class="form-group">
+                <label asp-for="ProgrameSessionId" class="control-label"></label>
+                <select asp-for="ProgrameSessionId" class="form-control" asp-items="ViewBag.ProgrameSessionId" id="programeSessionId"><option value="">Select Programe Session</option></select>
+            </div>
+
+            <div class="form-group">
+                <label asp-for="AnnualFee" class="control-label"></label>
+                <input asp-for="AnnualFee" class="form-control" id="annualFee" />
+                <span asp-validation-for="AnnualFee" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="PromoteDate" class="control-label"></label>
+                <input asp-for="PromoteDate" class="form-control" />
+                <span asp-validation-for="PromoteDate" class="text-danger"></span>
+            </div>
+            <div class="form-group form-check">
+                <label class="form-check-label">
+                    <input class="form-check-input" asp-for="IsActive" /> Promotion Status
+                </label>
+            </div>
+            <div class="form-group form-check">
+                <label class="form-check-label">
+                    <input class="form-check-input" asp-for="IsSubmit" /> Promotion Fee Status
+                </label>
+            </div>
+            <div class="form-group">
+                <input type="submit" value="Create" class="btn btn-success" />
+                <a asp-action="Index" class="btn btn-light">Back to List</a>
+            </div>
+
+            @section Scripts
+            {
+                <script>
+
+                    console.log("hiii");
+                    $(document).ready(function () {
+                        $('#studentId').change(function () {
+                            $('#classId').html('');
+                            console.log($(this).val());
+                            $.ajax({
+                                url: '@Url.Action("GetPromoteList","StudentPromotes")',
+                                type: 'GET',
+                                data: { sId: $(this).val() },
+                                dataType: 'Json',
+                                success: function (response) {
+                                    for (var i = 0; i < response.length; i++) {
+                                        var id = response[i].classTblId;
+                                        var name = response[i].name;
+                                        $('#classId').append(`<option value =${id}>${name}</option>`);
+                                    }
+                                },
+                                error: function () {
+                                    console.log("Not found");
+                                }
+                            });
+                        });
+
+                        $('#programeSessionId').change(function () {
+                            console.log($(this).val());
+                            $.ajax({
+                                url:'@Url.Action("GetAnnualFees","StudentPromotes")',
+                                type: 'GET',
+                                data: { pSId: $(this).val() },
+                                dataType: 'Json',
+                                success: function (response) {
+                                    console.log(response);
+                                    $('#annualFee').val(response);
+                                },
+                                error: function() {
+                                    console.log("Not found");
+                                }
+                            });
+                        });
+                    });
+                </script>
+            }
+
+        </form>
+    </div>
+</div>

@@ -1,0 +1,94 @@
+﻿@model IEnumerable<SchoolManagementSystem.Models.Entities.SubmissionFee>
+
+@{
+    ViewData["Title"] = "SubmissionFee";
+}
+
+<p>
+    <a asp-action="Create" class="btn btn-success">Create New</a>
+</p>
+<div class="card shadow mb-4">
+    <div class="card-header py-3">
+        <h6 class="m-0 font-weight-bold text-primary">Submit Tution Fee</h6>
+    </div>
+    <div class="card-body">
+        <div class="table-responsive ">
+            <table class="table table-bordered " id="dataTable" width="100%" cellspacing="0">
+                <thead>
+                    <tr>
+                        <th>
+                            Student ID
+                        </th>
+                        <th>
+                            Student Name
+                        </th>
+                        <th>
+                            Class
+                        </th>
+                        <th>
+                            Submission Date
+                        </th>
+                        <th>
+                            Fee Month
+                        </th>
+                        <th>
+                            @Html.DisplayNameFor(model => model.Amount)
+                        </th>
+                        <th>
+                            Programe Name
+                        </th>
+
+                        <th>
+                            @Html.DisplayNameFor(model => model.Description)
+                        </th>
+
+                        <th>
+                            @Html.DisplayNameFor(model => model.User)
+                        </th>
+                        <th>Actions</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach (var item in Model)
+                    {
+                    <tr>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.Student.StudentId)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.Student.Name)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.ClassTbl.Name)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.SubmissionDate)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.FeeMonth)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.Amount)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.Programe.Name)
+                        </td>
+
+                        <td>
+                            @Html.DisplayFor(modelItem => item.Description)
+                        </td>
+
+
+                        <td>
+                            @Html.DisplayFor(modelItem => item.User.FullName)
+                        </td>
+                        <td>
+                           <a asp-action="Details" asp-route-id="@item.SubmissionFeeId" class="btn  btn-info">Details</a>
+                        </td>
+                    </tr>
+                    }
+                </tbody>
+            </table>
+            </div>
+        </div>
+    </div>

@@ -1,0 +1,190 @@
+﻿@model IEnumerable<SchoolManagementSystem.Models.Entities.Student>
+
+@{
+    ViewData["Title"] = "Index";
+}
+
+<p>
+    <a asp-action="Create" class="btn btn-success">Add New Student</a>
+</p>
+<div class="card shadow mb-4">
+    <div class="card-header py-3">
+        <h6 class="m-0 font-weight-bold text-primary">Student List</h6>
+    </div>
+    <div class="card-body">
+        <div class="table-responsive ">
+            <table class="table table-bordered " id="dataTable" width="100%" cellspacing="0">
+                <thead>
+                    <tr>
+                        <th>
+                            StudentId
+                        </th>
+                        <th>
+                            @Html.DisplayNameFor(model => model.Name)
+                        </th>
+                        <th>
+                            @Html.DisplayNameFor(model => model.FatherName)
+                        </th>
+                        @*<th>
+            @Html.DisplayNameFor(model => model.DateOfBirth)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.Gender)
+        </th>*@
+                        <th>
+                            @Html.DisplayNameFor(model => model.ContactNo)
+                        </th>
+                        @*<th>
+            @Html.DisplayNameFor(model => model.Email)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.Nationality)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.Religion)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.Category)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.GuardianName)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.GuardianOccupation)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.GuardianPhone)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.Cast)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.Address)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.AadharNo)
+        </th>*@
+                        <th>
+                            @Html.DisplayNameFor(model => model.Photo)
+                        </th>
+                        @*<th>
+            @Html.DisplayNameFor(model => model.AdmissionDate)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.PreviousSchool)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.PreviousPercentage)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.Programe)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.Session)
+        </th>*@
+                        <th>
+                            @Html.DisplayNameFor(model => model.ClassTbl)
+                        </th>
+                        <th>
+                            @Html.DisplayNameFor(model => model.User)
+                        </th>
+
+                        <th>Action</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach (var item in Model)
+                    {
+                    <tr>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.StudentId)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.Name)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.FatherName)
+                        </td>
+                        @*<td>
+            @Html.DisplayFor(modelItem => item.DateOfBirth)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.Gender)
+        </td>*@
+                        <td>
+                            @Html.DisplayFor(modelItem => item.ContactNo)
+                        </td>
+                        @*<td>
+            @Html.DisplayFor(modelItem => item.Email)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.Nationality)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.Religion)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.Category)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.GuardianName)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.GuardianOccupation)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.GuardianPhone)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.Cast)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.Address)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.AadharNo)
+        </td>*@
+                    <td>
+                        @{ string path = item.Photo;
+                        }  
+                        <img src="~/image/@item.Photo" width="100", height="100" />
+                                       
+                    </td>
+                        @*<td>
+            @Html.DisplayFor(modelItem => item.AdmissionDate)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.PreviousSchool)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.PreviousPercentage)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.Programe.ProgrameId)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.Session.SessionId)
+        </td>*@
+                        <td>
+                            @Html.DisplayFor(modelItem => item.ClassTbl.Name)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.User.FullName)
+                        </td>
+
+                        <td class="btn-group">
+                            <a asp-action="StudentAttendance" asp-controller="AttendanceReports" asp-route-id="@item.StudentId" class="btn btn-info">Attendance Report</a>
+                            <a asp-action="StudentReport" asp-controller="TimeTableReports" asp-route-id="@item.StudentId" class="btn btn-primary">Time Table</a>
+                            <a asp-action="LeavingC" asp-controller="StudentCertificateReports" asp-route-id="@item.StudentId" class="btn btn-danger">Leaving Certificate</a>
+                            <a asp-action="CharacterC" asp-controller="StudentCertificateReports" asp-route-id="@item.StudentId" class="btn btn-danger">Character Certificate</a>
+                            <a asp-action="Edit" asp-route-id="@item.StudentId" class="btn btn-primary">Edit</a>
+                            <a asp-action="Details" asp-route-id="@item.StudentId" class="btn btn-info">Details</a>
+                            @*<a asp-action="Delete" asp-route-id="@item.StudentId" class="btn btn-danger">Delete</a>*@
+                        </td>
+                    </tr>
+                    } 
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>

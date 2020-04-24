@@ -1,0 +1,97 @@
+﻿@model IEnumerable<SchoolManagementSystem.Models.Entities.SubmissionFee>
+
+@{
+    Layout = null;
+}
+
+<!DOCTYPE html>
+
+<html>
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" />
+    <title>Tution Report</title>
+    <script src="~/lib/jquery/dist/jquery.js"></script>
+    <script type="text/javascript">
+        $(document).ready(function () {
+            $('#printbtn').click(function () {
+                window.print();
+            });
+        });
+    </script>
+
+</head>
+<body>
+    <br /><br /><br />
+    <div class="container body-content">
+        <h3 class="alert-danger">@ViewBag.message</h3>
+        <form class="user" asp-controller="FeeReports" asp-action="CustomTutionFee" method="post">
+            <div class="form-group">
+                <label>Select From Date</label>
+                <input type="date" class="form-control form-control-user" id="fromDate" name="fromDate" aria-describedby="emailHelp">
+            </div>
+            <div class="form-group">
+                <label>Select To Date</label>
+                <input type="date" class="form-control form-control-user" id="toDate" name="toDate" />
+            </div>
+            <div class="form-group">
+                <input type="submit" value="Get Report" class="btn btn-primary btn-user btn-block" />
+            </div>
+        </form>
+        <hr>
+        <button id="printbtn">Print Report</button><br />
+        <h3>Tution Fee Report</h3>
+        <table class="table table-bordered">
+            <thead>
+                <tr>
+                    <th>
+                       Class
+                    </th>
+                    <th>
+                        @Html.DisplayNameFor(model => model.Student)
+                    </th>
+                    <th>
+                        @Html.DisplayNameFor(model => model.Amount)
+                    </th>
+                    <th>
+                        Submission Date
+                    </th>
+                    <th>
+                       Fee Month
+                    </th>
+                    <th>
+                        @Html.DisplayNameFor(model => model.User)
+                    </th>
+                   
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var item in Model)
+                {
+                <tr>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.ClassTbl.Name)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.Student.Name)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.Amount)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.SubmissionDate)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.FeeMonth)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.User.FullName)
+                    </td>
+                </tr>
+                }
+            </tbody>
+        </table>
+    </div>
+</body>
+</html>

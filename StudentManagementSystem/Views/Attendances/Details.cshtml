@@ -1,0 +1,48 @@
+﻿@model SchoolManagementSystem.Models.Entities.Attendance
+
+@{
+    ViewData["Title"] = "Attendance";
+}
+
+<h2>Details</h2>
+
+<div>
+    <h4>Attendance</h4>
+    <hr />
+    <dl class="row">
+        <dt class = "col-sm-2">
+            Attendance Date
+        </dt>
+        <dd class = "col-sm-10">
+            @Html.DisplayFor(model => model.AttendanceDate)
+        </dd>
+        <dt class = "col-sm-2">
+           Attendance Time
+        </dt>
+        <dd class = "col-sm-10">
+            @Html.DisplayFor(model => model.AttendanceTime)
+        </dd>
+        <dt class = "col-sm-2">
+           Student
+        </dt>
+        <dd class = "col-sm-10">
+            @Html.DisplayFor(model => model.Student.Name)
+        </dd>
+        <dt class = "col-sm-2">
+            Session
+        </dt>
+        <dd class = "col-sm-10">
+            @Html.DisplayFor(model => model.Session.Name)
+        </dd>
+        <dt class = "col-sm-2">
+            Class
+        </dt>
+        <dd class = "col-sm-10">
+            @Html.DisplayFor(model => model.ClassTbl.Name)
+        </dd>
+    </dl>
+</div>
+<div>
+    <a asp-action="Edit" asp-route-id="@Model.AttendanceId" class="btn btn-success">Edit</a> 
+    <a asp-action="Index" class="btn btn-default">Back to List</a>
+</div>

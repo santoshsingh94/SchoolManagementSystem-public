@@ -1,0 +1,95 @@
+﻿@model IEnumerable<SchoolManagementSystem.Models.Entities.StudentPromote>
+
+@{
+    ViewData["Title"] = "Index";
+}
+
+<h1>Index</h1>
+
+<p>
+    <a asp-action="Create" class="btn btn-success">Promote Student</a>
+</p>
+<div class="card shadow mb-4">
+    <div class="card-header py-3">
+        <h6 class="m-0 font-weight-bold text-primary">Student List</h6>
+    </div>
+    <div class="card-body">
+        <div class="table-responsive ">
+            <table class="table table-bordered " id="dataTable" width="100%" cellspacing="0">
+                <thead>
+                    <tr>
+                        <th>
+                            Promote Id
+                        </th>
+                        <th>
+                            Student
+                        </th>
+                        <th>
+                            Promote Date
+                        </th>
+                        <th>
+                           Promotion Fee
+                        </th>
+                        <th>
+                            Promotion Status
+                        </th>
+                        <th>
+                            Fee Status
+                        </th>
+                        <th>
+                            Promote Class
+                        </th>
+                        <th>
+                            Programe Session
+                        </th>
+
+                        <th>
+                            Class Section
+                        </th>
+                        <th></th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach (var item in Model)
+                    {
+                    <tr>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.StudentPromoteId)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.Student.Name)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.PromoteDate)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.AnnualFee)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.IsActive)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.IsSubmit)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.ClassTbl.Name)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.ProgrameSession.Details)
+                        </td>
+
+                        <td>
+                            @Html.DisplayFor(modelItem => item.Section.Name)
+                        </td>
+                        <td class="btn-group">
+                            <a asp-action="Edit" asp-route-id="@item.StudentPromoteId" class="btn btn-primary">Edit</a>
+                            <a asp-action="Details" asp-route-id="@item.StudentPromoteId" class="btn btn-info">Details</a>
+                            <a asp-action="Delete" asp-route-id="@item.StudentPromoteId" class="btn btn-danger">Delete</a>
+                        </td>
+                    </tr>
+                    }
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>

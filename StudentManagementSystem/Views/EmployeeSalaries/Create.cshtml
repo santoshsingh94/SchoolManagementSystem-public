@@ -1,0 +1,75 @@
+﻿@model SchoolManagementSystem.Models.Entities.EmployeeSalary
+
+@{
+    ViewData["Title"] = "Create";
+}
+
+<div class="card mb-4 shadow">
+    <div class="card-header">Enter Salary Details</div>
+    <div class="card-body">
+        <form asp-action="Create">
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+            
+            <div class="form-group">
+                <label asp-for="StaffId" class="control-label">Select Employee</label>
+                <select asp-for="StaffId" class="form-control" asp-items="ViewBag.StaffId" id="staffId"><option value="">Select Employee</option></select>
+            </div>
+
+            <div class="form-group">
+                <label asp-for="SalaryDate" class="control-label">SalaryDate</label>
+                <input asp-for="SalaryDate" class="form-control" />
+                <span asp-validation-for="SalaryDate" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="SalaryMonth" class="control-label">Salary(Month)</label>
+                <input asp-for="SalaryMonth" class="form-control" />
+                <span asp-validation-for="SalaryMonth" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="SalaryYear" class="control-label">Salary(Year)</label>
+                <input asp-for="SalaryYear" class="form-control" />
+                <span asp-validation-for="SalaryYear" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Amount" class="control-label">Salary</label>
+                <input asp-for="Amount" class="form-control" id="amount"/>
+                <span asp-validation-for="Amount" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Comments" class="control-label"></label>
+                <input asp-for="Comments" class="form-control" />
+                <span asp-validation-for="Comments" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <input type="submit" value="Paid Salary" class="btn btn-success" />
+            </div>
+        </form>
+    </div>
+</div>
+
+<div>
+    <a asp-action="Index">Back</a>
+</div>
+
+@section Scripts
+            {
+    <script>
+        $(document).ready(function () {
+            $('#staffId').change(function () {
+                $.ajax({
+                    url:'@Url.Action("GetSalary","EmployeeSalaries")',
+                    type: 'GET',
+                    data: { sid: $(this).val() },
+                    dataType: 'Json',
+                    success: function (response) {
+                        $('#amount').val(response);
+                    },
+                    error: function() {
+                        console.log("Not found");
+                    }
+                });
+            });
+        });
+    </script>
+}
+

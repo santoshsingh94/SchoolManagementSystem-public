@@ -1,0 +1,36 @@
+﻿@model SchoolManagementSystem.Models.Entities.UserType
+
+@{
+    ViewData["Title"] = "User Type";
+}
+
+<h4>Add New UserType</h4>
+<hr />
+<div class="row">
+    <div class="col-md-4">
+        <form asp-action="Create">
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+            <div class="form-group">
+                <label asp-for="TypeName" class="control-label">Enter User Type</label>
+                <input asp-for="TypeName" class="form-control form-control-user" />
+                <span asp-validation-for="TypeName" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Description" class="control-label">Description</label>
+                <input asp-for="Description" class="form-control" />
+                <span asp-validation-for="Description" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <input type="submit" value="Create" class="btn btn-success" />
+                <a class="btn btn-"default asp-action="Index">Back to List</a>
+            </div>
+        </form>
+    </div>
+</div>
+<div>    
+</div>
+
+@*@section Scripts {
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+}
+*@

@@ -1,0 +1,55 @@
+﻿@model SchoolManagementSystem.Models.Entities.ProgrameSession
+
+@{
+    ViewData["Title"] = "ProgrameSession";
+}
+
+<h2>Details</h2>
+
+<div>
+    <h4>Programe Session</h4>
+    <hr />
+    <dl class="row">
+        <dt class="col-sm-2">
+            Session
+        </dt>
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.Session.SessionId)
+        </dd>
+        <dt class="col-sm-2">
+            Programe
+        </dt>
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.Programe.ProgrameId)
+        </dd>
+        <dt class="col-sm-2">
+            Details
+        </dt>
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.Details)
+        </dd>
+        <dt class="col-sm-2">
+            RegDate
+        </dt>
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.RegDate)
+        </dd>
+        <dt class="col-sm-2">
+            Description
+        </dt>
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.Description)
+        </dd>
+        <dt class="col-sm-2">
+            User
+        </dt>
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.User.UserId)
+        </dd>
+    </dl>
+</div>
+<div>
+    <a asp-action="Edit" asp-route-id="@Model.ProgrameSessionId" class="btn btn-success" >Edit</a> 
+    <a asp-action="Index" class="btn btn-default">Back to List</a>
+</div>
+  

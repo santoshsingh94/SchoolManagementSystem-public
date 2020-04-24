@@ -1,0 +1,62 @@
+﻿@model IEnumerable<SchoolManagementSystem.Models.Entities.ClassSubject>
+
+@{
+    ViewData["Title"] = "ClassSubject";
+}
+<p>
+    <a asp-action="Create" class="btn btn-success">Add Subject to Class</a>
+</p>
+<div class="card shadow mb-4">
+    <div class="card-header py-3">
+        <h6 class="m-0 font-weight-bold text-primary">Class Wise Subject's</h6>
+    </div>
+    <div class="card-body">
+        <div class="table-responsive ">
+            <table class="table table-bordered " id="dataTable" width="100%" cellspacing="0">
+                <thead>
+                    <tr>
+                        <th>
+                            Class
+                        </th>
+                        <th>
+                            Subject
+                        </th>
+                        <th>
+                            Class Subject Title
+                        </th>
+                        <th>
+                            Status
+                        </th>
+
+                        <th>Actions</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach (var item in Model)
+                    {
+                    <tr>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.ClassTbl.Name)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.Subject.Name)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.Name)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.IsActive)
+                        </td>
+
+                        <td class="btn-group">
+                            <a asp-action="Edit" asp-route-id="@item.ClassSubjectId" class="btn btn-primary">Edit</a>
+                            <a asp-action="Details" asp-route-id="@item.ClassSubjectId" class="btn btn-info">Details</a>
+                            <a asp-action="Delete" asp-route-id="@item.ClassSubjectId" class="btn btn-danger">Delete</a>
+                        </td>
+                    </tr>
+                    }
+                </tbody>
+            </table>
+            </div>
+        </div>
+    </div>

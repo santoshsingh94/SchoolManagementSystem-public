@@ -1,0 +1,104 @@
+﻿@model SchoolManagementSystem.Models.Entities.ExamMark
+
+@{
+    ViewData["Title"] = "ExamMarks";
+}
+
+<div class="card mb-4 shadow">
+    <div class="card-header">Enter Student MarkSheet Details</div>
+    <div class="card-body">
+        <form asp-action="Create">
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+
+            <hr />
+            <div class="row">
+                <div class="col-md-9">
+                    <div class="form-group">
+                        <input type="number" class="form-control" placeholder="Enter Promote Id" id="promoteId" />
+
+                    </div>
+                </div>
+                <div class="col-md-2">
+                    <div class="form-group">
+                        <input type="button" class="btn btn-primary" value="Find" id="findPromoteRecord" />
+                    </div>
+                </div>
+            </div>
+            <hr />
+
+            <div class="form-group">
+                <label asp-for="StudentId" class="control-label"></label>
+                <select asp-for="StudentId" class="form-control" asp-items="ViewBag.StudentId" id="studentId"></select>
+            </div>
+            <div class="form-group">
+                <label asp-for="ExamId" class="control-label"></label>
+                <select asp-for="ExamId" class="form-control" asp-items="ViewBag.ExamId" id="examId"></select>
+            </div>
+            <div class="form-group">
+                <label asp-for="ClassSubjectId" class="control-label"></label>
+                <select asp-for="ClassSubjectId" class="form-control" asp-items="ViewBag.ClassSubjectId" id="classSubjectId"></select>
+            </div>
+
+
+            <div class="form-group">
+                <label asp-for="TotalMarks" class="control-label"></label>
+                <input asp-for="TotalMarks" class="form-control" id="totalMarks"/>
+                <span asp-validation-for="TotalMarks" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="ObtainMarks" class="control-label" ></label>
+                <input asp-for="ObtainMarks" class="form-control" />
+                <span asp-validation-for="ObtainMarks" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <input type="submit" value="Create" class="btn btn-success" />
+                <a asp-action="Index" class="btn btn-default">Back to List</a>
+            </div>
+            @section Scripts
+            {
+                <script>
+                    $(document).ready(function () {
+                        console.log("hi");
+                        $('#findPromoteRecord').click(function () {
+                            $('#classSubjectId').html('');
+                            ///$('#studentId').html('');
+                            $.ajax({
+                                url:'@Url.Action("GetByPromoteId","ExamMarks")',
+                                type: 'GET',
+                                data: { sid: $('#promoteId').val() },
+                                dataType: 'Json',
+                                success: function (response) {
+                                    //console.log("std: "+response.studentList[0].studentId);
+                                    //console.log("std2: "+response.classSubjectList[0].classSubjectId);
+                                    $('#studentId').val(response.studentList[0].studentId);
+                                    for (var i = 0; i < response.classSubjectList.length; i++) {
+                                        $('#classSubjectId').append("<option value=" + response.classSubjectList[i].classSubjectId + " >" + response.classSubjectList[i].name+"</option>");
+                                    }
+                                },
+                                error: function() {
+                                    console.log("Not found2");
+                                }
+                            });
+                        });
+
+                         $('#classSubjectId').change(function () {
+                            $.ajax({
+                                url:'@Url.Action("GetTotalMarks","ExamMarks")',
+                                type: 'GET',
+                                data: { sid: $(this).val() },
+                                dataType: 'Json',
+                                success: function (response) {
+                                    $('#totalMarks').val(response);
+                                },
+                                error: function() {
+                                    console.log("Not found");
+                                }
+                            });
+                        });
+                    });
+                </script>
+            }
+
+        </form>
+    </div>
+</div>

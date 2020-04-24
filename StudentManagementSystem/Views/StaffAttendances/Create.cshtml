@@ -1,0 +1,41 @@
+﻿@model SchoolManagementSystem.Models.Entities.StaffAttendance
+
+@{
+    ViewData["Title"] = "Create";
+}
+
+<div class="card mb-4 shadow">
+    <div class="card-header">Employee Attendance</div>
+    <div class="card-body">
+        <form asp-action="Create">
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+            <div class="form-group">
+                <label asp-for="StaffId" class="control-label">Select Employee</label>
+                <select asp-for="StaffId" class="form-control" asp-items="ViewBag.StaffId"></select>
+            </div>
+            <div class="form-group">
+                <label asp-for="AttendanceDate" class="control-label">Attendance Date</label>
+                <input asp-for="AttendanceDate" class="form-control" />
+                <span asp-validation-for="AttendanceDate" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="ComingTime" class="control-label">Check In</label>
+                <input asp-for="ComingTime" class="form-control" />
+                <span asp-validation-for="ComingTime" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="ClosingTime" class="control-label">Check Out</label>
+                <input asp-for="ClosingTime" class="form-control" />
+                <span asp-validation-for="ClosingTime" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <input type="submit" value="Create" class="btn btn-success" />
+            </div>
+        </form>
+    </div>
+</div>
+
+<div>
+    <a asp-action="Index">Back</a>
+</div>
+

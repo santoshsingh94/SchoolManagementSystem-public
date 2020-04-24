@@ -1,0 +1,90 @@
+﻿@model IEnumerable<SchoolManagementSystem.Models.Entities.Expense>
+
+@{
+    Layout = null;
+}
+
+<!DOCTYPE html>
+
+<html>
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" />
+    <title>StudentAttendance</title>
+    <script src="~/lib/jquery/dist/jquery.js"></script>
+    <script type="text/javascript">
+        $(document).ready(function () {
+            $('#printbtn').click(function () {
+                window.print();
+            });
+        });
+    </script>
+
+</head>
+<body>
+    <br /><br /><br />
+                <div class="container body-content">
+                    <h3 class="alert-danger">@ViewBag.message</h3>
+                    <form class="user" asp-controller="ExpenseReports" asp-action="CustomExpenses" method="post">
+                        <div class="form-group">
+                            <label>Select From Date</label>
+                            <input type="date" class="form-control form-control-user" id="fromDate" name="fromDate" aria-describedby="emailHelp">
+                        </div>
+                        <div class="form-group">
+                            <label>Select To Date</label>
+                            <input type="date" class="form-control form-control-user" id="toDate" name="toDate" />
+                        </div>
+                        <div class="form-group">
+                            <input type="submit" value="Get Report" class="btn btn-primary btn-user btn-block" />
+                        </div>                      
+                    </form>
+                    <hr>
+                    <button id="printbtn">Print Report</button><br/>
+                    <h3>Expenses Report</h3>
+                    <table class="table table-bordered">
+                        <thead>
+                            <tr>
+                                <th>
+                                    Expenses Type
+                                </th>
+                                <th>
+                                    Expenses Date
+                                </th>
+                                <th>
+                                    Amount
+                                </th>
+                                <th>
+                                    Reason
+                                </th>
+                                <th>
+                                    User
+                                </th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            @foreach (var item in Model)
+                            {
+                                <tr>
+                                    <td>
+                                        @Html.DisplayFor(modelItem => item.ExpenseType.Name)
+                                    </td>
+                                    <td>
+                                        @Html.DisplayFor(modelItem => item.ExpensesDate)
+                                    </td>
+                                    <td>
+                                        @Html.DisplayFor(modelItem => item.Amount)
+                                    </td>
+                                    <td>
+                                        @Html.DisplayFor(modelItem => item.Reason)
+                                    </td>
+                                    <td>
+                                        @Html.DisplayFor(modelItem => item.User.FullName)
+                                    </td>
+                                </tr>
+                            }
+                        </tbody>
+                    </table>
+                </div>
+</body>
+</html>

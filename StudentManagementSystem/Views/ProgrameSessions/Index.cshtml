@@ -1,0 +1,76 @@
+﻿@model IEnumerable<SchoolManagementSystem.Models.Entities.ProgrameSession>
+
+@{
+    ViewData["Title"] = "Configuration" ;
+}
+
+<p>
+    <a asp-action="Create" class="btn btn-success">Programe Configuration</a>
+</p>
+<div class="card shadow mb-4">
+    <div class="card-header py-3">
+        <h6 class="m-0 font-weight-bold text-primary">Programe Session's Setting</h6>
+    </div>
+    <div class="card-body">
+        <div class="table-responsive ">
+            <table class="table table-bordered " id="dataTable" width="100%" cellspacing="0">
+                <thead>
+                    <tr>
+                        <th>
+                            Session
+                        </th>
+                        <th>
+                            Programe
+                        </th>
+                        <th>
+                            Details
+                        </th>
+                        <th>
+                            Reg Date
+                        </th>
+                        <th>
+                            Description
+                        </th>
+                        <th>
+                            User
+                        </th>
+                        <th>Actions</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach (var item in Model)
+                    {
+                    <tr>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.Session.Name)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.Programe.Name)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.Details)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.RegDate)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.Description)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.User.FullName)
+                        </td>
+
+                        <td class="btn-group">
+                            <a asp-action="Edit" asp-route-id="@item.ProgrameSessionId" class="btn btn-primary">Edit</a> 
+                            <a asp-action="Details" asp-route-id="@item.ProgrameSessionId" class="btn btn-info">Details</a>
+                            <a asp-action="Delete" asp-route-id="@item.ProgrameSessionId" class="btn btn-danger">Delete</a>
+                        </td>
+                    </tr>
+                    }
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
+
+

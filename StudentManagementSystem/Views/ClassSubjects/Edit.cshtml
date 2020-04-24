@@ -1,0 +1,47 @@
+﻿@model SchoolManagementSystem.Models.Entities.ClassSubject
+
+@{
+    ViewData["Title"] = "ClassSubject";
+}
+
+<h2>Edit</h2>
+
+<h4>Class Subject</h4>
+<hr />
+<div class="row">
+    <div class="col-md-4">
+        <form asp-action="Edit">
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+            <input type="hidden" asp-for="ClassSubjectId" />
+            <div class="form-group">
+                <label asp-for="ClassTblId" class="control-label">Select Class</label>
+                <select asp-for="ClassTblId" class="form-control" asp-items="ViewBag.ClassTblId"></select>
+                <span asp-validation-for="ClassTblId" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="SubjectId" class="control-label">Select Subject</label>
+                <select asp-for="SubjectId" class="form-control" asp-items="ViewBag.SubjectId"></select>
+                <span asp-validation-for="SubjectId" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Name" class="control-label">Class Subject Title</label>
+                <input asp-for="Name" class="form-control" />
+                <span asp-validation-for="Name" class="text-danger"></span>
+            </div>
+            <div class="form-group form-check">
+                <label class="form-check-label">
+                    <input class="form-check-input" asp-for="IsActive" /> @Html.DisplayNameFor(model => model.IsActive)
+                </label>
+            </div>
+            <div class="form-group">
+                <input type="submit" value="Save" class="btn btn-success" />
+                <a asp-action="Index" class="btn btn-default">Back to List</a>
+            </div>
+        </form>
+    </div>
+</div>
+
+<div>
+   
+</div>
+

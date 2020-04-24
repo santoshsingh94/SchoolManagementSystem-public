@@ -1,0 +1,49 @@
+﻿@model SchoolManagementSystem.Models.Entities.TimeTable
+
+@{
+    ViewData["Title"] = "TimeTable";
+}
+
+    <div class="card mb-4 shadow">
+        <div class="card-header">
+            Edit Subject-Teacher
+        </div>
+        <div class="card-body">
+            <form asp-action="Edit">
+                <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+                <input type="hidden" asp-for="TimeTableId" />
+                <div class="form-group">
+                    <label asp-for="StaffId" class="control-label">Select Teacher</label>
+                    <select asp-for="StaffId" class="form-control" asp-items="ViewBag.StaffId"></select>
+                </div>
+                <div class="form-group">
+                    <label asp-for="ClassSubjectId" class="control-label">Select Subject</label>
+                    <select asp-for="ClassSubjectId" class="form-control" asp-items="ViewBag.ClassSubjectId"></select>
+                </div>
+                <div class="form-group">
+                    <label asp-for="Day" class="control-label"></label>
+                    <input asp-for="Day" class="form-control" />
+                    <span asp-validation-for="Day" class="text-danger"></span>
+                </div>
+                <div class="form-group">
+                    <label asp-for="StartTime" class="control-label">Enter Start Time</label>
+                    <input asp-for="StartTime" class="form-control" />
+                    <span asp-validation-for="StartTime" class="text-danger"></span>
+                </div>
+                <div class="form-group">
+                    <label asp-for="EndTime" class="control-label">Enter End Time</label>
+                    <input asp-for="EndTime" class="form-control" />
+                    <span asp-validation-for="EndTime" class="text-danger"></span>
+                </div>
+                <div class="form-group form-check">
+                    <label class="form-check-label">
+                        <input class="form-check-input" asp-for="IsActive" />Status
+                    </label>
+                </div>
+                <div class="form-group">
+                    <input type="submit" value="Save" class="btn btn-success" />
+                    <a asp-action="Index" class="btn btn-light">Back</a>
+                </div>
+            </form>
+        </div>
+    </div>

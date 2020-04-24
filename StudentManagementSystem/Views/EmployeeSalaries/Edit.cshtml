@@ -1,0 +1,53 @@
+﻿@model SchoolManagementSystem.Models.Entities.EmployeeSalary
+
+@{
+    ViewData["Title"] = "Edit";
+}
+
+<div class="card mb-4 shadow">
+    <div class="card-header">Update Salary Details</div>
+    <div class="card-body">
+        <form asp-action="Edit">
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+            <input type="hidden" asp-for="EmployeeSalaryId" />
+            <div class="form-group">
+                <label asp-for="StaffId" class="control-label">Select Employee</label>
+                <select asp-for="StaffId" class="form-control" asp-items="ViewBag.StaffId"></select>
+            </div>
+
+            <div class="form-group">
+                <label asp-for="SalaryDate" class="control-label">SalaryDate</label>
+                <input asp-for="SalaryDate" class="form-control" />
+                <span asp-validation-for="SalaryDate" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="SalaryMonth" class="control-label">Salary(Month)</label>
+                <input asp-for="SalaryMonth" class="form-control" />
+                <span asp-validation-for="SalaryMonth" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="SalaryYear" class="control-label">Salary(Year)</label>
+                <input asp-for="SalaryYear" class="form-control" />
+                <span asp-validation-for="SalaryYear" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Amount" class="control-label">Salary</label>
+                <input asp-for="Amount" class="form-control" />
+                <span asp-validation-for="Amount" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Comments" class="control-label"></label>
+                <input asp-for="Comments" class="form-control" />
+                <span asp-validation-for="Comments" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <input type="submit" value="Update Salary" class="btn btn-success" />
+            </div>
+        </form>
+    </div>
+</div>
+
+<div>
+    <a asp-action="Index">Back</a>
+</div>
+

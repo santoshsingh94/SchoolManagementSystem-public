@@ -1,0 +1,102 @@
+﻿@model IEnumerable<SchoolManagementSystem.ViewModels.StaffAttendanceReport>
+
+@{
+    Layout = null;
+}
+
+<!DOCTYPE html>
+
+<html>
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" />
+    <title>EmployeeAttendance</title>
+    <script src="~/lib/jquery/dist/jquery.js"></script>
+    <script type="text/javascript">
+        $(document).ready(function () {
+            $('#printbtn').click(function () {
+                window.print();
+            });
+        });
+    </script>
+</head>
+<body>
+    <div class="form-group">
+        <button type="button" class="btn btn-primary">Save Record</button>
+        <button id="printbtn" class="btn btn-default"><i class="fas fa-print"></i>Print</button>
+       
+        <br /><br />
+        <div class="row">
+            <div class="col-md-10">
+                <div class="fa-cpanel panel-default">
+                    <div class="panel-body">
+                        <div class="text-center"><h1><b>PRAISE-EL SCHOOLS</b></h1></div>
+                        <div class="text-center">
+                            <img src="~/image/schoolLogo.gif" width="450" />
+                        </div>
+                        <div class="text-center">New Delhi Cell:8652544148</div>
+                        <div class="text-center"><h2><b>EMPLOYEE ATTENDANCE REPORT</b></h2></div> <br />
+                        <br />
+                        <div class="clearfix"></div>
+                        <br />
+
+                        <div class="container body-content">
+                            <table class="table table-striped table-condensed table-hover">
+                                <thead>
+                                    <tr>
+                                        <th>
+                                            Employee
+                                        </th>
+                                        <th>
+                                            Designation
+                                        </th>
+                                        <th>
+                                            Attendance Date
+                                        </th>
+                                        <th>
+                                            Check In
+                                        </th>
+                                        <th>
+                                            Check Out
+                                        </th>
+                                        <th>
+                                            Duty Hour's
+                                        </th>
+
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    @foreach (var item in Model)
+                                    {
+                                        <tr>
+                                            <td>
+                                                @Html.DisplayFor(modelItem => item.Name)
+                                            </td>
+                                            <td>
+                                                @Html.DisplayFor(modelItem => item.Designation)
+                                            </td>
+                                            <td>
+                                                @Html.DisplayFor(modelItem => item.AttendanceDate)
+                                            </td>
+                                            <td>
+                                                @Html.DisplayFor(modelItem => item.ComingTime)
+                                            </td>
+                                            <td>
+                                                @Html.DisplayFor(modelItem => item.ClosingTime)
+                                            </td>
+                                            <td>
+                                                @Html.DisplayFor(modelItem => item.DutyHour)
+                                            </td>
+                                        </tr>
+                                    }
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</body>
+</html>
