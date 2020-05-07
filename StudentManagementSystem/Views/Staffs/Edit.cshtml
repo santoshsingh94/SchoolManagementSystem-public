@@ -130,7 +130,7 @@
                         <div class="col-md-6">
                             <div class="form-group">
                                 <label class="form-check-label">
-                                    <input class="form-check-input" asp-for="DoYouHaveAnyDisability" />Do you have any disability?
+                                    <input class="form-check-input" asp-for="DoYouHaveAnyDisability" id="disabilityCheck" />Do you have any disability?
                                 </label>
                             </div>
                         </div>
@@ -139,7 +139,7 @@
                 <div class="col-md-6">
                     <div class="form-group">
                         <label asp-for="DisabilityDetails" class="control-label"></label>
-                        <input asp-for="DisabilityDetails" class="form-control" />
+                        <input asp-for="DisabilityDetails" name="disabilityText" id="disabilityText" class="form-control" disabled />
                         <span asp-validation-for="DisabilityDetails" class="text-danger"></span>
                     </div>
                 </div>
@@ -151,7 +151,7 @@
                         <div class="col-md-6">
                             <div class="form-group">
                                 <label class="form-check-label">
-                                    <input class="form-check-input" asp-for="TakingAnyMedication" />Are you taking any medication?
+                                    <input class="form-check-input" asp-for="TakingAnyMedication" id="medicationCheck"/>Are you taking any medication?
                                 </label>
                             </div>
                         </div>
@@ -160,7 +160,7 @@
                 <div class="col-md-6">
                     <div class="form-group">
                         <label asp-for="MedicationDetails" class="control-label"></label>
-                        <input asp-for="MedicationDetails" class="form-control" />
+                        <input asp-for="MedicationDetails" class="form-control" name="medicationText" id="medicationText" disabled />
                         <span asp-validation-for="MedicationDetails" class="text-danger"></span>
                     </div>
                 </div>
@@ -172,7 +172,7 @@
                         <div class="col-md-6">
                             <div class="form-group">
                                 <label class="form-check-label">
-                                    <input class="form-check-input" asp-for="AnyCriminalOffence" />Do you have any police record?
+                                    <input class="form-check-input" asp-for="AnyCriminalOffence" id="policeCheck"/>Do you have any police record?
                                 </label>
 
                             </div>
@@ -182,7 +182,7 @@
                 <div class="col-md-6">
                     <div class="form-group">
                         <label asp-for="CriminalOffenceDetails" class="control-label"></label>
-                        <input asp-for="CriminalOffenceDetails" class="form-control" />
+                        <input asp-for="CriminalOffenceDetails" class="form-control" name="policeText" id="policeText" disabled/>
                         <span asp-validation-for="CriminalOffenceDetails" class="text-danger"></span>
                     </div>
                 </div>
