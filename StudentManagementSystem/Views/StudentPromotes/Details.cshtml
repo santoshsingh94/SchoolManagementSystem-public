@@ -6,61 +6,64 @@
 
 <h1>Details</h1>
 
-<div>
-    <h4>StudentPromote</h4>
-    <hr />
-    <dl class="row">
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.PromoteDate)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.PromoteDate)
-        </dd>
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.AnnualFee)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.AnnualFee)
-        </dd>
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.IsActive)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.IsActive)
-        </dd>
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.IsSubmit)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.IsSubmit)
-        </dd>
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.ClassTbl)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.ClassTbl.ClassTblId)
-        </dd>
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.ProgrameSession)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.ProgrameSession.ProgrameSessionId)
-        </dd>
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.Student)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.Student.ContactNo)
-        </dd>
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.Section)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.Section.SectionId)
-        </dd>
-    </dl>
+<div class="card">
+    <div class="card-body">
+        <h4>StudentPromote</h4>
+        <hr />
+        <dl class="row">
+
+            <dt class="col-sm-2">
+                @Html.DisplayNameFor(model => model.PromoteDate)
+            </dt>
+            <dd class="col-sm-10">
+                @Html.DisplayFor(model => model.PromoteDate)
+            </dd>
+            <dt class="col-sm-2">
+                @Html.DisplayNameFor(model => model.AnnualFee)
+            </dt>
+            <dd class="col-sm-10">
+                @Html.DisplayFor(model => model.AnnualFee)
+            </dd>
+            <dt class="col-sm-2">
+                @Html.DisplayNameFor(model => model.IsActive)
+            </dt>
+            <dd class="col-sm-10">
+                @Html.DisplayFor(model => model.IsActive)
+            </dd>
+            <dt class="col-sm-2">
+                @Html.DisplayNameFor(model => model.IsSubmit)
+            </dt>
+            <dd class="col-sm-10">
+                @Html.DisplayFor(model => model.IsSubmit)
+            </dd>
+            <dt class="col-sm-2">
+                @Html.DisplayNameFor(model => model.ClassTbl)
+            </dt>
+            <dd class="col-sm-10">
+                @Html.DisplayFor(model => model.ClassTbl.ClassTblId)
+            </dd>
+            <dt class="col-sm-2">
+                @Html.DisplayNameFor(model => model.ProgrameSession)
+            </dt>
+            <dd class="col-sm-10">
+                @Html.DisplayFor(model => model.ProgrameSession.ProgrameSessionId)
+            </dd>
+            <dt class="col-sm-2">
+                @Html.DisplayNameFor(model => model.Student)
+            </dt>
+            <dd class="col-sm-10">
+                @Html.DisplayFor(model => model.Student.ContactNo)
+            </dd>
+            <dt class="col-sm-2">
+                @Html.DisplayNameFor(model => model.Section)
+            </dt>
+            <dd class="col-sm-10">
+                @Html.DisplayFor(model => model.Section.SectionId)
+            </dd>
+        </dl>
+    </div>
 </div>
 <div>
-    <a asp-action="Edit" asp-route-id="@Model.StudentPromoteId">Edit</a> |
-    <a asp-action="Index">Back to List</a>
+    <a asp-action="Edit" asp-route-id="@Model.StudentPromoteId" class="btn btn-success">Edit</a> 
+    <a asp-action="Index" class="btn btn-light">Back to List</a>
 </div>

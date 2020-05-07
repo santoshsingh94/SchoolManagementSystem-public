@@ -13,7 +13,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
     <meta name="description" content="">
     <meta name="author" content="">
-
+    
     <title>SB Admin 2 - Dashboard</title>
 
     <!-- Custom fonts for this template-->
@@ -78,7 +78,7 @@
             <!-- Sidebar - Brand -->
             <a class="sidebar-brand d-flex align-items-center justify-content-center" href="#">
                 <div class="sidebar-brand-icon rotate-n-15">
-                    <img class="img-profile rounded-circle" style=" width:70px;height:70px;transform: rotate(10deg);" src="~/image/@Context.Session.GetString("Photo")"/>
+                    <img class="img-profile rounded-circle" style=" width:70px;height:70px;transform: rotate(10deg);" src="~/image/@Context.Session.GetString("Photo")" />
                 </div>
                 <div class="sidebar-brand-text mx-3"><sup>@Context.Session.GetString("FullName")</sup></div>
             </a>
@@ -413,84 +413,84 @@
                     </li>
                 }
             }
-          
-                    <!-- Nav Item - Charts -->
-                    <!-- Divider -->
-                    <hr class="sidebar-divider">
 
-                    <!-- Heading -->
-                    <div class="sidebar-heading">
-                        Reports
+            <!-- Nav Item - Charts -->
+            <!-- Divider -->
+            <hr class="sidebar-divider">
+
+            <!-- Heading -->
+            <div class="sidebar-heading">
+                Reports
+            </div>
+
+            <!-- Nav Item - Pages Collapse Menu -->
+            <li class="nav-item">
+                <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapseReport" aria-expanded="true" aria-controls="collapseReport">
+                    <i class="fas fa-fw fa-chart-area"></i>
+                    <span>Basic Reports</span>
+                </a>
+                <div id="collapseReport" class="collapse" aria-labelledby="headingReport" data-parent="#accordionSidebar">
+                    <div class="bg-white py-2 collapse-inner rounded">
+
+                        <h6 class="collapse-header">Teacher Reports:</h6>
+                        @{
+                            if (userTypeId == 1 || userTypeId == 2 || userTypeId == 3)//Admin Or Operator Or Teacher
+                            {
+
+                                <a class="collapse-item" asp-area="" asp-controller="TimeTableReports" asp-action="TeacherWiseReport">Teacher Wise Time Table</a>
+                            }
+                        }
+                        <div class="collapse-divider"></div>
+                        <h6 class="collapse-header">Administration Reports:</h6>
+                        @{
+                            if (userTypeId == 1 || userTypeId == 5) //Admin Or Accountant
+                            {
+                                <a class="collapse-item" asp-area="" asp-controller="ExpenseReports" asp-action="AllExpenses">All Expenses</a>
+                                <a class="collapse-item" asp-area="" asp-controller="ExpenseReports" asp-action="CustomExpenses">Custom Expenses</a>
+                            }
+                        }
+                        <div class="collapse-divider"></div>
+                        <h6 class="collapse-header">Examination Reports:</h6>
+                        @{
+                            if (userTypeId == 1 || userTypeId == 2) //Admin OR Operator
+                            {
+                                <a class="collapse-item" asp-area="" asp-controller="ExamReports" asp-action="PrintMarkSheet">Print MarkSheet</a>
+                            }
+                        }
+                        <div class="collapse-divider"></div>
+                        <h6 class="collapse-header">Attendance Reports:</h6>
+                        @{
+                            if (userTypeId == 1 || userTypeId == 2) //Admin OR Operator
+                            {
+                                <a class="collapse-item" asp-area="" asp-controller="AttendanceReports" asp-action="AllStudentAttendance">Student Attendance</a>
+                                <a class="collapse-item" asp-area="" asp-controller="AttendanceReports" asp-action="AllStaffAttendance">Staff Attendance</a>
+                            }
+
+                            if (userTypeId == 1 || userTypeId == 2 || userTypeId == 3 || userTypeId == 5 || userTypeId == 6)// Not Student  >show emp attendance report
+                            {
+                                <a class="collapse-item" asp-action="StaffAttendance" asp-controller="AttendanceReports" asp-route-id="0">Attendance Reports</a>
+                            }
+                            else    //Show Attendance Report
+                            {
+                                <a class="collapse-item" asp-action="StudentAttendance" asp-controller="AttendanceReports" asp-route-id="0">Attendance Reports</a>
+                            }
+
+
+                        }
+                        <div class="collapse-divider"></div>
+
+                        <h6 class="collapse-header">Fee's Reports:</h6>
+                        @{
+                            if (userTypeId == 1 || userTypeId == 2) //Admin OR Operator
+                            {
+                                <a class="collapse-item" asp-area="" asp-controller="FeeReports" asp-action="CustomAnnualFee">Annual Fee</a>
+                                <a class="collapse-item" asp-area="" asp-controller="FeeReports" asp-action="CustomTutionFee">Student Fee Report</a>
+                            }
+                        }
                     </div>
-
-                    <!-- Nav Item - Pages Collapse Menu -->
-                    <li class="nav-item">
-                        <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapseReport" aria-expanded="true" aria-controls="collapseReport">
-                            <i class="fas fa-fw fa-chart-area"></i>
-                            <span>Basic Reports</span>
-                        </a>
-                        <div id="collapseReport" class="collapse" aria-labelledby="headingReport" data-parent="#accordionSidebar">
-                            <div class="bg-white py-2 collapse-inner rounded">
-
-                                <h6 class="collapse-header">Teacher Reports:</h6>
-                                @{
-                                    if (userTypeId == 1 || userTypeId == 2 || userTypeId == 3)//Admin Or Operator Or Teacher
-                                    {
-
-                                        <a class="collapse-item" asp-area="" asp-controller="TimeTableReports" asp-action="TeacherWiseReport">Teacher Wise Time Table</a>
-                                    }
-                                }
-                                <div class="collapse-divider"></div>
-                                <h6 class="collapse-header">Administration Reports:</h6>
-                                @{
-                                    if (userTypeId == 1 || userTypeId == 5) //Admin Or Accountant
-                                    {
-                                        <a class="collapse-item" asp-area="" asp-controller="ExpenseReports" asp-action="AllExpenses">All Expenses</a>
-                                        <a class="collapse-item" asp-area="" asp-controller="ExpenseReports" asp-action="CustomExpenses">Custom Expenses</a>
-                                    }
-                                }
-                                <div class="collapse-divider"></div>
-                                <h6 class="collapse-header">Examination Reports:</h6>
-                                @{
-                                    if (userTypeId == 1 || userTypeId == 2) //Admin OR Operator
-                                    {
-                                        <a class="collapse-item" asp-area="" asp-controller="ExamReports" asp-action="PrintMarkSheet">Print MarkSheet</a>
-                                    }
-                                }
-                                <div class="collapse-divider"></div>
-                                <h6 class="collapse-header">Attendance Reports:</h6>
-                                @{
-                                    if (userTypeId == 1 || userTypeId == 2) //Admin OR Operator
-                                    {
-                                        <a class="collapse-item" asp-area="" asp-controller="AttendanceReports" asp-action="AllStudentAttendance">Student Attendance</a>
-                                        <a class="collapse-item" asp-area="" asp-controller="AttendanceReports" asp-action="AllStaffAttendance">Staff Attendance</a>
-                                    }
-
-                                    if (userTypeId == 1 || userTypeId == 2 || userTypeId == 3 || userTypeId == 5 || userTypeId == 6)// Not Student  >show emp attendance report
-                                    {
-                                        <a class="collapse-item" asp-action="StaffAttendance" asp-controller="AttendanceReports" asp-route-id="0">Attendance Reports</a>
-                                    }
-                                    else    //Show Attendance Report
-                                    {
-                                        <a class="collapse-item" asp-action="StudentAttendance" asp-controller="AttendanceReports" asp-route-id="0">Attendance Reports</a>
-                                    }
-
-
-                                }
-                                <div class="collapse-divider"></div>
-
-                                <h6 class="collapse-header">Fee's Reports:</h6>
-                                @{
-                                    if (userTypeId == 1 || userTypeId == 2) //Admin OR Operator
-                                    {
-                                        <a class="collapse-item" asp-area="" asp-controller="FeeReports" asp-action="CustomAnnualFee">Annual Fee</a>
-                                        <a class="collapse-item" asp-area="" asp-controller="FeeReports" asp-action="CustomTutionFee">Student Fee Report</a>
-                                    }
-                                }
-                            </div>
-                        </div>
-                    </li>
-                    @*<li class="nav-item">
+                </div>
+            </li>
+            @*<li class="nav-item">
                     <a class="nav-link" href="charts.html">
                         <i class="fas fa-fw fa-chart-area"></i>
                         <span>Charts</span>
@@ -505,15 +505,15 @@
                     </a>
                 </li>*@
 
-                    <!-- Divider -->
-                    <hr class="sidebar-divider d-none d-md-block">
+            <!-- Divider -->
+            <hr class="sidebar-divider d-none d-md-block">
 
-                    <!-- Sidebar Toggler (Sidebar) -->
-                    <div class="text-center d-none d-md-inline">
-                        <button class="rounded-circle border-0" id="sidebarToggle"></button>
-                    </div>
+            <!-- Sidebar Toggler (Sidebar) -->
+            <div class="text-center d-none d-md-inline">
+                <button class="rounded-circle border-0" id="sidebarToggle"></button>
+            </div>
 
-                </ul>
+        </ul>
         <!-- End of Sidebar -->
         <!-- Content Wrapper -->
         <div id="content-wrapper" class="d-flex flex-column">
@@ -562,13 +562,13 @@
                         <li class="nav-item dropdown no-arrow">
                             <a class="nav-link dropdown-toggle" href="#" id="userDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                                 <span class="mr-2 d-none d-lg-inline text-gray-600 small">@Context.Session.GetString("UserType")</span>
-                                <img class="img-profile rounded-circle"  src="~/image/@Context.Session.GetString("Photo")" />
+                                <img class="img-profile rounded-circle" src="~/image/@Context.Session.GetString("Photo")" />
                             </a>
                             <!-- Dropdown - User Information -->
-                            <div class="dropdown-menu dropdown-menu-right shadow animated--grow-in" aria-labelledby="userDropdown">                                
-                                   @* <i class="fas fa-user fa-sm fa-fw mr-2 text-gray-400"></i>*@
-                                    <a class=" dropdown-item fas fa-user fa-sm fa-fw mr-2 text-gray-400" asp-area="" asp-controller="Home" asp-action="ChangePassword">Change Password</a>
-                               
+                            <div class="dropdown-menu dropdown-menu-right shadow animated--grow-in" aria-labelledby="userDropdown">
+                                @* <i class="fas fa-user fa-sm fa-fw mr-2 text-gray-400"></i>*@
+                                <a class=" dropdown-item fas fa-user fa-sm fa-fw mr-2 text-gray-400" asp-area="" asp-controller="Home" asp-action="ChangePassword">Change Password</a>
+
                                 <div class="dropdown-divider"></div>
                                 <a class="dropdown-item" href="#" data-toggle="modal" data-target="#logoutModal">
                                     <i class="fas fa-sign-out-alt fa-sm fa-fw mr-2 text-gray-400"></i>
@@ -652,6 +652,8 @@
 
     <!-- Page level custom scripts -->
     <script src="~/AdminTemplate/js/demo/datatables-demo.js"></script>
+    <script src="~/js/site.js"></script>
+
     @if (IsSectionDefined("Scripts"))
     {
         @RenderSection("Scripts", required: true)
