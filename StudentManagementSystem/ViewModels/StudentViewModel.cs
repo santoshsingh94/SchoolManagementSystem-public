@@ -1,5 +1,6 @@
 ﻿using Microsoft.AspNetCore.Http;
 using SchoolManagementSystem.Models.Entities;
+using SchoolManagementSystem.Models.Master;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
@@ -26,13 +27,13 @@ namespace SchoolManagementSystem.ViewModels
         [DataType(DataType.Date)]
         public DateTime DateOfBirth { get; set; }
         [Required(ErrorMessage = "Please Enter Gender")]
-        public string Gender { get; set; }
+        public string GenderId { get; set; }
         [Required(ErrorMessage = "Please Enter Contact No")]
         public string ContactNo { get; set; }
         public string Email { get; set; }
-        public string Nationality { get; set; }
-        public string Religion { get; set; }
-        public string Category { get; set; }
+        public int NationalityId { get; set; }
+        public int ReligionId { get; set; }
+        public int CategoryId { get; set; }
         public string GuardianName { get; set; }
         public string GuardianOccupation { get; set; }
         public string GuardianPhone { get; set; }
@@ -49,14 +50,16 @@ namespace SchoolManagementSystem.ViewModels
         public string PreviousSchool { get; set; }
         //[Required(ErrorMessage = "Please Enter Percentage")]
         public float PreviousPercentage { get; set; }
-
-
-        public ICollection<Attendance> Attendances { get; set; }
-        public ICollection<ExamMark> ExamMarks { get; set; }
         public Programe Programe { get; set; }
         public Session Session { get; set; }
         public User User { get; set; }
         public ClassTbl ClassTbl { get; set; }
+        public Gender Gender { get; set; }
+        public Nationality Nationality { get; set; }
+        public Category Category { get; set; }
+        public Religion Religion { get; set; }
+        public ICollection<Attendance> Attendances { get; set; }
+        public ICollection<ExamMark> ExamMarks { get; set; }
         public ICollection<SubmissionFee> SubmissionFees { get; set; }
         public ICollection<StudentPromote> StudentPromotes { get; set; }
         public ICollection<SchoolLeaving> SchoolLeavings { get; set; }

@@ -58,10 +58,11 @@ namespace StudentManagementSystem.Controllers
                         {
                             HttpContext.Session.SetString("Photo", student.Photo.ToString());
                         }
-                        else
+                        else 
                         {
                             var employee = _context.Staffs.Where(e => e.Email == finduser[0].UserName).FirstOrDefault();
-                            HttpContext.Session.SetString("Photo", employee.photo.ToString());
+                            if(employee!=null)
+                                HttpContext.Session.SetString("Photo", employee.photo.ToString());
                         }
 
 

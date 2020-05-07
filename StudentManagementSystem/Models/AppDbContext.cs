@@ -1,11 +1,8 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using SchoolManagementSystem.Models.Entities;
+using SchoolManagementSystem.Models.Master;
 using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
-
 namespace StudentManagementSystem.Models
 {
     public class AppDbContext : DbContext
@@ -50,6 +47,11 @@ namespace StudentManagementSystem.Models
         public DbSet<Section> Sections { get; set; }
         public DbSet<Expense> Expenses { get; set; }
         public DbSet<ExpenseType> ExpenseTypes { get; set; }
+        public DbSet<Gender> Genders { get; set; }
+        public DbSet<Nationality> Nationalities { get; set; }
+        public DbSet<Category> Categories { get; set; }
+        public DbSet<Religion> Religions { get; set; }
+
 
 
 
@@ -83,10 +85,6 @@ namespace StudentManagementSystem.Models
                .HasOne(p => p.Staff)
                .WithMany(b => b.TimeTables)
                .OnDelete(DeleteBehavior.Restrict);
-            //modelBuilder.Entity<TimeTable>()
-            //   .HasOne(p => p.Subject)
-            //   .WithMany(b => b.TimeTables)
-            //   .OnDelete(DeleteBehavior.Restrict);
             modelBuilder.Entity<StudentPromote>()
                .HasOne(p=>p.Student)
                .WithMany(b => b.StudentPromotes)
@@ -140,6 +138,8 @@ namespace StudentManagementSystem.Models
                .WithMany(b => b.Students)
                .OnDelete(DeleteBehavior.Restrict);
 
+           
+
             //Addding Unique Key
             modelBuilder.Entity<Staff>()
             .HasIndex(u => u.Email)
@@ -158,143 +158,175 @@ namespace StudentManagementSystem.Models
 
 
 
-            modelBuilder.Entity<Student>().HasData(new
+           
+
+            //UserTypes
+            modelBuilder.Entity<UserType>().HasData(new UserType()
             {
-                StudentId = 1,
-                SessionId = 1,
-                ProgrameId = 1,
-                UserId = 1,
-                Name = "Santosh Singh",
-                FatherName = "C. B. Singh",
-                DateOfBirth = Convert.ToDateTime("12-13-1994"),
-                AdmissionDate=DateTime.Now,
-                Gender = "Male",
-                ContactNo = "8652544148",
-                Email = "ausantoshsingh@gmail.com",
-                Address = "Varanasi",
-                AadharNo = "1234567890",
-                Photo = "",
-                IsEnrolled = true,
-                ApplyDate = Convert.ToDateTime("04-08-2016"),
-                IsShortlist = true,
-                IsApply = true,
-                PreviousSchool = "MIIT Varanasi",
-                PreviousPercentage = 70.0f,
-                ClassTblId =1 
+                UserTypeId = 1,
+                TypeName = "Admin",
+                Description = "Admins are allowed to handle all the modules."
             });
+            modelBuilder.Entity<UserType>().HasData(new UserType()
+            {
+                UserTypeId = 2,
+                TypeName = "Operator",
+                Description = "Operators are allowed to handle all the modules with some restrictions."
+            });
+            modelBuilder.Entity<UserType>().HasData(new UserType()
+            {
+                UserTypeId = 3,
+                TypeName = "Teacher",
+                Description = "Teachers are allowed to handle Student and teacher information."
+            });
+            modelBuilder.Entity<UserType>().HasData(new UserType()
+            {
+                UserTypeId = 4,
+                TypeName = "Student",
+                Description = "Students can view their attendance."
+            });
+            modelBuilder.Entity<UserType>().HasData(new UserType()
+            {
+                UserTypeId = 5,
+                TypeName = "Accountant",
+                Description = "Accountants can handle all the transactions details."
+            });
+            modelBuilder.Entity<UserType>().HasData(new UserType()
+            {
+                UserTypeId = 6,
+                TypeName = "Employee",
+                Description = "Employee have low access than a teacher."
+            });
+            //Default User
             modelBuilder.Entity<User>().HasData(new User()
             {
                 UserId = 1,
                 UserTypeId = 1,
-                FullName = "Santosh Singh",
-                UserName = "ausantoshsingh@gmail.com",
-                Password = "sks@123",
+                FullName = "Admin",
+                UserName = "admin@gmail.com",
+                Password = "password",
                 ContactNo = "8652544148",
-                Email = "ausantoshsingh@gmail.com",
-                Address = "Varanasi"
+                Email = "admin@gmail.com",
+                Address = "New Delhi",                
             });
-            modelBuilder.Entity<Session>().HasData(new Session()
+            //Gender
+            modelBuilder.Entity<Gender>().HasData(new Gender()
             {
-                SessionId = 1,
-                UserId = 1,
-                Name = "July",
-                StartDate = Convert.ToDateTime("04-08-2016"),
-                EndDate = Convert.ToDateTime("04-08-2016")
+                GenderId = 1,
+                GenderType = "Male"
             });
-            modelBuilder.Entity<Annual>().HasData(new Annual()
+            modelBuilder.Entity<Gender>().HasData(new Gender()
             {
-                AnnualId = 1,
-                ProgrameId = 1,
-                UserId = 1,
-                Title = "July-May",
-                Description = "This is the one year School",
-                Fees = 18000,
-                IsActive = true
+                GenderId = 2,
+                GenderType = "Female"
             });
-            modelBuilder.Entity<Programe>().HasData(new Programe()
+            modelBuilder.Entity<Gender>().HasData(new Gender()
             {
-                ProgrameId = 1,
-                UserId = 1,
-                Name = "MCA",
-                StartDate = Convert.ToDateTime("04-08-2016"),
-                IsActive = true
+                GenderId = 3,
+                GenderType = "Transgender"
             });
-            modelBuilder.Entity<ProgrameSession>().HasData(new ProgrameSession()
+            //Nationalities
+            modelBuilder.Entity<Nationality>().HasData(new Nationality() { 
+                NationalityId=1,
+                NationalityType="Indian"
+            }); 
+            modelBuilder.Entity<Nationality>().HasData(new Nationality() { 
+                NationalityId=2,
+                NationalityType="Others"
+            });
+            //Categories
+            modelBuilder.Entity<Category>().HasData(new Category() { 
+                CategoryId=1,
+                CategoryType="General"
+            });
+            modelBuilder.Entity<Category>().HasData(new Category()
             {
-                ProgrameSessionId = 1,
-                UserId = 1,
-                SessionId = 1,
-                ProgrameId = 1,
-                Details = "abcdefgh",
-                RegDate = Convert.ToDateTime("04-08-2016"),
-                Description = "ijklmnop"
+                CategoryId = 2,
+                CategoryType = "OBC"
             });
-            modelBuilder.Entity<Staff>().HasData(new Staff()
+            modelBuilder.Entity<Category>().HasData(new Category()
             {
-                StaffId = 1,
-                UserId = 1,
-                Name = "Rahul Mishra",
-                ContactNo = "1234567890",
-                BasicSalary = 25000,
-                Email = "rahulmishra@gmail.com",
-                Address = "Allahabad",
-                Qualification = "P.Hd",
-                Gender = "male",
-                HomePhone="8652544148",
-                Description = "Completed PHd from MNNIT Allahabad",
-                IsActive = true
+                CategoryId = 3,
+                CategoryType = "SC"
             });
-            modelBuilder.Entity<StaffAttendance>().HasData(new StaffAttendance()
+            modelBuilder.Entity<Category>().HasData(new Category()
             {
-                StaffAttendanceId = 1,
-                StaffId = 1,
-                AttendanceDate = Convert.ToDateTime("04-08-2016"),
-                ComingTime = TimeSpan.Parse("12:15:06"),
-                ClosingTime = TimeSpan.Parse("1:15:06")
+                CategoryId = 4,
+                CategoryType = "ST"
             });
+            //Religion
+            modelBuilder.Entity<Religion>().HasData(new Religion { 
+                ReligionId=1,
+                ReligionType="Hindu"
+            });
+            modelBuilder.Entity<Religion>().HasData(new Religion
+            {
+                ReligionId = 2,
+                ReligionType = "Muslim"
+            });
+            modelBuilder.Entity<Religion>().HasData(new Religion
+            {
+                ReligionId = 3,
+                ReligionType = "Sikh"
+            });
+            modelBuilder.Entity<Religion>().HasData(new Religion
+            {
+                ReligionId = 4,
+                ReligionType = "Christian"
+            });
+            modelBuilder.Entity<Religion>().HasData(new Religion
+            {
+                ReligionId = 5,
+                ReligionType = "Jain"
+            }); 
+            modelBuilder.Entity<Religion>().HasData(new Religion
+            {
+                ReligionId = 6,
+                ReligionType = "Buddhist"
+            });
+            modelBuilder.Entity<Religion>().HasData(new Religion
+            {
+                ReligionId = 7,
+                ReligionType = "Other"
+            });           
+            //adding subject           
             modelBuilder.Entity<Subject>().HasData(new Subject()
             {
                 SubjectId = 1,
                 UserId = 1,
-                Name = "Computer Networks",
-                RegDate = Convert.ToDateTime("04-08-2016"),
-                Description = "Computer Networks is one the most important subject in Computer Science.",
-                TotalMarks = 80
+                Name = "Hindi",
+                RegDate = Convert.ToDateTime("01-01-2018"),
+                Description = "",
+                TotalMarks = 100
             });
-            modelBuilder.Entity<SubmissionFee>().HasData(new SubmissionFee()
+            modelBuilder.Entity<Subject>().HasData(new Subject()
             {
-                SubmissionFeeId = 1,
+                SubjectId = 2,
                 UserId = 1,
-                StudentId = 1,
-                ClassTblId=1,
-                ProgrameId = 1,
-                Amount = 60000,
-                SubmissionDate = Convert.ToDateTime("04-08-2016"),
-                FeeMonth = "January",
-                Description = "This is Jan month fee"
+                Name = "English",
+                RegDate = Convert.ToDateTime("01-01-2018"),
+                Description = "",
+                TotalMarks = 100
             });
-            modelBuilder.Entity<TimeTable>().HasData(new TimeTable()
+            modelBuilder.Entity<Subject>().HasData(new Subject()
             {
-                TimeTableId = 1,
+                SubjectId = 3,
                 UserId = 1,
-                StaffId=1,
-                ClassSubjectId=1,
-                StartTime = TimeSpan.Parse("12:15:06"),
-                EndTime = TimeSpan.Parse("12:55:06"),
-                Day = "Saturday",
-                IsActive = true
+                Name = "Math",
+                RegDate = Convert.ToDateTime("01-01-2018"),
+                Description = "",
+                TotalMarks = 100
             });
-            
-            modelBuilder.Entity<Attendance>().HasData(new Attendance()
+            modelBuilder.Entity<Subject>().HasData(new Subject()
             {
-                AttendanceId = 1,
-                SessionId = 1,
-                StudentId = 1,
-                ClassTblId=1,
-                AttendanceDate = Convert.ToDateTime("04-08-2016"),
-                AttendanceTime = TimeSpan.Parse("12:15:06")
-
+                SubjectId = 4,
+                UserId = 1,
+                Name = "Science",
+                RegDate = Convert.ToDateTime("01-01-2018"),
+                Description = "",
+                TotalMarks = 100
             });
+            //Adding Designation
             modelBuilder.Entity<Designation>().HasData(new Designation()
             {
                 DesignationId = 1,
@@ -302,70 +334,219 @@ namespace StudentManagementSystem.Models
                 Title = "Principal",
                 IsActive = true
             });
-            modelBuilder.Entity<Exam>().HasData(new Exam()
+            modelBuilder.Entity<Designation>().HasData(new Designation()
             {
-                ExamId = 1,
+                DesignationId = 2,
                 UserId = 1,
-                Title = "Mid Term Exam",
-                StartDate = Convert.ToDateTime("04-08-2016"),
-                EndDate = Convert.ToDateTime("10-08-2016"),
-                Description = ""
+                Title = "Voice Principal",
+                IsActive = true
             });
-            
-            modelBuilder.Entity<ExamMark>().HasData(new ExamMark()
+            modelBuilder.Entity<Designation>().HasData(new Designation()
             {
-                ExamMarkId = 1,
-                ExamId = 1,
-                StudentId = 1,
-                ClassSubjectId=1,
+                DesignationId = 3,
                 UserId = 1,
-                TotalMarks = 1,
-                ObtainMarks = 1
+                Title = "Teacher",
+                IsActive = true
             });
-            modelBuilder.Entity<UserType>().HasData(new UserType()
+            modelBuilder.Entity<Designation>().HasData(new Designation()
             {
-                UserTypeId = 1,
-                TypeName = "Admin",
-                Description = "xyz"
+                DesignationId = 4,
+                UserId = 1,
+                Title = "Security Guard",
+                IsActive = true
             });
+            modelBuilder.Entity<Designation>().HasData(new Designation()
+            {
+                DesignationId = 5,
+                UserId = 1,
+                Title = "Cleaner",
+                IsActive = true
+            });
+            modelBuilder.Entity<Programe>().HasData(new Programe()
+            {
+                ProgrameId = 1,
+                UserId = 1,
+                Name = "Arts",
+                StartDate = Convert.ToDateTime("01-01-2018"),
+                IsActive = true
+            });
+            modelBuilder.Entity<Programe>().HasData(new Programe()
+            {
+                ProgrameId = 2,
+                UserId = 1,
+                Name = "Commerce",
+                StartDate = Convert.ToDateTime("01-01-2018"),
+                IsActive = true
+            });
+            modelBuilder.Entity<Programe>().HasData(new Programe()
+            {
+                ProgrameId = 3,
+                UserId = 1,
+                Name = "Science",
+                StartDate = Convert.ToDateTime("01-01-2018"),
+                IsActive = true
+            });
+            modelBuilder.Entity<Programe>().HasData(new Programe()
+            {
+                ProgrameId = 4,
+                UserId = 1,
+                Name = "Computer Science",
+                StartDate = Convert.ToDateTime("01-01-2018"),
+                IsActive = true
+            });
+
+            //Annual Fee/Promote Fee
+            modelBuilder.Entity<Annual>().HasData(new Annual()
+            {
+                AnnualId = 1,
+                UserId = 1,
+                Title = "For LKG To Fifth Standard",
+                ProgrameId=1,
+                Description = "Annual Fee Same",
+                Fees=1000,
+                IsActive = true
+            });
+            modelBuilder.Entity<Annual>().HasData(new Annual()
+            {
+                AnnualId = 2,
+                UserId = 1,
+                Title = "For LKG To Fifth Standard",
+                ProgrameId = 1,
+                Description = "Annual Fee Same",
+                Fees = 1500,
+                IsActive = true
+            });
+            modelBuilder.Entity<Annual>().HasData(new Annual()
+            {
+                AnnualId = 3,
+                UserId = 1,
+                Title = "For LKG To Fifth Standard",
+                ProgrameId = 3,
+                Description = "Annual Fee Same",
+                Fees = 1800,
+                IsActive = true
+            });
+            modelBuilder.Entity<Annual>().HasData(new Annual()
+            {
+                AnnualId = 4,
+                UserId = 1,
+                Title = "For LKG To Fifth Standard",
+                ProgrameId = 4,
+                Description = "Annual Fee Same",
+                Fees = 2000,
+                IsActive = true
+            });
+            //Session
+            modelBuilder.Entity<Session>().HasData(new Session()
+            {
+                SessionId = 1,
+                UserId = 1,
+                Name = "2020-2021",
+                StartDate = Convert.ToDateTime("01-07-2020"),
+                EndDate = Convert.ToDateTime("30-06-2021")
+            });
+            //ProgrameSession
+            modelBuilder.Entity<ProgrameSession>().HasData(new ProgrameSession()
+            {
+                ProgrameSessionId = 1,
+                UserId = 1,
+                SessionId = 1,
+                ProgrameId=1,
+                Details = "(2020-2021-Arts)LGK to 5th",
+                Description = "Annual Fee Same",
+                RegDate = Convert.ToDateTime("01-01-2018")
+            });
+            //Adding class
             modelBuilder.Entity<ClassTbl>().HasData(new ClassTbl()
             {
                 ClassTblId = 1,
-                Name = "High School",
+                Name = "LKG",
                 IsActive=true
             });
-            modelBuilder.Entity<StudentPromote>().HasData(new StudentPromote()
+            
+            modelBuilder.Entity<ClassTbl>().HasData(new ClassTbl()
             {
-                StudentPromoteId=1,
-                StudentId=1,
-                ClassTblId=1,
-                ProgrameSessionId=1,
-                PromoteDate= Convert.ToDateTime("04-08-2016"),
-                AnnualFee=10000
+                ClassTblId = 2,
+                Name = "UKG",
+                IsActive = true
             });
+            modelBuilder.Entity<ClassTbl>().HasData(new ClassTbl()
+            {
+                ClassTblId = 3,
+                Name = "First Standard",
+                IsActive = true
+            });
+            modelBuilder.Entity<ClassTbl>().HasData(new ClassTbl()
+            {
+                ClassTblId = 4,
+                Name = "Second Standard",
+                IsActive = true
+            });
+            modelBuilder.Entity<ClassTbl>().HasData(new ClassTbl()
+            {
+                ClassTblId = 5,
+                Name = "Third Standard",
+                IsActive = true
+            });
+            modelBuilder.Entity<ClassTbl>().HasData(new ClassTbl()
+            {
+                ClassTblId = 6,
+                Name = "Fourth Standard",
+                IsActive = true
+            });
+            modelBuilder.Entity<ClassTbl>().HasData(new ClassTbl()
+            {
+                ClassTblId = 7,
+                Name = "Fifth Standard",
+                IsActive = true
+            });
+            modelBuilder.Entity<ClassTbl>().HasData(new ClassTbl()
+            {
+                ClassTblId = 8,
+                Name = "Sixth Standard",
+                IsActive = true
+            });
+            modelBuilder.Entity<ClassTbl>().HasData(new ClassTbl()
+            {
+                ClassTblId = 9,
+                Name = "Seventh Standard",
+                IsActive = true
+            });
+            modelBuilder.Entity<ClassTbl>().HasData(new ClassTbl()
+            {
+                ClassTblId = 10,
+                Name = "Eighth Standard",
+                IsActive = true
+            });
+            //Adding ClassSubject
             modelBuilder.Entity<ClassSubject>().HasData(new ClassSubject()
             {
-                ClassSubjectId=1,
-                ClassTblId = 1,
+                ClassSubjectId = 1,
+                ClassTblId=1,
                 SubjectId = 1,
-                Name = "Math",
-                IsActive=true
+                Name = "Hindi-LKG",
+                IsActive = true
             });
+            //Adding Sections
             modelBuilder.Entity<Section>().HasData(new Section()
             {
                 SectionId=1,
                 UserId = 1,
                 Name="A"
             });
-            modelBuilder.Entity<EventTbl>().HasData(new EventTbl()
+            modelBuilder.Entity<Section>().HasData(new Section()
             {
-                EventTblId = 1,
-                EventTitle="Tech Workshop",
-                EventDate= Convert.ToDateTime("04-08-2020"),
-                Location = "Delhi",
-                Description="This is technical Workshop",
-                UserId=1
+                SectionId = 2,
+                UserId = 1,
+                Name = "B"
             });
+            modelBuilder.Entity<Section>().HasData(new Section()
+            {
+                SectionId = 3,
+                UserId = 1,
+                Name = "C"
+            });
+
         }
     }
 }

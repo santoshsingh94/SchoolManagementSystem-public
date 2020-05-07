@@ -3,15 +3,17 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using StudentManagementSystem.Models;
 
 namespace SchoolManagementSystem.Migrations
 {
     [DbContext(typeof(AppDbContext))]
-    partial class AppDbContextModelSnapshot : ModelSnapshot
+    [Migration("20200502123146_addingData")]
+    partial class addingData
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -57,41 +59,11 @@ namespace SchoolManagementSystem.Migrations
                         new
                         {
                             AnnualId = 1,
-                            Description = "Annual Fee Same",
-                            Fees = 1000.0,
+                            Description = "This is the one year School",
+                            Fees = 18000.0,
                             IsActive = true,
                             ProgrameId = 1,
-                            Title = "For LKG To Fifth Standard",
-                            UserId = 1
-                        },
-                        new
-                        {
-                            AnnualId = 2,
-                            Description = "Annual Fee Same",
-                            Fees = 1500.0,
-                            IsActive = true,
-                            ProgrameId = 1,
-                            Title = "For LKG To Fifth Standard",
-                            UserId = 1
-                        },
-                        new
-                        {
-                            AnnualId = 3,
-                            Description = "Annual Fee Same",
-                            Fees = 1800.0,
-                            IsActive = true,
-                            ProgrameId = 3,
-                            Title = "For LKG To Fifth Standard",
-                            UserId = 1
-                        },
-                        new
-                        {
-                            AnnualId = 4,
-                            Description = "Annual Fee Same",
-                            Fees = 2000.0,
-                            IsActive = true,
-                            ProgrameId = 4,
-                            Title = "For LKG To Fifth Standard",
+                            Title = "July-May",
                             UserId = 1
                         });
                 });
@@ -155,16 +127,6 @@ namespace SchoolManagementSystem.Migrations
                     b.HasIndex("SubjectId");
 
                     b.ToTable("ClassSubjects");
-
-                    b.HasData(
-                        new
-                        {
-                            ClassSubjectId = 1,
-                            ClassTblId = 1,
-                            IsActive = true,
-                            Name = "Hindi-LKG",
-                            SubjectId = 1
-                        });
                 });
 
             modelBuilder.Entity("SchoolManagementSystem.Models.Entities.ClassTbl", b =>
@@ -294,13 +256,6 @@ namespace SchoolManagementSystem.Migrations
                         new
                         {
                             DesignationId = 4,
-                            IsActive = true,
-                            Title = "Security Guard",
-                            UserId = 1
-                        },
-                        new
-                        {
-                            DesignationId = 5,
                             IsActive = true,
                             Title = "Cleaner",
                             UserId = 1
@@ -805,32 +760,8 @@ namespace SchoolManagementSystem.Migrations
                         {
                             ProgrameId = 1,
                             IsActive = true,
-                            Name = "Arts",
-                            StartDate = new DateTime(2018, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            UserId = 1
-                        },
-                        new
-                        {
-                            ProgrameId = 2,
-                            IsActive = true,
-                            Name = "Commerce",
-                            StartDate = new DateTime(2018, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            UserId = 1
-                        },
-                        new
-                        {
-                            ProgrameId = 3,
-                            IsActive = true,
-                            Name = "Science",
-                            StartDate = new DateTime(2018, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            UserId = 1
-                        },
-                        new
-                        {
-                            ProgrameId = 4,
-                            IsActive = true,
-                            Name = "Computer Science",
-                            StartDate = new DateTime(2018, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            Name = "MCA",
+                            StartDate = new DateTime(2016, 8, 4, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             UserId = 1
                         });
                 });
@@ -869,18 +800,6 @@ namespace SchoolManagementSystem.Migrations
                     b.HasIndex("UserId");
 
                     b.ToTable("ProgrameSessions");
-
-                    b.HasData(
-                        new
-                        {
-                            ProgrameSessionId = 1,
-                            Description = "Annual Fee Same",
-                            Details = "(2020-2021-Arts)LGK to 5th",
-                            ProgrameId = 1,
-                            RegDate = new DateTime(2018, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            SessionId = 1,
-                            UserId = 1
-                        });
                 });
 
             modelBuilder.Entity("SchoolManagementSystem.Models.Entities.SchoolLeaving", b =>
@@ -991,9 +910,9 @@ namespace SchoolManagementSystem.Migrations
                         new
                         {
                             SessionId = 1,
-                            EndDate = new DateTime(2021, 6, 30, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            Name = "2020-2021",
-                            StartDate = new DateTime(2020, 7, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            EndDate = new DateTime(2016, 8, 4, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            Name = "July",
+                            StartDate = new DateTime(2018, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             UserId = 1
                         });
                 });

@@ -5,7 +5,7 @@
 }
 
 <p>
-    <a asp-action="Create" class="btn btn-success">Create New</a>
+    @*<a asp-action="Create" class="btn btn-success">Create New</a>*@
 </p>
 <div class="card shadow mb-4">
 <div class="card-header py-3">
@@ -62,7 +62,7 @@
                         <td class="btn-group">
                             <a asp-action="Edit" asp-route-id="@item.UserId" class="btn btn-primary">Edit</a>
                             <a asp-action="Details" asp-route-id="@item.UserId" class="btn btn-info">Details</a>
-                            <a asp-action="Delete" asp-route-id="@item.UserId" class="btn btn-danger">Delete</a>
+                            @*<a asp-action="Delete" asp-route-id="@item.UserId" class="btn btn-danger">Delete</a>*@
                         </td>
                     </tr>
                 }

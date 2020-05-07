@@ -7,6 +7,7 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
+using SchoolManagementSystem.Helper;
 using SchoolManagementSystem.Models.Entities;
 using SchoolManagementSystem.ViewModels;
 using StudentManagementSystem.Models;
@@ -76,6 +77,10 @@ namespace SchoolManagementSystem.Controllers
             ViewData["ClassTblId"] = new SelectList(_context.ClassTbls, "ClassTblId", "Name");
             ViewData["ProgrameId"] = new SelectList(_context.Programes, "ProgrameId", "Name");
             ViewData["SessionId"] = new SelectList(_context.Sessions, "SessionId", "Name");
+            ViewData["GenderId"] = new SelectList(_context.Genders, "GenderId", "GenderType");
+            ViewData["NationalityId"] = new SelectList(_context.Nationalities, "NationalityId", "NationalityType");
+            ViewData["ReligionId"] = new SelectList(_context.Religions, "ReligionId", "ReligionType");
+            ViewData["CategoryId"] = new SelectList(_context.Categories, "CategoryId", "CategoryType");
             ViewData["UserId"] = new SelectList(_context.Users, "UserId", "FullName");
             return View();
         }
@@ -139,12 +144,12 @@ namespace SchoolManagementSystem.Controllers
                     Name = model.Name,
                     FatherName = model.FatherName,
                     DateOfBirth = model.DateOfBirth,
-                    Gender = model.Gender,
+                    GenderId = model.GenderId,
                     ContactNo = model.ContactNo,
                     Email = model.Email,
-                    Nationality = model.Nationality,
-                    Religion = model.Religion,
-                    Category = model.Category,
+                    NationalityId = model.NationalityId,
+                    ReligionId = model.ReligionId,
+                    CategoryId = model.CategoryId,
                     Cast = model.Cast,
                     GuardianName = model.GuardianName,
                     GuardianOccupation = model.GuardianOccupation,
@@ -165,6 +170,10 @@ namespace SchoolManagementSystem.Controllers
             ViewData["ClassTblId"] = new SelectList(_context.ClassTbls, "ClassTblId", "Name", model.ClassTblId);
             ViewData["ProgrameId"] = new SelectList(_context.Programes, "ProgrameId", "Name", model.ProgrameId);
             ViewData["SessionId"] = new SelectList(_context.Sessions, "SessionId", "Name", model.SessionId);
+            ViewData["GenderId"] = new SelectList(_context.Genders, "GenderId", "GenderType");
+            ViewData["NationalityId"] = new SelectList(_context.Genders, "NationalityId", "NationalityType");
+            ViewData["ReligionId"] = new SelectList(_context.Genders, "ReligionId", "ReligionType");
+            ViewData["CategoryId"] = new SelectList(_context.Genders, "CategoryId", "CategoryType");
             ViewData["UserId"] = new SelectList(_context.Users, "UserId", "FullName", model.UserId);
             return View(model);
         }
@@ -200,12 +209,12 @@ namespace SchoolManagementSystem.Controllers
                 UserId = student.UserId,
                 FatherName=student.FatherName,
                 DateOfBirth=student.DateOfBirth,
-                Gender=student.Gender,
+                GenderId=student.GenderId,
                 ContactNo=student.ContactNo,
                 Email=student.Email,
-                Nationality=student.Email,
-                Religion=student.Religion,
-                Category=student.Category,
+                NationalityId=student.NationalityId,
+                ReligionId=student.ReligionId,
+                CategoryId=student.CategoryId,
                 Cast=student.Cast,
                 GuardianName=student.GuardianName,
                 GuardianOccupation=student.GuardianOccupation,
@@ -259,12 +268,12 @@ namespace SchoolManagementSystem.Controllers
                     UserId = model.UserId,
                     FatherName = model.FatherName,
                     DateOfBirth = model.DateOfBirth,
-                    Gender = model.Gender,
+                    GenderId = model.GenderId,
                     ContactNo = model.ContactNo,
                     Email = model.Email,
-                    Nationality = model.Email,
-                    Religion = model.Religion,
-                    Category = model.Category,
+                    NationalityId = model.NationalityId,
+                    ReligionId = model.ReligionId,
+                    CategoryId = model.CategoryId,
                     Cast = model.Cast,
                     Photo=uniqueFileName,
                     GuardianName = model.GuardianName,

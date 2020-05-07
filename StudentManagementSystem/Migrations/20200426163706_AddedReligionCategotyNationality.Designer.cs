@@ -3,15 +3,17 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using StudentManagementSystem.Models;
 
 namespace SchoolManagementSystem.Migrations
 {
     [DbContext(typeof(AppDbContext))]
-    partial class AppDbContextModelSnapshot : ModelSnapshot
+    [Migration("20200426163706_AddedReligionCategotyNationality")]
+    partial class AddedReligionCategotyNationality
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -52,48 +54,6 @@ namespace SchoolManagementSystem.Migrations
                     b.HasIndex("UserId");
 
                     b.ToTable("Annuals");
-
-                    b.HasData(
-                        new
-                        {
-                            AnnualId = 1,
-                            Description = "Annual Fee Same",
-                            Fees = 1000.0,
-                            IsActive = true,
-                            ProgrameId = 1,
-                            Title = "For LKG To Fifth Standard",
-                            UserId = 1
-                        },
-                        new
-                        {
-                            AnnualId = 2,
-                            Description = "Annual Fee Same",
-                            Fees = 1500.0,
-                            IsActive = true,
-                            ProgrameId = 1,
-                            Title = "For LKG To Fifth Standard",
-                            UserId = 1
-                        },
-                        new
-                        {
-                            AnnualId = 3,
-                            Description = "Annual Fee Same",
-                            Fees = 1800.0,
-                            IsActive = true,
-                            ProgrameId = 3,
-                            Title = "For LKG To Fifth Standard",
-                            UserId = 1
-                        },
-                        new
-                        {
-                            AnnualId = 4,
-                            Description = "Annual Fee Same",
-                            Fees = 2000.0,
-                            IsActive = true,
-                            ProgrameId = 4,
-                            Title = "For LKG To Fifth Standard",
-                            UserId = 1
-                        });
                 });
 
             modelBuilder.Entity("SchoolManagementSystem.Models.Entities.Attendance", b =>
@@ -155,16 +115,6 @@ namespace SchoolManagementSystem.Migrations
                     b.HasIndex("SubjectId");
 
                     b.ToTable("ClassSubjects");
-
-                    b.HasData(
-                        new
-                        {
-                            ClassSubjectId = 1,
-                            ClassTblId = 1,
-                            IsActive = true,
-                            Name = "Hindi-LKG",
-                            SubjectId = 1
-                        });
                 });
 
             modelBuilder.Entity("SchoolManagementSystem.Models.Entities.ClassTbl", b =>
@@ -183,68 +133,6 @@ namespace SchoolManagementSystem.Migrations
                     b.HasKey("ClassTblId");
 
                     b.ToTable("ClassTbls");
-
-                    b.HasData(
-                        new
-                        {
-                            ClassTblId = 1,
-                            IsActive = true,
-                            Name = "LKG"
-                        },
-                        new
-                        {
-                            ClassTblId = 2,
-                            IsActive = true,
-                            Name = "UKG"
-                        },
-                        new
-                        {
-                            ClassTblId = 3,
-                            IsActive = true,
-                            Name = "First Standard"
-                        },
-                        new
-                        {
-                            ClassTblId = 4,
-                            IsActive = true,
-                            Name = "Second Standard"
-                        },
-                        new
-                        {
-                            ClassTblId = 5,
-                            IsActive = true,
-                            Name = "Third Standard"
-                        },
-                        new
-                        {
-                            ClassTblId = 6,
-                            IsActive = true,
-                            Name = "Fourth Standard"
-                        },
-                        new
-                        {
-                            ClassTblId = 7,
-                            IsActive = true,
-                            Name = "Fifth Standard"
-                        },
-                        new
-                        {
-                            ClassTblId = 8,
-                            IsActive = true,
-                            Name = "Sixth Standard"
-                        },
-                        new
-                        {
-                            ClassTblId = 9,
-                            IsActive = true,
-                            Name = "Seventh Standard"
-                        },
-                        new
-                        {
-                            ClassTblId = 10,
-                            IsActive = true,
-                            Name = "Eighth Standard"
-                        });
                 });
 
             modelBuilder.Entity("SchoolManagementSystem.Models.Entities.Designation", b =>
@@ -268,43 +156,6 @@ namespace SchoolManagementSystem.Migrations
                     b.HasIndex("UserId");
 
                     b.ToTable("Designations");
-
-                    b.HasData(
-                        new
-                        {
-                            DesignationId = 1,
-                            IsActive = true,
-                            Title = "Principal",
-                            UserId = 1
-                        },
-                        new
-                        {
-                            DesignationId = 2,
-                            IsActive = true,
-                            Title = "Voice Principal",
-                            UserId = 1
-                        },
-                        new
-                        {
-                            DesignationId = 3,
-                            IsActive = true,
-                            Title = "Teacher",
-                            UserId = 1
-                        },
-                        new
-                        {
-                            DesignationId = 4,
-                            IsActive = true,
-                            Title = "Security Guard",
-                            UserId = 1
-                        },
-                        new
-                        {
-                            DesignationId = 5,
-                            IsActive = true,
-                            Title = "Cleaner",
-                            UserId = 1
-                        });
                 });
 
             modelBuilder.Entity("SchoolManagementSystem.Models.Entities.EmployeeCertification", b =>
@@ -799,40 +650,6 @@ namespace SchoolManagementSystem.Migrations
                     b.HasIndex("UserId");
 
                     b.ToTable("Programes");
-
-                    b.HasData(
-                        new
-                        {
-                            ProgrameId = 1,
-                            IsActive = true,
-                            Name = "Arts",
-                            StartDate = new DateTime(2018, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            UserId = 1
-                        },
-                        new
-                        {
-                            ProgrameId = 2,
-                            IsActive = true,
-                            Name = "Commerce",
-                            StartDate = new DateTime(2018, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            UserId = 1
-                        },
-                        new
-                        {
-                            ProgrameId = 3,
-                            IsActive = true,
-                            Name = "Science",
-                            StartDate = new DateTime(2018, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            UserId = 1
-                        },
-                        new
-                        {
-                            ProgrameId = 4,
-                            IsActive = true,
-                            Name = "Computer Science",
-                            StartDate = new DateTime(2018, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            UserId = 1
-                        });
                 });
 
             modelBuilder.Entity("SchoolManagementSystem.Models.Entities.ProgrameSession", b =>
@@ -869,18 +686,6 @@ namespace SchoolManagementSystem.Migrations
                     b.HasIndex("UserId");
 
                     b.ToTable("ProgrameSessions");
-
-                    b.HasData(
-                        new
-                        {
-                            ProgrameSessionId = 1,
-                            Description = "Annual Fee Same",
-                            Details = "(2020-2021-Arts)LGK to 5th",
-                            ProgrameId = 1,
-                            RegDate = new DateTime(2018, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            SessionId = 1,
-                            UserId = 1
-                        });
                 });
 
             modelBuilder.Entity("SchoolManagementSystem.Models.Entities.SchoolLeaving", b =>
@@ -940,26 +745,6 @@ namespace SchoolManagementSystem.Migrations
                     b.HasIndex("UserId");
 
                     b.ToTable("Sections");
-
-                    b.HasData(
-                        new
-                        {
-                            SectionId = 1,
-                            Name = "A",
-                            UserId = 1
-                        },
-                        new
-                        {
-                            SectionId = 2,
-                            Name = "B",
-                            UserId = 1
-                        },
-                        new
-                        {
-                            SectionId = 3,
-                            Name = "C",
-                            UserId = 1
-                        });
                 });
 
             modelBuilder.Entity("SchoolManagementSystem.Models.Entities.Session", b =>
@@ -986,16 +771,6 @@ namespace SchoolManagementSystem.Migrations
                     b.HasIndex("UserId");
 
                     b.ToTable("Sessions");
-
-                    b.HasData(
-                        new
-                        {
-                            SessionId = 1,
-                            EndDate = new DateTime(2021, 6, 30, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            Name = "2020-2021",
-                            StartDate = new DateTime(2020, 7, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            UserId = 1
-                        });
                 });
 
             modelBuilder.Entity("SchoolManagementSystem.Models.Entities.Staff", b =>
@@ -1311,44 +1086,6 @@ namespace SchoolManagementSystem.Migrations
                     b.HasIndex("UserId");
 
                     b.ToTable("Subjects");
-
-                    b.HasData(
-                        new
-                        {
-                            SubjectId = 1,
-                            Description = "",
-                            Name = "Hindi",
-                            RegDate = new DateTime(2018, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            TotalMarks = 100,
-                            UserId = 1
-                        },
-                        new
-                        {
-                            SubjectId = 2,
-                            Description = "",
-                            Name = "English",
-                            RegDate = new DateTime(2018, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            TotalMarks = 100,
-                            UserId = 1
-                        },
-                        new
-                        {
-                            SubjectId = 3,
-                            Description = "",
-                            Name = "Math",
-                            RegDate = new DateTime(2018, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            TotalMarks = 100,
-                            UserId = 1
-                        },
-                        new
-                        {
-                            SubjectId = 4,
-                            Description = "",
-                            Name = "Science",
-                            RegDate = new DateTime(2018, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            TotalMarks = 100,
-                            UserId = 1
-                        });
                 });
 
             modelBuilder.Entity("SchoolManagementSystem.Models.Entities.SubmissionFee", b =>

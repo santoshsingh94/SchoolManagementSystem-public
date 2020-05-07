@@ -57,9 +57,9 @@
                 <div class="row">
                     <div class="col-md-6">
                         <div class="form-group">
-                            <label asp-for="Gender" class="control-label"></label>
-                            <input asp-for="Gender" class="form-control" />
-                            <span asp-validation-for="Gender" class="text-danger"></span>
+                            <label asp-for="GenderId" class="control-label">Select Gender</label>
+                            <select asp-for="GenderId" class="form-control" asp-items="ViewBag.GenderId"><option value="">Select</option></select>
+                            <span asp-validation-for="GenderId" class="text-danger"></span>
                         </div>
                     </div>
                     <div class="col-md-6">
@@ -80,25 +80,25 @@
                     </div>
                     <div class="col-md-6">
                         <div class="form-group">
-                            <label asp-for="Nationality" class="control-label"></label>
-                            <input asp-for="Nationality" class="form-control" />
-                            <span asp-validation-for="Nationality" class="text-danger"></span>
+                            <label asp-for="NationalityId" class="control-label">Select Nationality</label>
+                            <select asp-for="NationalityId" class="form-control" asp-items="ViewBag.NationalityId"><option value="">Select</option></select>
+                            <span asp-validation-for="NationalityId" class="text-danger"></span>
                         </div>
                     </div>
                 </div>
                 <div class="row">
                     <div class="col-md-6">
                         <div class="form-group">
-                            <label asp-for="Religion" class="control-label"></label>
-                            <input asp-for="Religion" class="form-control" />
-                            <span asp-validation-for="Religion" class="text-danger"></span>
+                            <label asp-for="ReligionId" class="control-label">Select Religion</label>
+                            <select asp-for="ReligionId" class="form-control" asp-items="ViewBag.ReligionId"><option value="">Select</option></select>
+                            <span asp-validation-for="ReligionId" class="text-danger"></span>
                         </div>
                     </div>
                     <div class="col-md-6">
                         <div class="form-group">
-                            <label asp-for="Category" class="control-label"></label>
-                            <input asp-for="Category" class="form-control" />
-                            <span asp-validation-for="Category" class="text-danger"></span>
+                            <label asp-for="CategoryId" class="control-label">Select Category</label>
+                            <select asp-for="CategoryId" class="form-control" asp-items="ViewBag.CategoryId"><option value="">Select</option></select>
+                            <span asp-validation-for="CategoryId" class="text-danger"></span>
                         </div>
                     </div>
                 </div>
@@ -154,8 +154,8 @@
                     <div class="col-md-6">
                         <div class="form-group">
                             @*<label asp-for="Photo" class="control-label"></label>
-                        <input asp-for="Photo" class="form-control" />
-                        <span asp-validation-for="Photo" class="text-danger"></span>*@
+                                <input asp-for="Photo" class="form-control" />
+                                <span asp-validation-for="Photo" class="text-danger"></span>*@
 
                             <label asp-for="Photo" class="col-form-label">Upload Image</label>
                             <div class="custom-file">
@@ -176,13 +176,13 @@
                     <div class="col-md-6">
                         <div class="form-group">
                             <label asp-for="PreviousSchool" class="control-label">Previous School</label>
-                            <input asp-for="PreviousSchool" class="form-control" />                            
+                            <input asp-for="PreviousSchool" class="form-control" />
                         </div>
                     </div>
                     <div class="col-md-6">
                         <div class="form-group">
                             <label asp-for="PreviousPercentage" class="control-label">Percentage</label>
-                            <input asp-for="PreviousPercentage" class="form-control" />                            
+                            <input asp-for="PreviousPercentage" class="form-control" />
                         </div>
                     </div>
                 </div>
@@ -212,11 +212,11 @@
                     });
                 </script>
             }
-        </form>        
+        </form>
     </div>
 </div>
 
 <div>
-   
+
 </div>
 
