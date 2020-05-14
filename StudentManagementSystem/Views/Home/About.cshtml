@@ -3,184 +3,184 @@
     ViewBag.Title = "Dashboard";
 }
 @{
-    int userTypeId = Convert.ToInt32(@Context.Session.GetString("UserTypeId"));
-    if (userTypeId == 1)
-    {
+    //int userTypeId = Convert.ToInt32(@Context.Session.GetString("UserTypeId"));
+    //if (userTypeId == 1)
+    //{
 
 
-        <div class="row">
-            <div class="col-md-6">
-                <div class="card mb-4">
-                    <div class="card-header">
-                        Student's
-                    </div>
-                    <div class="card-body">
-                        <div class="row">
-                            <div class="col-md-3  text-center">
-                                <a asp-action="Create" asp-controller="Students">
-                                    <i class="fas fa-user-graduate fa-2x"></i>
-                                    <p>Add New Student</p>
-                                </a>
-                            </div>
-                            <div class="col-md-3  text-center">
-                                <a asp-action="Create" asp-controller="StudentPromotes">
-                                    <i class="fas fa-users fa-2x"></i>
-                                    <p>Student Promote</p>
-                                </a>
-                            </div>
-                            <div class="col-md-3  text-center">
-                                <a asp-action="Create" asp-controller="Exams">
-                                    <i class="fas fa-poll-h fa-2x"></i>
-                                    <p>Students Exam</p>
-                                </a>
-                            </div>
-                            <div class="col-md-3  text-center">
-                                <a asp-action="Index" asp-controller="Students">
-                                    <i class="fas fa-user-friends fa-2x"></i>
-                                    <p>Student List</p>
-                                </a>
-                            </div>
-                        </div>
-                    </div>
+    <div class="row">
+        <div class="col-md-6">
+            <div class="card mb-4">
+                <div class="card-header">
+                    Student's
                 </div>
-            </div>
-
-            <div class="col-md-6">
-                <div class="card mb-4">
-                    <div class="card-header">
-                        Employee's
-                    </div>
-                    <div class="card-body">
-                        <div class="row">
-                            <div class="col-md-3  text-center">
-                                <a asp-action="Create" asp-controller="Staffs">
-                                    <i class="fas fa-user-tie fa-2x"></i>
-                                    <p>Add New Employee</p>
-                                </a>
-                            </div>
-                            <div class="col-md-3  text-center">
-                                <a asp-action="Create" asp-controller="StaffAttendances">
-                                    <i class="fas fa-chart-line fa-2x"></i>
-                                    <p>Staff Attendance</p>
-                                </a>
-                            </div>
-                            <div class="col-md-3  text-center">
-                                <a asp-action="Index" asp-controller="Staffs">
-                                    <i class="fas fa-users fa-2x"></i>
-                                    <p>Employee List</p>
-                                </a>
-                            </div>
+                <div class="card-body">
+                    <div class="row">
+                        <div class="col-md-3  text-center">
+                            <a asp-action="Create" asp-controller="Students">
+                                <i class="fas fa-user-graduate fa-2x"></i>
+                                <p>Add New Student</p>
+                            </a>
+                        </div>
+                        <div class="col-md-3  text-center">
+                            <a asp-action="Create" asp-controller="StudentPromotes">
+                                <i class="fas fa-users fa-2x"></i>
+                                <p>Student Promote</p>
+                            </a>
+                        </div>
+                        <div class="col-md-3  text-center">
+                            <a asp-action="Create" asp-controller="Exams">
+                                <i class="fas fa-poll-h fa-2x"></i>
+                                <p>Students Exam</p>
+                            </a>
+                        </div>
+                        <div class="col-md-3  text-center">
+                            <a asp-action="Index" asp-controller="Students">
+                                <i class="fas fa-user-friends fa-2x"></i>
+                                <p>Student List</p>
+                            </a>
                         </div>
                     </div>
                 </div>
             </div>
         </div>
 
-
-        <div class="row">
-            <div class="col-md-6">
-                <div class="card mb-4">
-                    <div class="card-header">
-                        User's
-                    </div>
-                    <div class="card-body">
-                        <div class="row">
-                            <div class="col-md-3  text-center">
-                                <a asp-action="Create" asp-controller="Users">
-                                    <i class="fas fa-user fa-2x"></i>
-                                    <p>Add New User</p>
-                                </a>
-                            </div>
+        <div class="col-md-6">
+            <div class="card mb-4">
+                <div class="card-header">
+                    Employee's
+                </div>
+                <div class="card-body">
+                    <div class="row">
+                        <div class="col-md-3  text-center">
+                            <a asp-action="Create" asp-controller="Staffs">
+                                <i class="fas fa-user-tie fa-2x"></i>
+                                <p>Add New Employee</p>
+                            </a>
+                        </div>
+                        <div class="col-md-3  text-center">
+                            <a asp-action="Create" asp-controller="StaffAttendances">
+                                <i class="fas fa-chart-line fa-2x"></i>
+                                <p>Staff Attendance</p>
+                            </a>
+                        </div>
+                        <div class="col-md-3  text-center">
+                            <a asp-action="Index" asp-controller="Staffs">
+                                <i class="fas fa-users fa-2x"></i>
+                                <p>Employee List</p>
+                            </a>
                         </div>
                     </div>
                 </div>
             </div>
-            <div class="col-md-6">
-                <div class="card mb-4">
-                    <div class="card-header">
-                        Accounts And Finance
-                    </div>
-                    <div class="card-body">
-                        <div class="row">
-                            <div class="col-md-3  text-center">
-                                <a asp-action="Index" asp-controller="SubmissionFees">
-                                    <i class="fas fa-funnel-dollar fa-2x"></i>
-                                    <p>Student Fee</p>
-                                </a>
-                            </div>
-                            <div class="col-md-3  text-center">
-                                <a asp-action="Create" asp-controller="EmployeeSalaries">
-                                    <i class="fas fa-funnel-dollar fa-2x"></i>
-                                    <p>Employee Salaries</p>
-                                </a>
-                            </div>
-                            <div class="col-md-3  text-center">
-                                <a asp-action="Create" asp-controller="Expenses">
-                                    <i class="fas fa-list fa-2x"></i>
-                                    <p>Expenses</p>
-                                </a>
-                            </div>
+        </div>
+    </div>
 
+
+    <div class="row">
+        <div class="col-md-6">
+            <div class="card mb-4">
+                <div class="card-header">
+                    User's
+                </div>
+                <div class="card-body">
+                    <div class="row">
+                        <div class="col-md-3  text-center">
+                            <a asp-action="Create" asp-controller="Users">
+                                <i class="fas fa-user fa-2x"></i>
+                                <p>Add New User</p>
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-6">
+            <div class="card mb-4">
+                <div class="card-header">
+                    Accounts And Finance
+                </div>
+                <div class="card-body">
+                    <div class="row">
+                        <div class="col-md-3  text-center">
+                            <a asp-action="Index" asp-controller="SubmissionFees">
+                                <i class="fas fa-funnel-dollar fa-2x"></i>
+                                <p>Student Fee</p>
+                            </a>
+                        </div>
+                        <div class="col-md-3  text-center">
+                            <a asp-action="Create" asp-controller="EmployeeSalaries">
+                                <i class="fas fa-funnel-dollar fa-2x"></i>
+                                <p>Employee Salaries</p>
+                            </a>
+                        </div>
+                        <div class="col-md-3  text-center">
+                            <a asp-action="Create" asp-controller="Expenses">
+                                <i class="fas fa-list fa-2x"></i>
+                                <p>Expenses</p>
+                            </a>
+                        </div>
+
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="row">
+        <div class="col-md-6">
+            <div class="card mb-4">
+                <div class="card-header">
+                    System Setup
+                </div>
+                <div class="card-body">
+                    <div class="row">
+                        <div class="col-md-3  text-center">
+                            <a asp-action="ListTypes" asp-controller="SystemSetups">
+                                <i class="fas fa-ellipsis-v fa-2x"></i>
+                                <p>List Types</p>
+                            </a>
+                        </div>
+                        <div class="col-md-3  text-center">
+                            <a asp-action="ListTypesData" asp-controller="SystemSetups">
+                                <i class="fas fa-list fa-2x"></i>
+                                <p>List Types Data</p>
+                            </a>
                         </div>
                     </div>
                 </div>
             </div>
         </div>
 
-        <div class="row">
-            <div class="col-md-6">
-                <div class="card mb-4">
-                    <div class="card-header">
-                        System Setup
-                    </div>
-                    <div class="card-body">
-                        <div class="row">
-                            <div class="col-md-3  text-center">
-                                <a asp-action="ListTypes" asp-controller="SystemSetups">
-                                    <i class="fas fa-ellipsis-v fa-2x"></i>
-                                    <p>List Types</p>
-                                </a>
-                            </div>
-                            <div class="col-md-3  text-center">
-                                <a asp-action="ListTypesData" asp-controller="SystemSetups">
-                                    <i class="fas fa-list fa-2x"></i>
-                                    <p>List Types Data</p>
-                                </a>
-                            </div>
-                        </div>
-                    </div>
+        <div class="col-md-6">
+            <div class="card mb-4">
+                <div class="card-header">
+                    Help & Support
                 </div>
-            </div>
-
-            <div class="col-md-6">
-                <div class="card mb-4">
-                    <div class="card-header">
-                        Help & Support
-                    </div>
-                    <div class="card-body">
-                        <div class="row">
-                            <div class="col-md-3 text-center">
-                                <a asp-action="#" asp-controller="#">
-                                    <i class="fas fa-desktop fa-2x"></i>
-                                    <p>Email</p>
-                                </a>
-                            </div>
-                            <div class="col-md-3 text-center">
-                                <a asp-action="#" asp-controller="#">
-                                    <i class="fas fa-sms fa-2x text-success"></i>
-                                    <p>Alert System</p>
-                                </a>
-                            </div>
-                            <div class="col-md-3 text-center">
-                                <a asp-action="#" asp-controller="#">
-                                    <i class="fas fa-eye fa-2x text-danger"></i>
-                                    <p>Videos</p>
-                                </a>
-                            </div>
+                <div class="card-body">
+                    <div class="row">
+                        <div class="col-md-3 text-center">
+                            <a asp-action="#" asp-controller="#">
+                                <i class="fas fa-desktop fa-2x"></i>
+                                <p>Email</p>
+                            </a>
+                        </div>
+                        <div class="col-md-3 text-center">
+                            <a asp-action="#" asp-controller="#">
+                                <i class="fas fa-sms fa-2x text-success"></i>
+                                <p>Alert System</p>
+                            </a>
+                        </div>
+                        <div class="col-md-3 text-center">
+                            <a asp-action="#" asp-controller="#">
+                                <i class="fas fa-eye fa-2x text-danger"></i>
+                                <p>Videos</p>
+                            </a>
                         </div>
                     </div>
                 </div>
             </div>
         </div>
-    }
+    </div>
+    @*}*@
 }

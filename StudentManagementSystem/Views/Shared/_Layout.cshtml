@@ -79,16 +79,9 @@
             <a class="sidebar-brand d-flex align-items-center justify-content-center" href="#">
                 <div class="sidebar-brand-icon rotate-n-15">
                     @{
-                        int userId = Convert.ToInt32(@Context.Session.GetString("UserId"));
-                        if (userId == 1)
-                        {
-                            <img class="img-profile rounded-circle" style=" width:70px;height:70px;transform: rotate(15deg);" src="~/image/Admin.png" />
-                        }
-                        else
-                        {
-                            <img class="img-profile rounded-circle" style=" width:70px;height:70px;transform: rotate(15deg);" src="~/image/@Context.Session.GetString("Photo")" />
-                        }
-                    }
+                       <img class="img-profile rounded-circle" style=" width:70px;height:70px;transform: rotate(15deg);" src="~/image/@Context.Session.GetString("Photo")" />
+                      }
+                    
                 </div>
                 <div class="sidebar-brand-text mx-3"><sup>@Context.Session.GetString("FullName")</sup></div>
             </a>
@@ -99,15 +92,15 @@
             <!-- Nav Item - Dashboard -->
             <li class="nav-item active">
                 @{
-                    int userTypeId = Convert.ToInt32(@Context.Session.GetString("UserTypeId"));
+                   // int userTypeId = Convert.ToInt32(@Context.Session.GetString("UserTypeId"));
                 }
                 <a class="nav-link fas fa-fw fa-tachometer-alt" asp-area="" asp-controller="Home" asp-action="About">&nbsp;&nbsp;Dashboard</a>
 
             </li>
 
-            @{
+            @*@{
                 if (userTypeId == 1 || userTypeId == 2 || userTypeId == 3)    //Admin,Operator or Teacher.
-                {
+                {*@
                     <!-- Divider -->
                     <hr class="sidebar-divider">
 
@@ -126,9 +119,9 @@
                             <div class="bg-white py-2 collapse-inner rounded">
 
                                 <h6 class="collapse-header">Student Registration:</h6>
-                                @{
+                                @*@{
                                     if (userTypeId == 1)//Admin
-                                    {
+                                    {*@
                                         <a class="collapse-item" asp-area="" asp-controller="Students" asp-action="Create">New Registration</a>
                                         <a class="collapse-item" asp-area="" asp-controller="Students" asp-action="Index">Student List</a>
 
@@ -136,21 +129,21 @@
                                         <h6 class="collapse-header">Promotions :</h6>
                                         <a class="collapse-item" asp-area="" asp-controller="StudentPromotes" asp-action="Create">Student Promote</a>
                                         <a class="collapse-item" asp-area="" asp-controller="StudentPromotes" asp-action="Index">Promote List</a>
-                                    }
+                                    @*}
                                 }
                                 @{
                                     if (userTypeId == 1 || userTypeId == 5)//Admin,Accountant
-                                    {
+                                    {*@
                                         <div class="collapse-divider"></div>
                                         <h6 class="collapse-header">Fee's:</h6>
                                         <a class="collapse-item" asp-area="" asp-controller="SubmissionFees" asp-action="Create">Submit Tution Fee</a>
                                         <a class="collapse-item" asp-area="" asp-controller="SubmissionFees" asp-action="Index">Tution Fee Records</a>
                                         <a class="collapse-item" asp-area="" asp-controller="Annuals" asp-action="Index">Annual Fee</a>
-                                    }
+                                    @*}
                                 }
                                 @{
                                     if (userTypeId == 1 || userTypeId == 2)//Admin,Operator
-                                    {
+                                    {*@
                                         <div class="collapse-divider"></div>
                                         <h6 class="collapse-header">Student Attendance:</h6>
                                         <a class="collapse-item" asp-area="" asp-controller="Attendances" asp-action="Create">Submit Attendance</a>
@@ -161,16 +154,16 @@
                                         <a class="collapse-item" asp-area="" asp-controller="StudentCertificateReport" asp-action="ProvisionalC">Provisional Certificate</a>
                                         <a class="collapse-item" asp-area="" asp-controller="StudentCertificateReport" asp-action="CharacterC">Character Certificate</a>
 
-                                    }
-                                }
+                                    @*}
+                                }*@
                             </div>
                         </div>
                     </li>
-                }
+                @*}
             }
             @{
                 if (userTypeId == 1 || userTypeId == 2)//Admin,Operator
-                {
+                {*@
                     <!-- Divider -->
                     <hr class="sidebar-divider">
 
@@ -187,40 +180,40 @@
                         </a>
                         <div id="collapseStaff" class="collapse" aria-labelledby="headingStaff" data-parent="#accordionSidebar">
                             <div class="bg-white py-2 collapse-inner rounded">
-                                @{
+                                @*@{
                                     if (userTypeId == 1)  //Admin
-                                    {
+                                    {*@
                                         <h6 class="collapse-header">Staff Registration:</h6>
                                         <a class="collapse-item" asp-area="" asp-controller="Staffs" asp-action="Create">Employee Registration</a>
                                         <a class="collapse-item" asp-area="" asp-controller="Staffs" asp-action="Index">Employee's Record</a>
-                                    }
+                                    @*}
                                 }
                                 @{
                                     if (userTypeId == 1 || userTypeId == 2)  //Admin or operator
-                                    {
+                                    {*@
                                         <div class="collapse-divider"></div>
                                         <h6 class="collapse-header">Attendance:</h6>
                                         <a class="collapse-item" asp-area="" asp-controller="StaffAttendances" asp-action="Create">Employee Attendance</a>
                                         <a class="collapse-item" asp-area="" asp-controller="StaffAttendances" asp-action="Index">Attendance Record</a>
-                                    }
+                                    @*}
                                 }
                                 @{
                                     if (userTypeId == 1 || userTypeId == 5)  //Admin or Accountant
-                                    {
+                                    {*@
                                         <div class="collapse-divider"></div>
                                         <h6 class="collapse-header">Salary:</h6>
                                         <a class="collapse-item" asp-area="" asp-controller="EmployeeSalaries" asp-action="Create">Employee Salary</a>
                                         <a class="collapse-item" asp-area="" asp-controller="EmployeeSalaries" asp-action="Index">Salaries Record</a>
-                                    }
-                                }
+                                    @*}
+                                }*@
                             </div>
                         </div>
                     </li>
-                }
+                @*}
             }
             @{
                 if (userTypeId == 1)  //Admin
-                {
+                {*@
                     <!-- Divider -->
                     <hr class="sidebar-divider">
 
@@ -238,17 +231,16 @@
                         <div id="collapseTwo" class="collapse" aria-labelledby="headingTwo" data-parent="#accordionSidebar">
                             <div class="bg-white py-2 collapse-inner rounded">
                                 <h6 class="collapse-header">Custom Settting</h6>
-                                <a class="collapse-item" asp-area="" asp-controller="UserTypes" asp-action="Index">User Types</a>
-                                <a class="collapse-item" asp-area="" asp-controller="Users" asp-action="Index">All User</a>
-
+                                <a class="collapse-item" asp-area="" asp-controller="Account" asp-action="ListRoles">User Types</a>
+                                <a class="collapse-item" asp-area="" asp-controller="Account" asp-action="ListUsers">All User</a>
                             </div>
                         </div>
                     </li>
-                }
+                @*}
             }
             @{
                 if (userTypeId == 1 || userTypeId == 2)   //Admin Or Operator
-                {
+                {*@
 
                     <!-- Nav Item - Utilities Collapse Menu -->
                     <li class="nav-item">
@@ -295,11 +287,11 @@
                             </div>
                         </div>
                     </li>
-                }
+                @*}
             }
             @{
                 if (userTypeId == 1 || userTypeId == 2)  //Admin or operator
-                {
+                {*@
 
                     <!-- Divider -->
                     <hr class="sidebar-divider">
@@ -328,12 +320,12 @@
                             </div>
                         </div>
                     </li>
-                }
+                @*}
             }
 
             @{
                 if (userTypeId == 1 || userTypeId == 2)  //Admin or operator
-                {
+                {*@
                     <!-- Divider -->
                     <hr class="sidebar-divider">
 
@@ -359,11 +351,11 @@
                             </div>
                         </div>
                     </li>
-                }
+                @*}
             }
             @{
                 if (userTypeId == 1 || userTypeId == 2)  //Admin or operator
-                {
+                {*@
                     <!-- Divider -->
                     <hr class="sidebar-divider">
 
@@ -389,11 +381,11 @@
                             </div>
                         </div>
                     </li>
-                }
+                @*}
             }
             @{
                 if (userTypeId == 1 || userTypeId == 2 || userTypeId == 5)  //Admin or operator or accountant
-                {
+                {*@
                     <!-- Divider -->
                     <hr class="sidebar-divider">
 
@@ -421,8 +413,8 @@
                             </div>
                         </div>
                     </li>
-                }
-            }
+                @*}
+            }*@
 
             <!-- Nav Item - Charts -->
             <!-- Divider -->
@@ -443,60 +435,60 @@
                     <div class="bg-white py-2 collapse-inner rounded">
 
                         <h6 class="collapse-header">Teacher Reports:</h6>
-                        @{
+                        @*@{
                             if (userTypeId == 1 || userTypeId == 2 || userTypeId == 3)//Admin Or Operator Or Teacher
-                            {
+                            {*@
 
                                 <a class="collapse-item" asp-area="" asp-controller="TimeTableReports" asp-action="TeacherWiseReport">Teacher Wise Time Table</a>
-                            }
-                        }
+                            @*}
+                        }*@
                         <div class="collapse-divider"></div>
                         <h6 class="collapse-header">Administration Reports:</h6>
-                        @{
+                        @*@{
                             if (userTypeId == 1 || userTypeId == 5) //Admin Or Accountant
-                            {
+                            {*@
                                 <a class="collapse-item" asp-area="" asp-controller="ExpenseReports" asp-action="AllExpenses">All Expenses</a>
                                 <a class="collapse-item" asp-area="" asp-controller="ExpenseReports" asp-action="CustomExpenses">Custom Expenses</a>
-                            }
-                        }
+                            @*}
+                        }*@
                         <div class="collapse-divider"></div>
                         <h6 class="collapse-header">Examination Reports:</h6>
-                        @{
+                        @*@{
                             if (userTypeId == 1 || userTypeId == 2) //Admin OR Operator
-                            {
+                            {*@
                                 <a class="collapse-item" asp-area="" asp-controller="ExamReports" asp-action="PrintMarkSheet">Print MarkSheet</a>
-                            }
-                        }
+                            @*}
+                        }*@
                         <div class="collapse-divider"></div>
                         <h6 class="collapse-header">Attendance Reports:</h6>
-                        @{
+                        @*@{
                             if (userTypeId == 1 || userTypeId == 2) //Admin OR Operator
-                            {
+                            {*@
                                 <a class="collapse-item" asp-area="" asp-controller="AttendanceReports" asp-action="AllStudentAttendance">Student Attendance</a>
                                 <a class="collapse-item" asp-area="" asp-controller="AttendanceReports" asp-action="AllStaffAttendance">Staff Attendance</a>
-                            }
+                            @*}
 
                             if (userTypeId == 1 || userTypeId == 2 || userTypeId == 3 || userTypeId == 5 || userTypeId == 6)// Not Student  >show emp attendance report
-                            {
+                            {*@
                                 <a class="collapse-item" asp-action="StaffAttendance" asp-controller="AttendanceReports" asp-route-id="0">Attendance Reports</a>
-                            }
+                            @*}
                             else    //Show Attendance Report
-                            {
+                            {*@
                                 <a class="collapse-item" asp-action="StudentAttendance" asp-controller="AttendanceReports" asp-route-id="0">Attendance Reports</a>
-                            }
+                            @*}
 
 
-                        }
+                        }*@
                         <div class="collapse-divider"></div>
 
                         <h6 class="collapse-header">Fee's Reports:</h6>
-                        @{
+                        @*@{
                             if (userTypeId == 1 || userTypeId == 2) //Admin OR Operator
-                            {
+                            {*@
                                 <a class="collapse-item" asp-area="" asp-controller="FeeReports" asp-action="CustomAnnualFee">Annual Fee</a>
                                 <a class="collapse-item" asp-area="" asp-controller="FeeReports" asp-action="CustomTutionFee">Student Fee Report</a>
-                            }
-                        }
+                            @*}
+                        }*@
                     </div>
                 </div>
             </li>
@@ -571,30 +563,20 @@
                         <!-- Nav Item - User Information -->
                         <li class="nav-item dropdown no-arrow">
                             <a class="nav-link dropdown-toggle" href="#" id="userDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                                <span class="mr-2 d-none d-lg-inline text-gray-600 small">@Context.Session.GetString("UserType")</span>
-                                @{    
-                                    //int userId = Convert.ToInt32(@Context.Session.GetString("UserId"));
-                                    if (userId == 1)
-                                    {
-                                        <img class="img-profile rounded-circle" src="~/image/Admin.png" />
-                                    }
-                                    else
-                                    {
-                                        <img class="img-profile rounded-circle" src="~/image/@Context.Session.GetString("Photo")" />
-                                    }
-                                }
-                                
+                                <span class="mr-2 d-none d-lg-inline text-gray-600 small">@User.Identity.Name</span>
+                                <img class="img-profile rounded-circle" src="~/image/Admin.png" />
                             </a>
                             <!-- Dropdown - User Information -->
                             <div class="dropdown-menu dropdown-menu-right shadow animated--grow-in" aria-labelledby="userDropdown">
                                 @* <i class="fas fa-user fa-sm fa-fw mr-2 text-gray-400"></i>*@
                                 <a class=" dropdown-item fas fa-user fa-sm fa-fw mr-2 text-gray-400" asp-area="" asp-controller="Home" asp-action="ChangePassword">Change Password</a>
 
-                                <div class="dropdown-divider"></div>
-                                <a class="dropdown-item" href="#" data-toggle="modal" data-target="#logoutModal">
-                                    <i class="fas fa-sign-out-alt fa-sm fa-fw mr-2 text-gray-400"></i>
-                                    Logout
-                                </a>
+                                <div class="dropdown-divider"></div>                                
+                                    <a class="dropdown-item" data-toggle="modal" data-target="#logoutModal">
+                                        <i class="fas fa-sign-out-alt fa-sm fa-fw mr-2 text-gray-400"></i>
+                                        Logout
+                                    </a>
+                                 
                             </div>
                         </li>
 
@@ -643,8 +625,13 @@
                 <div class="modal-body">Select "Logout" below if you are ready to end your current session.</div>
                 <div class="modal-footer">
                     <button class="btn btn-secondary" type="button" data-dismiss="modal">Cancel</button>
-                    <a class="btn btn-primary" asp-area="" asp-controller="Home" asp-action="Logout">Logout</a>
-                    @*<a class="" href="login.html">Logout</a>*@
+                    @*<a class="btn btn-primary" asp-area="" asp-controller="account" asp-action="logout">Logout</a>*@
+                    <form method="post" asp-action="logout" asp-controller="account">
+                        <button type="Submit" class="btn btn-primary">
+                            Logout
+                        </button>
+                    </form>
+
                 </div>
             </div>
         </div>

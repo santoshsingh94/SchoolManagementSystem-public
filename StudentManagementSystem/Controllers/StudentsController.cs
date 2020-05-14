@@ -2,23 +2,24 @@
 using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
-using SchoolManagementSystem.Helper;
 using SchoolManagementSystem.Models.Entities;
 using SchoolManagementSystem.ViewModels;
 using StudentManagementSystem.Models;
 
 namespace SchoolManagementSystem.Controllers
 {
+    [Authorize(Roles = "Admin,Operator")]
     public class StudentsController : Controller
     {
         private readonly AppDbContext _context;
         private readonly IHostingEnvironment hostingEnvironment;
-
+        
         public StudentsController(AppDbContext context, IHostingEnvironment hostingEnvironment)
         {
             _context = context;
@@ -26,12 +27,10 @@ namespace SchoolManagementSystem.Controllers
         }
 
         // GET: Students
+        
+        [HttpGet]
         public async Task<IActionResult> Index()
-        {
-            if (string.IsNullOrEmpty(HttpContext.Session.GetString("UserName")))
-            {
-                return RedirectToAction("Login", "Home");
-            }
+        {           
             var appDbContext = _context.Students
                 .Include(s => s.ClassTbl)
                 .Include(s => s.Programe)
@@ -91,11 +90,7 @@ namespace SchoolManagementSystem.Controllers
         [HttpPost]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Create(StudentViewModel model)
-        {
-            if (string.IsNullOrEmpty(HttpContext.Session.GetString("UserName")))
-            {
-                return RedirectToAction("Login", "Home");
-            }
+        {           
             int userid = Convert.ToInt32(HttpContext.Session.GetString("UserId"));
             if (ModelState.IsValid)
             {
@@ -181,10 +176,6 @@ namespace SchoolManagementSystem.Controllers
         // GET: Students/Edit/5
         public async Task<IActionResult> Edit(int? id)
         {
-            if (string.IsNullOrEmpty(HttpContext.Session.GetString("UserName")))
-            {
-                return RedirectToAction("Login", "Home");
-            }
             if (id == null)
             {
                 return NotFound();
@@ -236,15 +227,6 @@ namespace SchoolManagementSystem.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Edit(int id, StudentViewModel model)
         {
-            if (string.IsNullOrEmpty(HttpContext.Session.GetString("UserName")))
-            {
-                return RedirectToAction("Login", "Home");
-            }
-            //model.StudentId = id;
-            //if (id != model.StudentId)
-            //{
-            //    return NotFound();
-            //}
             int userid = Convert.ToInt32(HttpContext.Session.GetString("UserId"));
             model.UserId = userid;
             //var staff = await _context.Staffs.FindAsync(id);
@@ -313,10 +295,6 @@ namespace SchoolManagementSystem.Controllers
         // GET: Students/Delete/5
         public async Task<IActionResult> Delete(int? id)
         {
-            if (string.IsNullOrEmpty(HttpContext.Session.GetString("UserName")))
-            {
-                return RedirectToAction("Login", "Home");
-            }
             if (id == null)
             {
                 return NotFound();
@@ -341,10 +319,6 @@ namespace SchoolManagementSystem.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> DeleteConfirmed(int id)
         {
-            if (string.IsNullOrEmpty(HttpContext.Session.GetString("UserName")))
-            {
-                return RedirectToAction("Login", "Home");
-            }
             var student = await _context.Students.FindAsync(id);
             _context.Students.Remove(student);
             await _context.SaveChangesAsync();

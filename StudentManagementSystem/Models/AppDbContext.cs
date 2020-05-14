@@ -3,9 +3,13 @@ using Microsoft.Extensions.Configuration;
 using SchoolManagementSystem.Models.Entities;
 using SchoolManagementSystem.Models.Master;
 using System;
+using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
+using SchoolManagementSystem.Models.Identity;
+using Microsoft.AspNetCore.Identity;
+
 namespace StudentManagementSystem.Models
 {
-    public class AppDbContext : DbContext
+    public class AppDbContext : IdentityDbContext<ApplicationUser> //DbContext
     {
         private readonly DbContextOptions<AppDbContext> _options;
         private readonly IConfiguration _config;
@@ -53,10 +57,10 @@ namespace StudentManagementSystem.Models
         public DbSet<Religion> Religions { get; set; }
 
 
-
-
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
+            base.OnModelCreating(modelBuilder);
+
             modelBuilder.Entity<Student>()
                 .HasOne(p => p.User)
                 .WithMany(b => b.Students)
