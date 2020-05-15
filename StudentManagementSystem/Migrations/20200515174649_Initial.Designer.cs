@@ -10,8 +10,8 @@ using StudentManagementSystem.Models;
 namespace SchoolManagementSystem.Migrations
 {
     [DbContext(typeof(AppDbContext))]
-    [Migration("20200512165840_IdentityTest")]
-    partial class IdentityTest
+    [Migration("20200515174649_Initial")]
+    partial class Initial
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -1424,11 +1424,14 @@ namespace SchoolManagementSystem.Migrations
                         .HasColumnType("int")
                         .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
+                    b.Property<string>("ApplicationUserId")
+                        .HasColumnType("nvarchar(450)");
+
                     b.Property<string>("Description")
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("Name")
-                        .HasColumnType("nvarchar(max)");
+                        .HasColumnType("nvarchar(450)");
 
                     b.Property<DateTime>("RegDate")
                         .HasColumnType("datetime2");
@@ -1436,12 +1439,13 @@ namespace SchoolManagementSystem.Migrations
                     b.Property<int>("TotalMarks")
                         .HasColumnType("int");
 
-                    b.Property<int>("UserId")
-                        .HasColumnType("int");
-
                     b.HasKey("SubjectId");
 
-                    b.HasIndex("UserId");
+                    b.HasIndex("ApplicationUserId");
+
+                    b.HasIndex("Name")
+                        .IsUnique()
+                        .HasFilter("[Name] IS NOT NULL");
 
                     b.ToTable("Subjects");
 
@@ -1452,8 +1456,7 @@ namespace SchoolManagementSystem.Migrations
                             Description = "",
                             Name = "Hindi",
                             RegDate = new DateTime(2018, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            TotalMarks = 100,
-                            UserId = 1
+                            TotalMarks = 100
                         },
                         new
                         {
@@ -1461,8 +1464,7 @@ namespace SchoolManagementSystem.Migrations
                             Description = "",
                             Name = "English",
                             RegDate = new DateTime(2018, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            TotalMarks = 100,
-                            UserId = 1
+                            TotalMarks = 100
                         },
                         new
                         {
@@ -1470,8 +1472,7 @@ namespace SchoolManagementSystem.Migrations
                             Description = "",
                             Name = "Math",
                             RegDate = new DateTime(2018, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            TotalMarks = 100,
-                            UserId = 1
+                            TotalMarks = 100
                         },
                         new
                         {
@@ -1479,8 +1480,7 @@ namespace SchoolManagementSystem.Migrations
                             Description = "",
                             Name = "Science",
                             RegDate = new DateTime(2018, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            TotalMarks = 100,
-                            UserId = 1
+                            TotalMarks = 100
                         });
                 });
 
@@ -2324,11 +2324,9 @@ namespace SchoolManagementSystem.Migrations
 
             modelBuilder.Entity("SchoolManagementSystem.Models.Entities.Subject", b =>
                 {
-                    b.HasOne("SchoolManagementSystem.Models.Entities.User", "User")
+                    b.HasOne("SchoolManagementSystem.Models.Identity.ApplicationUser", "ApplicationUser")
                         .WithMany("Subjects")
-                        .HasForeignKey("UserId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
+                        .HasForeignKey("ApplicationUserId");
                 });
 
             modelBuilder.Entity("SchoolManagementSystem.Models.Entities.SubmissionFee", b =>

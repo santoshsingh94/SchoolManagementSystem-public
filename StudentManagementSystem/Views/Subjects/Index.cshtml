@@ -28,7 +28,7 @@
                             @Html.DisplayNameFor(model => model.TotalMarks)
                         </th>
                         <th>
-                            @Html.DisplayNameFor(model => model.User)
+                            User
                         </th>
                         <th></th>
                     </tr>
@@ -50,7 +50,7 @@
                                 @Html.DisplayFor(modelItem => item.TotalMarks)
                             </td>
                             <td>
-                                @Html.DisplayFor(modelItem => item.User.UserId)
+                                @Html.DisplayFor(modelItem => item.ApplicationUser.UserName)
                             </td>
                             <td class="btn-group">
                                 <a asp-action="Edit" asp-route-id="@item.SubjectId" class="btn btn-primary">Edit</a>

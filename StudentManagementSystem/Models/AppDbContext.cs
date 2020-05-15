@@ -154,6 +154,9 @@ namespace StudentManagementSystem.Models
             modelBuilder.Entity<Student>()
             .HasIndex(u => u.Email)
             .IsUnique();
+            modelBuilder.Entity<Subject>()
+           .HasIndex(u => u.Name)
+           .IsUnique();
 
 
 
@@ -297,7 +300,7 @@ namespace StudentManagementSystem.Models
             modelBuilder.Entity<Subject>().HasData(new Subject()
             {
                 SubjectId = 1,
-                UserId = 1,
+                //UserId = 1,
                 Name = "Hindi",
                 RegDate = Convert.ToDateTime("01-01-2018"),
                 Description = "",
@@ -306,7 +309,7 @@ namespace StudentManagementSystem.Models
             modelBuilder.Entity<Subject>().HasData(new Subject()
             {
                 SubjectId = 2,
-                UserId = 1,
+                //UserId = 1,
                 Name = "English",
                 RegDate = Convert.ToDateTime("01-01-2018"),
                 Description = "",
@@ -315,7 +318,7 @@ namespace StudentManagementSystem.Models
             modelBuilder.Entity<Subject>().HasData(new Subject()
             {
                 SubjectId = 3,
-                UserId = 1,
+                //UserId = 1,
                 Name = "Math",
                 RegDate = Convert.ToDateTime("01-01-2018"),
                 Description = "",
@@ -324,7 +327,7 @@ namespace StudentManagementSystem.Models
             modelBuilder.Entity<Subject>().HasData(new Subject()
             {
                 SubjectId = 4,
-                UserId = 1,
+                //UserId = 1,
                 Name = "Science",
                 RegDate = Convert.ToDateTime("01-01-2018"),
                 Description = "",

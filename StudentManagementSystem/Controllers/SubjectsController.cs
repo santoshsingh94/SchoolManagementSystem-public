@@ -3,10 +3,12 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using SchoolManagementSystem.Models.Entities;
+using SchoolManagementSystem.Models.Identity;
 using StudentManagementSystem.Models;
 
 namespace StudentManagementSystem.Controllers
@@ -14,50 +16,42 @@ namespace StudentManagementSystem.Controllers
     public class SubjectsController : Controller
     {
         private readonly AppDbContext _context;
+        private readonly UserManager<ApplicationUser> userManager;
 
-        public SubjectsController(AppDbContext context)
+        public SubjectsController(AppDbContext context, UserManager<ApplicationUser> userManager)
         {
             _context = context;
+            this.userManager = userManager;
         }
 
         // GET: Subjects
         public async Task<IActionResult> Index()
         {
-            if (string.IsNullOrEmpty(HttpContext.Session.GetString("UserName")))
-            {
-                return RedirectToAction("Login", "Home");
-            }
-            var appDbContext = _context.Subjects.Include(s => s.User);
+            var appDbContext = _context.Subjects.Include(s => s.ApplicationUser);
             return View(await appDbContext.ToListAsync());
         }
 
         // GET: Subjects/Details/5
         public async Task<IActionResult> Details(int? id)
-        {
-            if (string.IsNullOrEmpty(HttpContext.Session.GetString("UserName")))
-            {
-                return RedirectToAction("Login", "Home");
-            }
+        {          
             if (id == null)
             {
                 return NotFound();
             }
 
             var subject = await _context.Subjects
-                .Include(s => s.User)
+                .Include(s => s.ApplicationUser)
                 .FirstOrDefaultAsync(m => m.SubjectId == id);
             if (subject == null)
             {
                 return NotFound();
             }
-
             return View(subject);
         }
-
+        private Task<ApplicationUser> GetCurrentUserAsync() => userManager.GetUserAsync(HttpContext.User);
         // GET: Subjects/Create
         public IActionResult Create()
         {
-            ViewData["UserId"] = new SelectList(_context.Users, "UserId", "UserId");
             return View();
         }
 
@@ -67,32 +61,21 @@ namespace StudentManagementSystem.Controllers
         [HttpPost]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Create(/*[Bind("SubjectId,UserId,Name,RegDate,Description,TotalMarks")]*/ Subject subject)
-        {
-            if (string.IsNullOrEmpty(HttpContext.Session.GetString("UserName")))
-            {
-                return RedirectToAction("Login", "Home");
-            }
-
-            int userid = Convert.ToInt32(HttpContext.Session.GetString("UserId"));
-            subject.UserId = userid;
-
+        {            
+            var user = await GetCurrentUserAsync();
+            subject.ApplicationUserId = user?.Id;
             if (ModelState.IsValid)
             {
                 _context.Add(subject);
                 await _context.SaveChangesAsync();
                 return RedirectToAction(nameof(Index));
-            }
-            ViewData["UserId"] = new SelectList(_context.Users, "UserId", "UserId", subject.UserId);
+            }           
             return View(subject);
         }
 
         // GET: Subjects/Edit/5
         public async Task<IActionResult> Edit(int? id)
         {
-            if (string.IsNullOrEmpty(HttpContext.Session.GetString("UserName")))
-            {
-                return RedirectToAction("Login", "Home");
-            }
             if (id == null)
             {
                 return NotFound();
@@ -103,7 +86,7 @@ namespace StudentManagementSystem.Controllers
             {
                 return NotFound();
             }
-            ViewData["UserId"] = new SelectList(_context.Users, "UserId", "UserId", subject.UserId);
+            ViewData["UserId"] = new SelectList(_context.Users, "UserName", "UserName", subject.ApplicationUserId);
             return View(subject);
         }
 
@@ -114,13 +97,8 @@ namespace StudentManagementSystem.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Edit(int id, /*[Bind("SubjectId,UserId,Name,RegDate,Description,TotalMarks")] */Subject subject)
         {
-            if (string.IsNullOrEmpty(HttpContext.Session.GetString("UserName")))
-            {
-                return RedirectToAction("Login", "Home");
-            }
-
-            int userid = Convert.ToInt32(HttpContext.Session.GetString("UserId"));
-            subject.UserId = userid;
+            //int userid = Convert.ToInt32(HttpContext.Session.GetString("UserId"));
+            //subject.UserId = userid;
 
             if (id != subject.SubjectId)
             {
@@ -147,24 +125,20 @@ namespace StudentManagementSystem.Controllers
                 }
                 return RedirectToAction(nameof(Index));
             }
-            ViewData["UserId"] = new SelectList(_context.Users, "UserId", "UserId", subject.UserId);
             return View(subject);
         }
 
         // GET: Subjects/Delete/5
         public async Task<IActionResult> Delete(int? id)
         {
-            if (string.IsNullOrEmpty(HttpContext.Session.GetString("UserName")))
-            {
-                return RedirectToAction("Login", "Home");
-            }
+           
             if (id == null)
             {
                 return NotFound();
             }
 
             var subject = await _context.Subjects
-                .Include(s => s.User)
+                .Include(s => s.ApplicationUser)
                 .FirstOrDefaultAsync(m => m.SubjectId == id);
             if (subject == null)
             {

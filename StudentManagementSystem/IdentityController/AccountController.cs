@@ -148,19 +148,7 @@ namespace SchoolManagementSystem.IdentityController
 
         public async Task<IActionResult> ListUsers()
         {
-            ///List<ApplicationUser> listUsers = new List<ApplicationUser>();
             var users =userManager.Users;
-            //foreach (var item in users)
-            //{
-            //    ApplicationUser appUser = new ApplicationUser()
-            //    {
-            //        Id = item.Id,
-            //        UserName = item.UserName,
-            //        PhoneNumber = item.PhoneNumber,
-            //        City = item.City
-            //    };
-            //    listUsers.Add(appUser);
-            //}
             return View(users);
         }
     }

@@ -12,14 +12,14 @@ namespace SchoolManagementSystem.Models.Entities
         {
             this.Annuals = new List<Annual>();
             this.Designations = new List<Designation>();
-            this.ExamMarks = new List<ExamMark>();
+            this.ExamMarks = new List<ExamMark>()   ;
             this.Exams = new List<Exam>();
             this.ProgrameSessions = new List<ProgrameSession>();
             this.Programes = new List<Programe>();
             this.Sessions = new List<Session>();
             this.Staffs = new List<Staff>();
             this.Students = new List<Student>();
-            this.Subjects = new List<Subject>();
+            //this.Subjects = new List<Subject>();
             this.SubmissionFees = new List<SubmissionFee>();
             this.TimeTables = new List<TimeTable>();
             this.Sections = new List<Section>();
@@ -46,7 +46,7 @@ namespace SchoolManagementSystem.Models.Entities
        public ICollection<Session> Sessions { get; set; }
         public ICollection<Staff> Staffs { get; set; }
         public ICollection<Student> Students { get; set; }
-        public ICollection<Subject> Subjects { get; set; }
+        //public ICollection<Subject> Subjects { get; set; }
         public ICollection<SubmissionFee> SubmissionFees { get; set; }
         public ICollection<TimeTable> TimeTables { get; set; }
         public ICollection<Section> Sections { get; set; }

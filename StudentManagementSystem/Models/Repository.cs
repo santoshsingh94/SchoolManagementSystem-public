@@ -299,7 +299,7 @@ namespace StudentManagementSystem.Models
 
         public void UpdateSubject(Subject entity, Subject model)
         {
-            entity.UserId = model.UserId;
+            //entity.UserId = model.UserId;
             entity.Name = model.Name;
             entity.RegDate = model.RegDate;
             entity.Description = model.Description;
