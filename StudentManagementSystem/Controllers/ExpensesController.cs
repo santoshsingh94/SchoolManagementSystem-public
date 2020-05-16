@@ -2,10 +2,12 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using SchoolManagementSystem.Models.Entities;
+using SchoolManagementSystem.Models.Identity;
 using StudentManagementSystem.Models;
 
 namespace SchoolManagementSystem.Controllers
@@ -13,19 +15,20 @@ namespace SchoolManagementSystem.Controllers
     public class ExpensesController : Controller
     {
         private readonly AppDbContext _context;
+        private readonly UserManager<ApplicationUser> userManager;
 
-        public ExpensesController(AppDbContext context)
+        public ExpensesController(AppDbContext context, UserManager<ApplicationUser> userManager)
         {
             _context = context;
+            this.userManager = userManager;
         }
-
+        private Task<ApplicationUser> GetCurrentUserAsync() => userManager.GetUserAsync(HttpContext.User);
         // GET: Expenses
         public async Task<IActionResult> Index()
         {
-            var appDbContext = _context.Expenses.Include(e => e.ExpenseType).Include(e => e.User);
+            var appDbContext = _context.Expenses.Include(e => e.ExpenseType).Include(e => e.ApplicationUser);
             return View(await appDbContext.ToListAsync());
         }
-
         // GET: Expenses/Details/5
         public async Task<IActionResult> Details(int? id)
         {
@@ -36,7 +39,7 @@ namespace SchoolManagementSystem.Controllers
 
             var expense = await _context.Expenses
                 .Include(e => e.ExpenseType)
-                .Include(e => e.User)
+                .Include(e => e.ApplicationUser)
                 .FirstOrDefaultAsync(m => m.ExpenseId == id);
             if (expense == null)
             {
@@ -49,8 +52,6 @@ namespace SchoolManagementSystem.Controllers
         // GET: Expenses/Create
         public IActionResult Create()
         {
-            ViewData["ExpenseTypeId"] = new SelectList(_context.ExpenseTypes, "ExpenseTypeId", "Name");
-            ViewData["UserId"] = new SelectList(_context.Users, "UserId", "FullName");
             return View();
         }
 
@@ -61,14 +62,15 @@ namespace SchoolManagementSystem.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Create([Bind("ExpenseId,ExpenseTypeId,ExpensesDate,Amount,Reason,UserId")] Expense expense)
         {
+            var user = await GetCurrentUserAsync();
+            expense.ApplicationUserId = user?.Id;
             if (ModelState.IsValid)
             {
                 _context.Add(expense);
                 await _context.SaveChangesAsync();
                 return RedirectToAction(nameof(Index));
             }
-            ViewData["ExpenseTypeId"] = new SelectList(_context.ExpenseTypes, "ExpenseTypeId", "Name", expense.ExpenseTypeId);
-            ViewData["UserId"] = new SelectList(_context.Users, "UserId", "FullName", expense.UserId);
+            
             return View(expense);
         }
 
@@ -85,8 +87,6 @@ namespace SchoolManagementSystem.Controllers
             {
                 return NotFound();
             }
-            ViewData["ExpenseTypeId"] = new SelectList(_context.ExpenseTypes, "ExpenseTypeId", "Name", expense.ExpenseTypeId);
-            ViewData["UserId"] = new SelectList(_context.Users, "UserId", "FullName", expense.UserId);
             return View(expense);
         }
 
@@ -97,6 +97,8 @@ namespace SchoolManagementSystem.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Edit(int id, [Bind("ExpenseId,ExpenseTypeId,ExpensesDate,Amount,Reason,UserId")] Expense expense)
         {
+            var user = await GetCurrentUserAsync();
+            expense.ApplicationUserId = user?.Id;
             if (id != expense.ExpenseId)
             {
                 return NotFound();
@@ -122,8 +124,7 @@ namespace SchoolManagementSystem.Controllers
                 }
                 return RedirectToAction(nameof(Index));
             }
-            ViewData["ExpenseTypeId"] = new SelectList(_context.ExpenseTypes, "ExpenseTypeId", "Name", expense.ExpenseTypeId);
-            ViewData["UserId"] = new SelectList(_context.Users, "UserId", "FullName", expense.UserId);
+            
             return View(expense);
         }
 
@@ -137,7 +138,7 @@ namespace SchoolManagementSystem.Controllers
 
             var expense = await _context.Expenses
                 .Include(e => e.ExpenseType)
-                .Include(e => e.User)
+                .Include(e => e.ApplicationUser)
                 .FirstOrDefaultAsync(m => m.ExpenseId == id);
             if (expense == null)
             {

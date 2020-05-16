@@ -3,10 +3,12 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using SchoolManagementSystem.Models.Entities;
+using SchoolManagementSystem.Models.Identity;
 using StudentManagementSystem.Models;
 
 namespace SchoolManagementSystem.Controllers
@@ -14,30 +16,26 @@ namespace SchoolManagementSystem.Controllers
     public class ExamsController : Controller
     {
         private readonly AppDbContext _context;
+        private readonly UserManager<ApplicationUser> userManager;
 
-        public ExamsController(AppDbContext context)
+        public ExamsController(AppDbContext context, UserManager<ApplicationUser> userManager)
         {
             _context = context;
+            this.userManager = userManager;
         }
+        private Task<ApplicationUser> GetCurrentUserAsync() => userManager.GetUserAsync(HttpContext.User);
 
         // GET: Exams
         public async Task<IActionResult> Index()
         {
-            if (string.IsNullOrEmpty(HttpContext.Session.GetString("UserName")))
-            {
-                return RedirectToAction("Login", "Home");
-            }
-            var appDbContext = _context.Exams.Include(e => e.User);
+            
+            var appDbContext = _context.Exams.Include(e => e.ApplicationUser);
             return View(await appDbContext.ToListAsync());
         }
 
         // GET: Exams/Details/5
         public async Task<IActionResult> Details(int? id)
         {
-            if (string.IsNullOrEmpty(HttpContext.Session.GetString("UserName")))
-            {
-                return RedirectToAction("Login", "Home");
-            }
 
             if (id == null)
             {
@@ -45,7 +43,7 @@ namespace SchoolManagementSystem.Controllers
             }
 
             var exam = await _context.Exams
-                .Include(e => e.User)
+                .Include(e => e.ApplicationUser)
                 .FirstOrDefaultAsync(m => m.ExamId == id);
             if (exam == null)
             {
@@ -58,12 +56,6 @@ namespace SchoolManagementSystem.Controllers
         // GET: Exams/Create
         public IActionResult Create()
         {
-            if (string.IsNullOrEmpty(HttpContext.Session.GetString("UserName")))
-            {
-                return RedirectToAction("Login", "Home");
-            }
-
-            ViewData["UserId"] = new SelectList(_context.Users, "UserId", "FullName");
             return View();
         }
 
@@ -74,12 +66,8 @@ namespace SchoolManagementSystem.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Create(Exam exam)
         {
-            if (string.IsNullOrEmpty(HttpContext.Session.GetString("UserName")))
-            {
-                return RedirectToAction("Login", "Home");
-            }
-            int userid = Convert.ToInt32(HttpContext.Session.GetString("UserId"));
-            exam.UserId = userid;
+            var user = await GetCurrentUserAsync();
+            exam.ApplicationUserId = user?.Id;
 
             if (ModelState.IsValid)
             {
@@ -87,18 +75,13 @@ namespace SchoolManagementSystem.Controllers
                 await _context.SaveChangesAsync();
                 return RedirectToAction(nameof(Index));
             }
-            ViewData["UserId"] = new SelectList(_context.Users, "UserId", "UserId", exam.UserId);
+            
             return View(exam);
         }
 
         // GET: Exams/Edit/5
         public async Task<IActionResult> Edit(int? id)
         {
-            if (string.IsNullOrEmpty(HttpContext.Session.GetString("UserName")))
-            {
-                return RedirectToAction("Login", "Home");
-            }
-
             if (id == null)
             {
                 return NotFound();
@@ -109,7 +92,6 @@ namespace SchoolManagementSystem.Controllers
             {
                 return NotFound();
             }
-            ViewData["UserId"] = new SelectList(_context.Users, "UserId", "UserId", exam.UserId);
             return View(exam);
         }
 
@@ -120,12 +102,8 @@ namespace SchoolManagementSystem.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Edit(int id,  Exam exam)
         {
-            if (string.IsNullOrEmpty(HttpContext.Session.GetString("UserName")))
-            {
-                return RedirectToAction("Login", "Home");
-            }
-            int userid = Convert.ToInt32(HttpContext.Session.GetString("UserId"));
-            exam.UserId = userid;
+            var user = await GetCurrentUserAsync();
+            exam.ApplicationUserId = user?.Id;
 
             if (id != exam.ExamId)
             {
@@ -152,25 +130,19 @@ namespace SchoolManagementSystem.Controllers
                 }
                 return RedirectToAction(nameof(Index));
             }
-            ViewData["UserId"] = new SelectList(_context.Users, "UserId", "UserId", exam.UserId);
             return View(exam);
         }
 
         // GET: Exams/Delete/5
         public async Task<IActionResult> Delete(int? id)
-        {
-            if (string.IsNullOrEmpty(HttpContext.Session.GetString("UserName")))
-            {
-                return RedirectToAction("Login", "Home");
-            }
-
+        { 
             if (id == null)
             {
                 return NotFound();
             }
 
             var exam = await _context.Exams
-                .Include(e => e.User)
+                .Include(e => e.ApplicationUser)
                 .FirstOrDefaultAsync(m => m.ExamId == id);
             if (exam == null)
             {
@@ -185,11 +157,6 @@ namespace SchoolManagementSystem.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> DeleteConfirmed(int id)
         {
-            if (string.IsNullOrEmpty(HttpContext.Session.GetString("UserName")))
-            {
-                return RedirectToAction("Login", "Home");
-            }
-
             var exam = await _context.Exams.FindAsync(id);
             _context.Exams.Remove(exam);
             await _context.SaveChangesAsync();

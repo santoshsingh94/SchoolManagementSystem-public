@@ -1,8 +1,10 @@
 ﻿using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using SchoolManagementSystem.Models.Entities;
+using SchoolManagementSystem.Models.Identity;
 using StudentManagementSystem.Models;
 using System;
 using System.Linq;
@@ -13,37 +15,34 @@ namespace StudentManagementSystem.Controllers
     public class SessionsController : Controller
     {
         private readonly AppDbContext _context;
+        private readonly UserManager<ApplicationUser> userManager;
 
-        public SessionsController(AppDbContext context)
+        public SessionsController(AppDbContext context, UserManager<ApplicationUser> userManager)
         {
             _context = context;
+            this.userManager = userManager;
         }
+        private Task<ApplicationUser> GetCurrentUserAsync() => userManager.GetUserAsync(HttpContext.User);
 
         // GET: Sessions
         public async Task<IActionResult> Index()
         {
-            if (string.IsNullOrEmpty(HttpContext.Session.GetString("UserName")))
-            {
-                return RedirectToAction("Login", "Home");
-            }
-            var appDbContext = _context.Sessions.Include(s => s.User);
+            
+            var appDbContext = _context.Sessions.Include(s => s.ApplicationUser);
             return View(await appDbContext.ToListAsync());
         }
 
         // GET: Sessions/Details/5
         public async Task<IActionResult> Details(int? id)
         {
-            if (string.IsNullOrEmpty(HttpContext.Session.GetString("UserName")))
-            {
-                return RedirectToAction("Login", "Home");
-            }
+            
             if (id == null)
             {
                 return NotFound();
             }
 
             var session = await _context.Sessions
-                .Include(s => s.User)
+                .Include(s => s.ApplicationUser)
                 .FirstOrDefaultAsync(m => m.SessionId == id);
             if (session == null)
             {
@@ -56,11 +55,7 @@ namespace StudentManagementSystem.Controllers
         // GET: Sessions/Create
         public IActionResult Create()
         {
-            if (string.IsNullOrEmpty(HttpContext.Session.GetString("UserName")))
-            {
-                return RedirectToAction("Login", "Home");
-            }
-            ViewData["UserId"] = new SelectList(_context.Users, "UserId", "UserId");
+            
             return View();
         }
 
@@ -71,31 +66,20 @@ namespace StudentManagementSystem.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Create(Session session)
         {
-            if (string.IsNullOrEmpty(HttpContext.Session.GetString("UserName")))
-            {
-                return RedirectToAction("Login", "Home");
-            }
-
-            int userid = Convert.ToInt32(HttpContext.Session.GetString("UserId"));
-            session.UserId = userid;
-
+            var user = await GetCurrentUserAsync();
+            session.ApplicationUserId = user?.Id;
             if (ModelState.IsValid)
             {
                 _context.Add(session);
                 await _context.SaveChangesAsync();
                 return RedirectToAction(nameof(Index));
-            }
-            ViewData["UserId"] = new SelectList(_context.Users, "UserId", "UserId", session.UserId);
+            }    
             return View(session);
         }
 
         // GET: Sessions/Edit/5
         public async Task<IActionResult> Edit(int? id)
-        {
-            if (string.IsNullOrEmpty(HttpContext.Session.GetString("UserName")))
-            {
-                return RedirectToAction("Login", "Home");
-            }
+        {          
             if (id == null)
             {
                 return NotFound();
@@ -106,7 +90,7 @@ namespace StudentManagementSystem.Controllers
             {
                 return NotFound();
             }
-            ViewData["UserId"] = new SelectList(_context.Users, "UserId", "UserId", session.UserId);
+            ViewData["UserId"] = new SelectList(_context.Users, "UserId", "UserId", session.ApplicationUserId);
             return View(session);
         }
 
@@ -117,18 +101,8 @@ namespace StudentManagementSystem.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Edit(int id, Session session)
         {
-            if (string.IsNullOrEmpty(HttpContext.Session.GetString("UserName")))
-            {
-                return RedirectToAction("Login", "Home");
-            }
-
-            int userid = Convert.ToInt32(HttpContext.Session.GetString("UserId"));
-            session.UserId = userid;
-
-            if (string.IsNullOrEmpty(HttpContext.Session.GetString("UserName")))
-            {
-                return RedirectToAction("Login", "Home");
-            }
+            var user = await GetCurrentUserAsync();
+            session.ApplicationUserId = user?.Id;
             if (id != session.SessionId)
             {
                 return NotFound();
@@ -154,24 +128,21 @@ namespace StudentManagementSystem.Controllers
                 }
                 return RedirectToAction(nameof(Index));
             }
-            ViewData["UserId"] = new SelectList(_context.Users, "UserId", "UserId", session.UserId);
+            
             return View(session);
         }
 
         // GET: Sessions/Delete/5
         public async Task<IActionResult> Delete(int? id)
         {
-            if (string.IsNullOrEmpty(HttpContext.Session.GetString("UserName")))
-            {
-                return RedirectToAction("Login", "Home");
-            }
+            
             if (id == null)
             {
                 return NotFound();
             }
 
             var session = await _context.Sessions
-                .Include(s => s.User)
+                .Include(s => s.ApplicationUser)
                 .FirstOrDefaultAsync(m => m.SessionId == id);
             if (session == null)
             {
@@ -187,11 +158,7 @@ namespace StudentManagementSystem.Controllers
         public async Task<IActionResult> DeleteConfirmed(int id)
         {
             try
-            {
-                if (string.IsNullOrEmpty(HttpContext.Session.GetString("UserName")))
-                {
-                    return RedirectToAction("Login", "Home");
-                }
+            {   
                 var session = await _context.Sessions.FindAsync(id);
                 _context.Sessions.Remove(session);
                 await _context.SaveChangesAsync();
@@ -208,7 +175,7 @@ namespace StudentManagementSystem.Controllers
             }
 
             var session = await _context.Sessions
-                .Include(s => s.User)
+                .Include(s => s.ApplicationUser)
                 .FirstOrDefaultAsync(m => m.SessionId == id);
             if (session == null)
             {

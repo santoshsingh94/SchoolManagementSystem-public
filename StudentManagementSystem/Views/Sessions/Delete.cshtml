@@ -39,10 +39,10 @@
             @Html.DisplayFor(model => model.EndDate)
         </dd>
         <dt class="col-sm-2">
-            @Html.DisplayNameFor(model => model.User)
+            Created By
         </dt>
         <dd class="col-sm-10">
-            @Html.DisplayFor(model => model.User.UserId)
+            @Html.DisplayFor(model => model.ApplicationUser.UserName)
         </dd>
     </dl>
 

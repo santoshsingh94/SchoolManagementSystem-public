@@ -23,7 +23,7 @@
                             Status (@Html.DisplayNameFor(model => model.IsActive))
                         </th>
                         <th>
-                            @Html.DisplayNameFor(model => model.User)
+                            Created By
                         </th>
                         <th></th>
                     </tr>
@@ -39,7 +39,7 @@
                                 @Html.DisplayFor(modelItem => item.IsActive)
                             </td>
                             <td>
-                                @Html.DisplayFor(modelItem => item.User.FullName)                               
+                                @Html.DisplayFor(modelItem => item.ApplicationUser.UserName)                               
                             </td>
                             <td class="btn btn-group">
                                 <a asp-action="Edit" asp-route-id="@item.DesignationId" class="btn btn-primary">Edit</a>

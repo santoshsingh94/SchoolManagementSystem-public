@@ -27,7 +27,7 @@
                             @Html.DisplayNameFor(model => model.IsActive)
                         </th>
                         <th>
-                            @Html.DisplayNameFor(model => model.User)
+                            Created By
                         </th>
                         <th></th>
                     </tr>
@@ -46,8 +46,7 @@
                                 @Html.DisplayFor(modelItem => item.IsActive)
                             </td>
                             <td>
-                               @* @Html.DisplayFor(modelItem => item.User.UserId)*@
-                                @Context.Session.GetString("UserName")
+                               @Html.DisplayFor(modelItem => item.ApplicationUser.UserName)
                             </td>
                             <td class="btn-group">
                                 <a asp-action="Edit" asp-route-id="@item.ProgrameId" class="btn btn-primary">Edit</a>

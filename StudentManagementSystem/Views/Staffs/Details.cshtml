@@ -122,10 +122,10 @@
                 @Html.DisplayFor(model => model.RegistrationDate)
             </dd>
             <dt class="col-sm-2">
-                @Html.DisplayNameFor(model => model.User)
+                Created By
             </dt>
             <dd class="col-sm-4">
-                @Html.DisplayFor(model => model.User.FullName)
+                @Html.DisplayFor(model => model.ApplicationUser.UserName)
             </dd>
             <dt class="col-sm-2">
                 @Html.DisplayNameFor(model => model.Designation)

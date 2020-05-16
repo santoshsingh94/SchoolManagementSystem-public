@@ -66,7 +66,7 @@ namespace StudentManagementSystem.Models
                 .WithMany(b => b.Students)
                 .OnDelete(DeleteBehavior.Restrict);
             modelBuilder.Entity<ProgrameSession>()
-                .HasOne(p => p.User)
+                .HasOne(p => p.ApplicationUser)
                 .WithMany(b => b.ProgrameSessions)
                 .OnDelete(DeleteBehavior.Restrict);
             modelBuilder.Entity<ProgrameSession>()
@@ -94,7 +94,7 @@ namespace StudentManagementSystem.Models
                .WithMany(b => b.StudentPromotes)
                .OnDelete(DeleteBehavior.Restrict);
             modelBuilder.Entity<Annual>()
-               .HasOne(p => p.User)
+               .HasOne(p => p.ApplicationUser)
                .WithMany(b => b.Annuals)
                .OnDelete(DeleteBehavior.Restrict);
             modelBuilder.Entity<Attendance>()
@@ -110,7 +110,7 @@ namespace StudentManagementSystem.Models
                .WithMany(b => b.ExamMarks)
                .OnDelete(DeleteBehavior.Restrict);
             modelBuilder.Entity<ExamMark>()
-               .HasOne(p => p.User)
+               .HasOne(p => p.ApplicationUser)
                .WithMany(b => b.ExamMarks)
                .OnDelete(DeleteBehavior.Restrict);
             modelBuilder.Entity<Staff>()
@@ -337,42 +337,36 @@ namespace StudentManagementSystem.Models
             modelBuilder.Entity<Designation>().HasData(new Designation()
             {
                 DesignationId = 1,
-                UserId = 1,
                 Title = "Principal",
                 IsActive = true
             });
             modelBuilder.Entity<Designation>().HasData(new Designation()
             {
                 DesignationId = 2,
-                UserId = 1,
                 Title = "Voice Principal",
                 IsActive = true
             });
             modelBuilder.Entity<Designation>().HasData(new Designation()
             {
                 DesignationId = 3,
-                UserId = 1,
-                Title = "Teacher",
+                Title="Teacher",
                 IsActive = true
             });
             modelBuilder.Entity<Designation>().HasData(new Designation()
             {
                 DesignationId = 4,
-                UserId = 1,
                 Title = "Security Guard",
                 IsActive = true
             });
             modelBuilder.Entity<Designation>().HasData(new Designation()
             {
                 DesignationId = 5,
-                UserId = 1,
                 Title = "Cleaner",
                 IsActive = true
             });
             modelBuilder.Entity<Programe>().HasData(new Programe()
             {
                 ProgrameId = 1,
-                UserId = 1,
                 Name = "Arts",
                 StartDate = Convert.ToDateTime("01-01-2018"),
                 IsActive = true
@@ -380,7 +374,6 @@ namespace StudentManagementSystem.Models
             modelBuilder.Entity<Programe>().HasData(new Programe()
             {
                 ProgrameId = 2,
-                UserId = 1,
                 Name = "Commerce",
                 StartDate = Convert.ToDateTime("01-01-2018"),
                 IsActive = true
@@ -388,7 +381,6 @@ namespace StudentManagementSystem.Models
             modelBuilder.Entity<Programe>().HasData(new Programe()
             {
                 ProgrameId = 3,
-                UserId = 1,
                 Name = "Science",
                 StartDate = Convert.ToDateTime("01-01-2018"),
                 IsActive = true
@@ -396,7 +388,6 @@ namespace StudentManagementSystem.Models
             modelBuilder.Entity<Programe>().HasData(new Programe()
             {
                 ProgrameId = 4,
-                UserId = 1,
                 Name = "Computer Science",
                 StartDate = Convert.ToDateTime("01-01-2018"),
                 IsActive = true
@@ -406,7 +397,6 @@ namespace StudentManagementSystem.Models
             modelBuilder.Entity<Annual>().HasData(new Annual()
             {
                 AnnualId = 1,
-                UserId = 1,
                 Title = "For LKG To Fifth Standard",
                 ProgrameId=1,
                 Description = "Annual Fee Same",
@@ -416,7 +406,6 @@ namespace StudentManagementSystem.Models
             modelBuilder.Entity<Annual>().HasData(new Annual()
             {
                 AnnualId = 2,
-                UserId = 1,
                 Title = "For LKG To Fifth Standard",
                 ProgrameId = 1,
                 Description = "Annual Fee Same",
@@ -426,7 +415,6 @@ namespace StudentManagementSystem.Models
             modelBuilder.Entity<Annual>().HasData(new Annual()
             {
                 AnnualId = 3,
-                UserId = 1,
                 Title = "For LKG To Fifth Standard",
                 ProgrameId = 3,
                 Description = "Annual Fee Same",
@@ -436,7 +424,6 @@ namespace StudentManagementSystem.Models
             modelBuilder.Entity<Annual>().HasData(new Annual()
             {
                 AnnualId = 4,
-                UserId = 1,
                 Title = "For LKG To Fifth Standard",
                 ProgrameId = 4,
                 Description = "Annual Fee Same",
@@ -447,16 +434,14 @@ namespace StudentManagementSystem.Models
             modelBuilder.Entity<Session>().HasData(new Session()
             {
                 SessionId = 1,
-                UserId = 1,
                 Name = "2020-2021",
                 StartDate = Convert.ToDateTime("01-07-2020"),
-                EndDate = Convert.ToDateTime("30-06-2021")
+                EndDate = Convert.ToDateTime("03-06-2021")
             });
             //ProgrameSession
             modelBuilder.Entity<ProgrameSession>().HasData(new ProgrameSession()
             {
                 ProgrameSessionId = 1,
-                UserId = 1,
                 SessionId = 1,
                 ProgrameId=1,
                 Details = "(2020-2021-Arts)LGK to 5th",
@@ -538,19 +523,16 @@ namespace StudentManagementSystem.Models
             modelBuilder.Entity<Section>().HasData(new Section()
             {
                 SectionId=1,
-                UserId = 1,
                 Name="A"
             });
             modelBuilder.Entity<Section>().HasData(new Section()
             {
                 SectionId = 2,
-                UserId = 1,
                 Name = "B"
             });
             modelBuilder.Entity<Section>().HasData(new Section()
             {
                 SectionId = 3,
-                UserId = 1,
                 Name = "C"
             });
 

@@ -29,7 +29,7 @@
                             @Html.DisplayNameFor(model => model.Description)
                         </th>
                         <th>
-                            @Html.DisplayNameFor(model => model.User)
+                            Created By
                         </th>
                         <th></th>
                     </tr>
@@ -51,7 +51,7 @@
                                 @Html.DisplayFor(modelItem => item.Description)
                             </td>
                             <td>
-                                @Html.DisplayFor(modelItem => item.User.FullName)
+                                @Html.DisplayFor(modelItem => item.ApplicationUser.UserName)
                             </td>
                             <td class="btn-group">
                                 <a asp-action="Edit" asp-route-id="@item.ExamId" class="btn btn-primary">Edit</a>

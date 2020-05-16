@@ -3,10 +3,12 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using SchoolManagementSystem.Models.Entities;
+using SchoolManagementSystem.Models.Identity;
 using StudentManagementSystem.Models;
 
 namespace StudentManagementSystem.Controllers
@@ -14,31 +16,28 @@ namespace StudentManagementSystem.Controllers
     public class AnnualsController : Controller
     {
         private readonly AppDbContext _context;
+        private readonly UserManager<ApplicationUser> userManager;
 
-        public AnnualsController(AppDbContext context)
+        public AnnualsController(AppDbContext context, UserManager<ApplicationUser> userManager)
         {
             _context = context;
+            this.userManager = userManager;
         }
 
+        private Task<ApplicationUser> GetCurrentUserAsync() => userManager.GetUserAsync(HttpContext.User);
         // GET: Annuals
         public async Task<IActionResult> Index()
         {
-            if (string.IsNullOrEmpty(HttpContext.Session.GetString("UserName")))
-            {
-                return RedirectToAction("Login", "Home");
-            }
+            
             //var appDbContext = _context.Annuals.Include(a => a.Programe).Include(a => a.User);
-            var appDbContext = _context.Annuals.Include(a => a.Programe).Include(a => a.User).Where(p=>p.IsActive==true);
+            var appDbContext = _context.Annuals.Include(a => a.Programe).Include(a => a.ApplicationUser).Where(p=>p.IsActive==true);
             return View(await appDbContext.ToListAsync());
         }
 
         // GET: Annuals/Details/5
         public async Task<IActionResult> Details(int? id)
         {
-            if (string.IsNullOrEmpty(HttpContext.Session.GetString("UserName")))
-            {
-                return RedirectToAction("Login", "Home");
-            }
+            
             if (id == null)
             {
                 return NotFound();
@@ -46,7 +45,7 @@ namespace StudentManagementSystem.Controllers
 
             var annual = await _context.Annuals
                 .Include(a => a.Programe)
-                .Include(a => a.User)
+                .Include(a => a.ApplicationUser)
                 .FirstOrDefaultAsync(m => m.AnnualId == id);
             if (annual == null)
             {
@@ -59,12 +58,8 @@ namespace StudentManagementSystem.Controllers
         // GET: Annuals/Create
         public IActionResult Create()
         {
-            if (string.IsNullOrEmpty(HttpContext.Session.GetString("UserName")))
-            {
-                return RedirectToAction("Login", "Home");
-            }
-            ViewData["ProgrameId"] = new SelectList(_context.Programes.Where(p=>p.IsActive==true), "ProgrameId", "Name");
-            ViewData["UserId"] = new SelectList(_context.Users, "UserId", "FullName");
+            
+            
             return View();
         }
 
@@ -75,12 +70,8 @@ namespace StudentManagementSystem.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Create(Annual annual)
         {
-            if (string.IsNullOrEmpty(HttpContext.Session.GetString("UserName")))
-            {
-                return RedirectToAction("Login", "Home");
-            }
-            int userid = Convert.ToInt32(HttpContext.Session.GetString("UserId"));
-            annual.UserId = userid;
+            var user = await GetCurrentUserAsync();
+            annual.ApllicationUserId = user?.Id;
 
             if (ModelState.IsValid)
             {
@@ -88,18 +79,14 @@ namespace StudentManagementSystem.Controllers
                 await _context.SaveChangesAsync();
                 return RedirectToAction(nameof(Index));
             }
-            ViewData["ProgrameId"] = new SelectList(_context.Programes.Where(p => p.IsActive == true), "ProgrameId", "ProgrameId", annual.ProgrameId);
-            ViewData["UserId"] = new SelectList(_context.Users, "UserId", "UserId", annual.UserId);
+            
             return View(annual);
         }
 
         // GET: Annuals/Edit/5
         public async Task<IActionResult> Edit(int? id)
         {
-            if (string.IsNullOrEmpty(HttpContext.Session.GetString("UserName")))
-            {
-                return RedirectToAction("Login", "Home");
-            }
+            
             if (id == null)
             {
                 return NotFound();
@@ -110,8 +97,7 @@ namespace StudentManagementSystem.Controllers
             {
                 return NotFound();
             }
-            ViewData["ProgrameId"] = new SelectList(_context.Programes.Where(p => p.IsActive == true), "ProgrameId", "Name", annual.ProgrameId);
-            ViewData["UserId"] = new SelectList(_context.Users, "UserId", "FullName", annual.UserId);
+            
             return View(annual);
         }
 
@@ -122,12 +108,8 @@ namespace StudentManagementSystem.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Edit(int id, Annual annual)
         {
-            if (string.IsNullOrEmpty(HttpContext.Session.GetString("UserName")))
-            {
-                return RedirectToAction("Login", "Home");
-            }
-            int userid = Convert.ToInt32(HttpContext.Session.GetString("UserId"));
-            annual.UserId = userid;
+            var user = await GetCurrentUserAsync();
+            annual.ApllicationUserId = user?.Id;
 
             if (id != annual.AnnualId)
             {
@@ -154,18 +136,14 @@ namespace StudentManagementSystem.Controllers
                 }
                 return RedirectToAction(nameof(Index));
             }
-            ViewData["ProgrameId"] = new SelectList(_context.Programes.Where(p => p.IsActive == true), "ProgrameId", "ProgrameId", annual.ProgrameId);
-            ViewData["UserId"] = new SelectList(_context.Users, "UserId", "UserId", annual.UserId);
+            
             return View(annual);
         }
 
         // GET: Annuals/Delete/5
         public async Task<IActionResult> Delete(int? id)
         {
-            if (string.IsNullOrEmpty(HttpContext.Session.GetString("UserName")))
-            {
-                return RedirectToAction("Login", "Home");
-            }
+            
             if (id == null)
             {
                 return NotFound();
@@ -173,7 +151,7 @@ namespace StudentManagementSystem.Controllers
 
             var annual = await _context.Annuals
                 .Include(a => a.Programe)
-                .Include(a => a.User)
+                .Include(a => a.ApplicationUser)
                 .FirstOrDefaultAsync(m => m.AnnualId == id);
             if (annual == null)
             {

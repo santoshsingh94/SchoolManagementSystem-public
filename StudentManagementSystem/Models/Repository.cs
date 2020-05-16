@@ -108,7 +108,7 @@ namespace StudentManagementSystem.Models
 
         public void UpdateAnnual(Annual entity, Annual model)
         {
-            entity.UserId = model.UserId;
+           // entity.ApplicationUser = model.UserId;
             entity.ProgrameId = model.ProgrameId;
             entity.Title = model.Title;
             entity.Description = model.Description;
@@ -144,7 +144,7 @@ namespace StudentManagementSystem.Models
         }
         public void UpdateDesignation(Designation entity, Designation model)
         {
-            entity.UserId = model.UserId;
+            //entity.UserId = model.UserId;
             entity.Title = model.Title;
             entity.IsActive = model.IsActive;
         }
@@ -161,7 +161,7 @@ namespace StudentManagementSystem.Models
 
         public void UpdateExam(Exam entity, Exam model)
         {
-            entity.UserId = model.ExamId;
+           // entity.UserId = model.ExamId;
             entity.Title = model.Title;
             entity.StartDate = model.StartDate;
             entity.EndDate = model.EndDate;
@@ -183,7 +183,7 @@ namespace StudentManagementSystem.Models
             entity.ExamId = model.ExamId;
             entity.ClassSubjectId = model.ClassSubjectId;
             entity.StudentId = model.StudentId;
-            entity.UserId = model.UserId;
+           // entity.UserId = model.UserId;
             entity.TotalMarks = model.TotalMarks;
             entity.ObtainMarks = model.ObtainMarks;
         }
@@ -201,7 +201,7 @@ namespace StudentManagementSystem.Models
 
         public void UpdatePrograme(Programe entity, Programe model)
         {
-            entity.UserId = model.UserId;
+            //entity.UserId = model.UserId;
             entity.Name = model.Name;
             entity.StartDate = model.StartDate;
             entity.IsActive = model.IsActive;
@@ -219,7 +219,7 @@ namespace StudentManagementSystem.Models
 
         public void UpdateSession(Session entity, Session model)
         {
-            entity.UserId = model.UserId;
+           // entity.UserId = model.UserId;
             entity.Name = model.Name;
             entity.StartDate = model.StartDate;
             entity.EndDate = model.EndDate;
@@ -237,7 +237,7 @@ namespace StudentManagementSystem.Models
 
         public void UpdateProgrameSession(ProgrameSession entity, ProgrameSession model)
         {
-            entity.UserId = model.UserId;
+            //entity.UserId = model.UserId;
             entity.SessionId = model.SessionId;
             entity.ProgrameId = model.ProgrameId;
             entity.Details = model.Details;
@@ -275,7 +275,7 @@ namespace StudentManagementSystem.Models
 
         public void UpdateStaff(Staff entity, Staff model)
         {
-            entity.UserId = model.UserId;
+            //entity.UserId = model.UserId;
             entity.Name = model.Name;
             entity.DesignationId = model.DesignationId;
             entity.ContactNo = model.ContactNo;

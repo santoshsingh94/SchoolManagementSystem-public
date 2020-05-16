@@ -36,7 +36,7 @@ namespace SchoolManagementSystem.Controllers
                     .Where(e => e.ClassSubject.ClassTblId == promoteRecord.ClassTblId && e.StudentId == promoteRecord.StudentId)
                     .Include(s => s.Student)
                     .Include(c => c.ClassSubject)
-                    .Include(u => u.User);
+                    .Include(u => u.ApplicationUser);
                 if (listMarks!=null)
                 {
 

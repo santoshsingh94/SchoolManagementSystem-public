@@ -20,7 +20,7 @@ namespace SchoolManagementSystem.Controllers
         {
             var allExpense = _context.Expenses
                 .Include(e=>e.ExpenseType)
-                .Include(u=>u.User).ToList()
+                .Include(u=>u.ApplicationUser).ToList()
                 .OrderByDescending(e => e.ExpenseId);
             return View(allExpense);
         }
@@ -30,7 +30,7 @@ namespace SchoolManagementSystem.Controllers
             var allExpense = _context.Expenses
                 .Where(e => e.ExpensesDate >= DateTime.Now && e.ExpensesDate <= DateTime.Now)
                 .Include(e => e.ExpenseType)
-                .Include(u => u.User).ToList()
+                .Include(u => u.ApplicationUser).ToList()
                 .OrderByDescending(e => e.ExpenseId);
             return View(allExpense);
         }
@@ -40,7 +40,7 @@ namespace SchoolManagementSystem.Controllers
             var allExpense = _context.Expenses
                 .Where(e=>e.ExpensesDate >= fromDate && e.ExpensesDate<=toDate)
                 .Include(e => e.ExpenseType)
-                .Include(u => u.User).ToList()
+                .Include(u => u.ApplicationUser).ToList()
                 .OrderByDescending(e => e.ExpenseId);
             return View(allExpense);
         }

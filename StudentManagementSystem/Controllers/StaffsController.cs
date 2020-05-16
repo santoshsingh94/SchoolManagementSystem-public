@@ -5,10 +5,12 @@ using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using SchoolManagementSystem.Models.Entities;
+using SchoolManagementSystem.Models.Identity;
 using SchoolManagementSystem.ViewModels;
 using StudentManagementSystem.Models;
 
@@ -18,31 +20,25 @@ namespace SchoolManagementSystem.Controllers
     {
         private readonly AppDbContext _context;
         private readonly IHostingEnvironment hostingEnvironment;
+        private readonly UserManager<ApplicationUser> userManager;
 
-        public StaffsController(AppDbContext context, IHostingEnvironment hostingEnvironment)
+        public StaffsController(AppDbContext context, IHostingEnvironment hostingEnvironment, UserManager<ApplicationUser> userManager)
         {
             _context = context;
             this.hostingEnvironment = hostingEnvironment;
+            this.userManager = userManager;
         }
-
+        private Task<ApplicationUser> GetCurrentUserAsync() => userManager.GetUserAsync(HttpContext.User);
         // GET: Staffs
         public async Task<IActionResult> Index()
         {
-            if (string.IsNullOrEmpty(HttpContext.Session.GetString("UserName")))
-            {
-                return RedirectToAction("Login", "Home");
-            }
-            var appDbContext = _context.Staffs.Include(s => s.Designation).Include(s => s.User);
+            var appDbContext = _context.Staffs.Include(s => s.Designation).Include(s => s.ApplicationUser);
             return View(await appDbContext.ToListAsync());
         }
 
         // GET: Staffs/Details/5
         public async Task<IActionResult> Details(int? id)
         {
-            if (string.IsNullOrEmpty(HttpContext.Session.GetString("UserName")))
-            {
-                return RedirectToAction("Login", "Home");
-            }
             if (id == null)
             {
                 return NotFound();
@@ -50,7 +46,7 @@ namespace SchoolManagementSystem.Controllers
 
             var staff = await _context.Staffs
                 .Include(s => s.Designation)
-                .Include(s => s.User)
+                .Include(s => s.ApplicationUser)
                 .FirstOrDefaultAsync(m => m.StaffId == id);
             if (staff == null)
             {
@@ -63,12 +59,7 @@ namespace SchoolManagementSystem.Controllers
         // GET: Staffs/Create
         public IActionResult Create()
         {
-            if (string.IsNullOrEmpty(HttpContext.Session.GetString("UserName")))
-            {
-                return RedirectToAction("Login", "Home");
-            }
             ViewData["DesignationId"] = new SelectList(_context.Designations, "DesignationId", "Title");
-            ViewData["UserId"] = new SelectList(_context.Users, "UserId", "UserName");
             return View();
         }
 
@@ -77,38 +68,35 @@ namespace SchoolManagementSystem.Controllers
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create( StaffViewModel staff)
+        public async Task<IActionResult> Create(StaffViewModel staff)
         {
-            if (string.IsNullOrEmpty(HttpContext.Session.GetString("UserName")))
-            {
-                return RedirectToAction("Login", "Home");
-            }
-            int userid = Convert.ToInt32(HttpContext.Session.GetString("UserId"));           
+
             ///////////Here every staff is an user, so we provide user Id behalf of user type(staff).x
-            
+
             if (ModelState.IsValid)
             {
-                var userType = _context.UserTypes.Where(u => u.TypeName == "Employee").FirstOrDefault();
-                int userTypeId = 0;
-                if (userType != null)
-                {
-                    userTypeId = userType.UserTypeId;
-                }
-                var user = new User()
-                {
-                    Address = staff.Address,
-                    ContactNo = staff.ContactNo,
-                    Email=staff.Email,
-                    FullName=staff.Name,
-                    UserName=staff.Email,
-                    UserTypeId = userTypeId, //Check your Db To get usertypeid of Employeetype
-                    Password="password" //default password for all the employee
-                };
-                _context.Users.Add(user);
-                await _context.SaveChangesAsync();
+                //var userType = _context.UserTypes.Where(u => u.TypeName == "Employee").FirstOrDefault();
+                //int userTypeId = 0;
+                //if (userType != null)
+                //{
+                //    userTypeId = userType.UserTypeId;
+                //}
+                //var user = new User()
+                //{
+                //    Address = staff.Address,
+                //    ContactNo = staff.ContactNo,
+                //    Email=staff.Email,
+                //    FullName=staff.Name,
+                //    UserName=staff.Email,
+                //    UserTypeId = userTypeId, //Check your Db To get usertypeid of Employeetype
+                //    Password="password" //default password for all the employee
+                //};
+                //_context.Users.Add(user);
+                //await _context.SaveChangesAsync();
 
+                var user = await GetCurrentUserAsync();
                 string uniqueFileName = null;
-                if(staff.photo != null)
+                if (staff.photo != null)
                 {
                     string uploadFolder = Path.Combine(hostingEnvironment.WebRootPath, "image");
                     uniqueFileName = Guid.NewGuid().ToString() + "_" + staff.photo.FileName;
@@ -117,7 +105,7 @@ namespace SchoolManagementSystem.Controllers
                 }
                 Staff newStaff = new Staff
                 {
-                    UserId = userid,
+                    ApplicationUserId = user?.Id,
                     Name = staff.Name,
                     DesignationId = staff.DesignationId,
                     ContactNo = staff.ContactNo,
@@ -137,24 +125,19 @@ namespace SchoolManagementSystem.Controllers
                     AnyCriminalOffence = staff.AnyCriminalOffence,
                     CriminalOffenceDetails = staff.CriminalOffenceDetails,
                     RegistrationDate = DateTime.Now
-                };                
+                };
                 _context.Staffs.Add(newStaff);
                 await _context.SaveChangesAsync();
                 //return RedirectToAction(nameof(Index));
                 return RedirectToAction("details", new { id = newStaff.StaffId });
             }
-            ViewData["DesignationId"] = new SelectList(_context.Designations, "DesignationId", "DesignationId", staff.DesignationId);
-            ViewData["UserId"] = new SelectList(_context.Users, "UserId", "UserId", staff.UserId);
+            ViewData["DesignationId"] = new SelectList(_context.Designations, "DesignationId", "DesignationId", staff.DesignationId);            
             return View(staff);
         }
 
         // GET: Staffs/Edit/5
         public async Task<IActionResult> Edit(int? id)
-        {
-            if (string.IsNullOrEmpty(HttpContext.Session.GetString("UserName")))
-            {
-                return RedirectToAction("Login", "Home");
-            }
+        {            
             if (id == null)
             {
                 return NotFound();
@@ -166,12 +149,11 @@ namespace SchoolManagementSystem.Controllers
                 return NotFound();
             }
             ViewData["DesignationId"] = new SelectList(_context.Designations, "DesignationId", "Title", staff.DesignationId);
-            ViewData["UserId"] = new SelectList(_context.Users, "UserId", "UserId", staff.UserId);
             ViewData["Photo"] = staff.photo;
             StaffViewModel viewStaff = new StaffViewModel
             {
                 StaffId = staff.StaffId,
-                UserId = staff.UserId,
+                ApplicationUserId = staff.ApplicationUserId,
                 Name = staff.Name,
                 DesignationId = staff.DesignationId,
                 ContactNo = staff.ContactNo,
@@ -207,9 +189,9 @@ namespace SchoolManagementSystem.Controllers
             {
                 return RedirectToAction("Login", "Home");
             }
-            int userid = Convert.ToInt32(HttpContext.Session.GetString("UserId"));
+            var user = await GetCurrentUserAsync();
             staff.StaffId = id;
-            staff.UserId = userid;
+            staff.ApplicationUserId = user?.Id;
             if (id != staff.StaffId)
             {
                 return NotFound();
@@ -228,7 +210,7 @@ namespace SchoolManagementSystem.Controllers
                 Staff newStaff = new Staff
                 {
                     StaffId = staff.StaffId,
-                    UserId = userid,
+                    ApplicationUserId = user?.Id,
                     Name = staff.Name,
                     DesignationId = staff.DesignationId,
                     ContactNo = staff.ContactNo,
@@ -267,8 +249,7 @@ namespace SchoolManagementSystem.Controllers
                 }
                 return RedirectToAction(nameof(Index));
             }
-            ViewData["DesignationId"] = new SelectList(_context.Designations, "DesignationId", "DesignationId", staff.DesignationId);
-            ViewData["UserId"] = new SelectList(_context.Users, "UserId", "UserId", staff.UserId);
+            ViewData["DesignationId"] = new SelectList(_context.Designations, "DesignationId", "DesignationId", staff.DesignationId);            
             return View(staff);
         }
 
@@ -286,7 +267,7 @@ namespace SchoolManagementSystem.Controllers
 
             var staff = await _context.Staffs
                 .Include(s => s.Designation)
-                .Include(s => s.User)
+                .Include(s => s.ApplicationUser)
                 .FirstOrDefaultAsync(m => m.StaffId == id);
             if (staff == null)
             {
@@ -297,7 +278,7 @@ namespace SchoolManagementSystem.Controllers
         }
 
         //POST: Staffs/Delete/5
-        [HttpPost, ActionName("Delete")]      
+        [HttpPost, ActionName("Delete")]
         public async Task<IActionResult> Delete(int id)
         {
             if (string.IsNullOrEmpty(HttpContext.Session.GetString("UserName")))

@@ -1,4 +1,5 @@
-﻿using System;
+﻿using SchoolManagementSystem.Models.Identity;
+using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.Linq;
@@ -19,7 +20,7 @@ namespace SchoolManagementSystem.Models.Entities
         }
         [Key]
         public int ProgrameId { get; set; }
-        public int UserId { get; set; }
+        public string ApplicationUserId { get; set; }
         public string Name { get; set; }
         [DataType(DataType.Date)]
         public DateTime StartDate { get; set; }
@@ -29,6 +30,6 @@ namespace SchoolManagementSystem.Models.Entities
         public ICollection<ProgrameSession> ProgrameSessions { get; set; }
         public ICollection<Student> Students { get; set; }
         public ICollection<SubmissionFee> SubmissionFees { get; set; }
-        public User User { get; set; }
+        public ApplicationUser ApplicationUser { get; set; }
     }
 }

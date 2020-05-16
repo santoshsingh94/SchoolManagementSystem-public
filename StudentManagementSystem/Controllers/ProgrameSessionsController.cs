@@ -3,10 +3,12 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using SchoolManagementSystem.Models.Entities;
+using SchoolManagementSystem.Models.Identity;
 using StudentManagementSystem.Models;
 
 namespace SchoolManagementSystem.Controllers
@@ -14,30 +16,25 @@ namespace SchoolManagementSystem.Controllers
     public class ProgrameSessionsController : Controller
     {
         private readonly AppDbContext _context;
+        private readonly UserManager<ApplicationUser> userManager;
 
-        public ProgrameSessionsController(AppDbContext context)
+        public ProgrameSessionsController(AppDbContext context, UserManager<ApplicationUser> userManager)
         {
             _context = context;
+            this.userManager = userManager;
         }
-
+        private Task<ApplicationUser> GetCurrentUserAsync() => userManager.GetUserAsync(HttpContext.User);
         // GET: ProgrameSessions
         public async Task<IActionResult> Index()
         {
-            if (string.IsNullOrEmpty(HttpContext.Session.GetString("UserName")))
-            {
-                return RedirectToAction("Login", "Home");
-            }
-            var appDbContext = _context.ProgrameSessions.Include(p => p.Programe).Include(p => p.Session).Include(p => p.User);
+            
+            var appDbContext = _context.ProgrameSessions.Include(p => p.Programe).Include(p => p.Session).Include(p => p.ApplicationUser);
             return View(await appDbContext.ToListAsync());
         }
 
         // GET: ProgrameSessions/Details/5
         public async Task<IActionResult> Details(int? id)
         {
-            if (string.IsNullOrEmpty(HttpContext.Session.GetString("UserName")))
-            {
-                return RedirectToAction("Login", "Home");
-            }
             if (id == null)
             {
                 return NotFound();
@@ -46,7 +43,7 @@ namespace SchoolManagementSystem.Controllers
             var programeSession = await _context.ProgrameSessions
                 .Include(p => p.Programe)
                 .Include(p => p.Session)
-                .Include(p => p.User)
+                .Include(p => p.ApplicationUser)
                 .FirstOrDefaultAsync(m => m.ProgrameSessionId == id);
             if (programeSession == null)
             {
@@ -59,13 +56,6 @@ namespace SchoolManagementSystem.Controllers
         // GET: ProgrameSessions/Create
         public IActionResult Create()
         {
-            if (string.IsNullOrEmpty(HttpContext.Session.GetString("UserName")))
-            {
-                return RedirectToAction("Login", "Home");
-            }
-            ViewData["ProgrameId"] = new SelectList(_context.Programes, "ProgrameId", "Name");
-            ViewData["SessionId"] = new SelectList(_context.Sessions, "SessionId", "Name");
-            ViewData["UserId"] = new SelectList(_context.Users, "UserId", "FullName");
             return View();
         }
 
@@ -76,12 +66,8 @@ namespace SchoolManagementSystem.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Create(ProgrameSession programeSession)
         {
-            if (string.IsNullOrEmpty(HttpContext.Session.GetString("UserName")))
-            {
-                return RedirectToAction("Login", "Home");
-            }
-            int userid = Convert.ToInt32(HttpContext.Session.GetString("UserId"));
-            programeSession.UserId = userid;
+            var user = await GetCurrentUserAsync();
+            programeSession.ApplicationUserId = user?.Id;
             if (ModelState.IsValid)
             {
                 var sessionname = _context.Sessions.Where(s => s.SessionId == programeSession.SessionId).SingleOrDefault();
@@ -98,19 +84,12 @@ namespace SchoolManagementSystem.Controllers
                 await _context.SaveChangesAsync();
                 return RedirectToAction(nameof(Index));
             }
-            ViewData["ProgrameId"] = new SelectList(_context.Programes, "ProgrameId", "Name", programeSession.ProgrameId);
-            ViewData["SessionId"] = new SelectList(_context.Sessions, "SessionId", "Name", programeSession.SessionId);
-            ViewData["UserId"] = new SelectList(_context.Users, "UserId", "FullName", programeSession.UserId);
             return View(programeSession);
         }
 
         // GET: ProgrameSessions/Edit/5
         public async Task<IActionResult> Edit(int? id)
         {
-            if (string.IsNullOrEmpty(HttpContext.Session.GetString("UserName")))
-            {
-                return RedirectToAction("Login", "Home");
-            }
 
             if (id == null)
             {
@@ -122,9 +101,6 @@ namespace SchoolManagementSystem.Controllers
             {
                 return NotFound();
             }
-            ViewData["ProgrameId"] = new SelectList(_context.Programes, "ProgrameId", "Name", programeSession.ProgrameId);
-            ViewData["SessionId"] = new SelectList(_context.Sessions, "SessionId", "Name", programeSession.SessionId);
-            ViewData["UserId"] = new SelectList(_context.Users, "UserId", "FullName", programeSession.UserId);
             return View(programeSession);
         }
 
@@ -135,12 +111,8 @@ namespace SchoolManagementSystem.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Edit(int id, ProgrameSession programeSession)
         {
-            if (string.IsNullOrEmpty(HttpContext.Session.GetString("UserName")))
-            {
-                return RedirectToAction("Login", "Home");
-            }
-            int userid = Convert.ToInt32(HttpContext.Session.GetString("UserId"));
-            programeSession.UserId = userid;
+            var user = await GetCurrentUserAsync();
+            programeSession.ApplicationUserId = user?.Id;
             if (id != programeSession.ProgrameSessionId)
             {
                 return NotFound();
@@ -176,19 +148,12 @@ namespace SchoolManagementSystem.Controllers
                 }
                 return RedirectToAction(nameof(Index));
             }
-            ViewData["ProgrameId"] = new SelectList(_context.Programes, "ProgrameId", "Name", programeSession.ProgrameId);
-            ViewData["SessionId"] = new SelectList(_context.Sessions, "SessionId", "Name", programeSession.SessionId);
-            ViewData["UserId"] = new SelectList(_context.Users, "UserId", "FullName", programeSession.UserId);
             return View(programeSession);
         }
 
         // GET: ProgrameSessions/Delete/5
         public async Task<IActionResult> Delete(int? id)
         {
-            if (string.IsNullOrEmpty(HttpContext.Session.GetString("UserName")))
-            {
-                return RedirectToAction("Login", "Home");
-            }
             if (id == null)
             {
                 return NotFound();
@@ -197,7 +162,7 @@ namespace SchoolManagementSystem.Controllers
             var programeSession = await _context.ProgrameSessions
                 .Include(p => p.Programe)
                 .Include(p => p.Session)
-                .Include(p => p.User)
+                .Include(p => p.ApplicationUser)
                 .FirstOrDefaultAsync(m => m.ProgrameSessionId == id);
             if (programeSession == null)
             {

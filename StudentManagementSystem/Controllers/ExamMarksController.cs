@@ -3,11 +3,13 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using Newtonsoft.Json;
 using SchoolManagementSystem.Models.Entities;
+using SchoolManagementSystem.Models.Identity;
 using StudentManagementSystem.Models;
 
 namespace SchoolManagementSystem.Controllers
@@ -15,37 +17,29 @@ namespace SchoolManagementSystem.Controllers
     public class ExamMarksController : Controller
     {
         private readonly AppDbContext _context;
+        private readonly UserManager<ApplicationUser> userManager;
 
-        public ExamMarksController(AppDbContext context)
+        public ExamMarksController(AppDbContext context, UserManager<ApplicationUser> userManager)
         {
             _context = context;
+            this.userManager = userManager;
         }
-
+        private Task<ApplicationUser> GetCurrentUserAsync() => userManager.GetUserAsync(HttpContext.User);
         // GET: ExamMarks
         public async Task<IActionResult> Index()
         {
-            if (string.IsNullOrEmpty(HttpContext.Session.GetString("UserName")))
-            {
-                return RedirectToAction("Login", "Home");
-            }
-
             var appDbContext = _context.ExamMarks
                                 .Include(e => e.ClassSubject)
                                 .Include(e => e.Exam)
                                 .Include(e => e.Student)
-                                .Include(e => e.User)
+                                .Include(e => e.ApplicationUser)
                                 .OrderByDescending(e=>e.ExamMarkId);
             return View(await appDbContext.ToListAsync());
         }
 
         // GET: ExamMarks/Details/5
         public async Task<IActionResult> Details(int? id)
-        {
-            if (string.IsNullOrEmpty(HttpContext.Session.GetString("UserName")))
-            {
-                return RedirectToAction("Login", "Home");
-            }
-
+        {           
             if (id == null)
             {
                 return NotFound();
@@ -55,7 +49,7 @@ namespace SchoolManagementSystem.Controllers
                 .Include(e => e.ClassSubject)
                 .Include(e => e.Exam)
                 .Include(e => e.Student)
-                .Include(e => e.User)
+                .Include(e => e.ApplicationUser)
                 .FirstOrDefaultAsync(m => m.ExamMarkId == id);
             if (examMark == null)
             {
@@ -68,15 +62,6 @@ namespace SchoolManagementSystem.Controllers
         // GET: ExamMarks/Create
         public IActionResult Create()
         {
-            if (string.IsNullOrEmpty(HttpContext.Session.GetString("UserName")))
-            {
-                return RedirectToAction("Login", "Home");
-            }
-
-            ViewData["ClassSubjectId"] = new SelectList(_context.ClassSubjects, "ClassSubjectId", "Name");
-            ViewData["ExamId"] = new SelectList(_context.Exams, "ExamId", "Title");
-            ViewData["StudentId"] = new SelectList(_context.Students, "StudentId", "Name");
-            ViewData["UserId"] = new SelectList(_context.Users, "UserId", "FullName");
             return View();
         }
         //Ajax Call
@@ -115,12 +100,8 @@ namespace SchoolManagementSystem.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Create(ExamMark examMark)
         {
-            if (string.IsNullOrEmpty(HttpContext.Session.GetString("UserName")))
-            {
-                return RedirectToAction("Login", "Home");
-            }
-            int userid = Convert.ToInt32(HttpContext.Session.GetString("UserId"));
-            examMark.UserId = userid;
+            var user = await GetCurrentUserAsync();
+            examMark.ApplicationUserId = user?.Id;
 
             if (ModelState.IsValid)
             {
@@ -128,20 +109,14 @@ namespace SchoolManagementSystem.Controllers
                 await _context.SaveChangesAsync();
                 return RedirectToAction(nameof(Index));
             }
-            ViewData["ClassSubjectId"] = new SelectList(_context.ClassSubjects, "ClassSubjectId", "ClassSubjectId", examMark.ClassSubjectId);
-            ViewData["ExamId"] = new SelectList(_context.Exams, "ExamId", "ExamId", examMark.ExamId);
-            ViewData["StudentId"] = new SelectList(_context.Students, "StudentId", "StudentId", examMark.StudentId);
-            ViewData["UserId"] = new SelectList(_context.Users, "UserId", "UserId", examMark.UserId);
+            
             return View(examMark);
         }
 
         // GET: ExamMarks/Edit/5
         public async Task<IActionResult> Edit(int? id)
         {
-            if (string.IsNullOrEmpty(HttpContext.Session.GetString("UserName")))
-            {
-                return RedirectToAction("Login", "Home");
-            }
+            
 
             if (id == null)
             {
@@ -152,11 +127,7 @@ namespace SchoolManagementSystem.Controllers
             if (examMark == null)
             {
                 return NotFound();
-            }
-            ViewData["ClassSubjectId"] = new SelectList(_context.ClassSubjects, "ClassSubjectId", "Name", examMark.ClassSubjectId);
-            ViewData["ExamId"] = new SelectList(_context.Exams, "ExamId", "Title", examMark.ExamId);
-            ViewData["StudentId"] = new SelectList(_context.Students, "StudentId", "Name", examMark.StudentId);
-            ViewData["UserId"] = new SelectList(_context.Users, "UserId", "FullName", examMark.UserId);
+            };
             return View(examMark);
         }
 
@@ -167,12 +138,8 @@ namespace SchoolManagementSystem.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Edit(int id, [Bind("ExamMarkId,ExamId,ClassSubjectId,StudentId,UserId,TotalMarks,ObtainMarks")] ExamMark examMark)
         {
-            if (string.IsNullOrEmpty(HttpContext.Session.GetString("UserName")))
-            {
-                return RedirectToAction("Login", "Home");
-            }
-            int userid = Convert.ToInt32(HttpContext.Session.GetString("UserId"));
-            examMark.UserId = userid;
+            var user = await GetCurrentUserAsync();
+            examMark.ApplicationUserId = user?.Id;
 
             if (id != examMark.ExamMarkId)
             {
@@ -199,20 +166,12 @@ namespace SchoolManagementSystem.Controllers
                 }
                 return RedirectToAction(nameof(Index));
             }
-            ViewData["ClassSubjectId"] = new SelectList(_context.ClassSubjects, "ClassSubjectId", "ClassSubjectId", examMark.ClassSubjectId);
-            ViewData["ExamId"] = new SelectList(_context.Exams, "ExamId", "ExamId", examMark.ExamId);
-            ViewData["StudentId"] = new SelectList(_context.Students, "StudentId", "StudentId", examMark.StudentId);
-            ViewData["UserId"] = new SelectList(_context.Users, "UserId", "UserId", examMark.UserId);
             return View(examMark);
         }
 
         // GET: ExamMarks/Delete/5
         public async Task<IActionResult> Delete(int? id)
         {
-            if (string.IsNullOrEmpty(HttpContext.Session.GetString("UserName")))
-            {
-                return RedirectToAction("Login", "Home");
-            }
 
             if (id == null)
             {
@@ -223,7 +182,7 @@ namespace SchoolManagementSystem.Controllers
                 .Include(e => e.ClassSubject)
                 .Include(e => e.Exam)
                 .Include(e => e.Student)
-                .Include(e => e.User)
+                .Include(e => e.ApplicationUser)
                 .FirstOrDefaultAsync(m => m.ExamMarkId == id);
             if (examMark == null)
             {

@@ -26,7 +26,7 @@
                             @Html.DisplayNameFor(model => model.EndDate)
                         </th>
                         <th>
-                            @Html.DisplayNameFor(model => model.User)
+                            Created By
                         </th>
                         <th>Actions</th>
                     </tr>
@@ -45,7 +45,7 @@
                                 @Html.DisplayFor(modelItem => item.EndDate)
                             </td>
                             <td>
-                                @Html.DisplayFor(modelItem => item.User.UserId)
+                                @Html.DisplayFor(modelItem => item.ApplicationUser.UserName)
                             </td>
                             <td class="btn-group">
                                 <a asp-action="Edit" asp-route-id="@item.SessionId" class="btn btn-primary">Edit</a>

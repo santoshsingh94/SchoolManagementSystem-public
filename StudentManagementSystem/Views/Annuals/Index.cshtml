@@ -32,7 +32,7 @@
                             Status (@Html.DisplayNameFor(model => model.IsActive))
                         </th>
                         <th>
-                            @Html.DisplayNameFor(model => model.User)
+                            Created By
                         </th>
 
                         <th> Actions</th>
@@ -58,7 +58,7 @@
                             @Html.DisplayFor(modelItem => item.IsActive)
                         </td>
                         <td>
-                            @Html.DisplayFor(modelItem => item.User.FullName)
+                            @Html.DisplayFor(modelItem => item.ApplicationUser.UserName)
                         </td>
 
                         <td class="btn btn-group">
