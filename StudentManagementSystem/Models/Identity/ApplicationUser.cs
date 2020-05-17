@@ -34,6 +34,7 @@ namespace SchoolManagementSystem.Models.Identity
         public ICollection<Programe> Programes { get; set; }
         public ICollection<ProgrameSession> ProgrameSessions { get; set; }
         public ICollection<Student> Students { get; set; }
+        public ICollection<TimeTable> TimeTables { get; set; }
 
     }
 }

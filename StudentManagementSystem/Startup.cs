@@ -29,7 +29,7 @@ namespace StudentManagementSystem
         public void ConfigureServices(IServiceCollection services)
         {
             services.AddDbContext<AppDbContext>(
-                cfg => cfg.UseSqlServer(Configuration.GetConnectionString("ServerConnectionString")));
+                cfg => cfg.UseSqlServer(Configuration.GetConnectionString("LocalConnectionString")));
             //services.AddTransient<DutchSeeder>();
             services.AddScoped<IRepository, Repository>();
             services.AddControllersWithViews();

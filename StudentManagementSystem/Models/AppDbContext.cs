@@ -82,7 +82,7 @@ namespace StudentManagementSystem.Models
                 .WithMany(b => b.SubmissionFees)
                 .OnDelete(DeleteBehavior.Restrict);
             modelBuilder.Entity<TimeTable>()
-                .HasOne(p => p.User)
+                .HasOne(p => p.ApplicationUser)
                 .WithMany(b => b.TimeTables)
                 .OnDelete(DeleteBehavior.Restrict);
             modelBuilder.Entity<TimeTable>()

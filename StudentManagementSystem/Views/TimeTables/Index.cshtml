@@ -38,7 +38,7 @@
                             Status(IsActive)
                         </th> 
                         <th>
-                            User
+                            Created By
                         </th>
                         <th>Actions</th>
                     </tr>
@@ -71,7 +71,7 @@
                             @Html.DisplayFor(modelItem => item.IsActive)
                         </td>
                         <td>
-                            @Html.DisplayFor(modelItem => item.User.FullName)
+                            @Html.DisplayFor(modelItem => item.ApplicationUser.UserName)
                         </td>
                         <td class=" btn-group">
                             <a asp-action="Edit" asp-route-id="@item.TimeTableId" class="btn btn-primary">Edit</a>

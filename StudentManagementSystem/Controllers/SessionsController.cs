@@ -66,14 +66,19 @@ namespace StudentManagementSystem.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Create(Session session)
         {
-            var user = await GetCurrentUserAsync();
-            session.ApplicationUserId = user?.Id;
-            if (ModelState.IsValid)
+            var model = _context.Sessions.Where(s => s.Name.Trim() == session.Name.Trim()).FirstOrDefault();
+            if (model == null)
             {
-                _context.Add(session);
-                await _context.SaveChangesAsync();
-                return RedirectToAction(nameof(Index));
-            }    
+                var user = await GetCurrentUserAsync();
+                session.ApplicationUserId = user?.Id;
+                if (ModelState.IsValid)
+                {
+                    _context.Add(session);
+                    await _context.SaveChangesAsync();
+                    return RedirectToAction(nameof(Index));
+                }
+            }
+            ModelState.AddModelError(string.Empty, "Session already exists.");
             return View(session);
         }
 
@@ -101,35 +106,41 @@ namespace StudentManagementSystem.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Edit(int id, Session session)
         {
-            var user = await GetCurrentUserAsync();
-            session.ApplicationUserId = user?.Id;
+            
             if (id != session.SessionId)
             {
                 return NotFound();
             }
-
-            if (ModelState.IsValid)
+            var result = _context.Sessions.Where(s => s.Name == session.Name && s.SessionId != id).ToList();
+            if (result.Count == 0)
             {
-                try
+                var user = await GetCurrentUserAsync();
+                session.ApplicationUserId = user?.Id;
+
+
+                if (ModelState.IsValid)
                 {
-                    _context.Update(session);
-                    await _context.SaveChangesAsync();
-                }
-                catch (DbUpdateConcurrencyException)
-                {
-                    if (!SessionExists(session.SessionId))
+                    try
                     {
-                        return NotFound();
+                        _context.Update(session);
+                        await _context.SaveChangesAsync();
                     }
-                    else
+                    catch (DbUpdateConcurrencyException)
                     {
-                        throw;
+                        if (!SessionExists(session.SessionId))
+                        {
+                            return NotFound();
+                        }
+                        else
+                        {
+                            throw;
+                        }
                     }
+                    return RedirectToAction(nameof(Index));
                 }
-                return RedirectToAction(nameof(Index));
             }
-            
-            return View(session);
+                ModelState.AddModelError(string.Empty, "Session already exists.");
+                return View(session);
         }
 
         // GET: Sessions/Delete/5
