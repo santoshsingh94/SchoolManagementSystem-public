@@ -1,5 +1,6 @@
 ﻿using Microsoft.AspNetCore.Http;
 using SchoolManagementSystem.Models.Entities;
+using SchoolManagementSystem.Models.Identity;
 using SchoolManagementSystem.Models.Master;
 using System;
 using System.Collections.Generic;
@@ -11,24 +12,24 @@ namespace SchoolManagementSystem.ViewModels
 {
     public class StudentViewModel
     {
-        [Required(ErrorMessage = "Please Select Session")]
+        [System.ComponentModel.DataAnnotations.Required(ErrorMessage = "Please Select Session")]
         public int SessionId { get; set; }
-        [Required(ErrorMessage = "Please Select Programe")]
+        [System.ComponentModel.DataAnnotations.Required(ErrorMessage = "Please Select Programe")]
         public int? ProgrameId { get; set; }
-        [Required(ErrorMessage = "Please Select Current Class")]
+        [System.ComponentModel.DataAnnotations.Required(ErrorMessage = "Please Select Current Class")]
         public int ClassTblId { get; set; }
-        public int UserId { get; set; }
-        [Required(ErrorMessage = "Please Enter Student Name")]
+        public string ApplicationUserId { get; set; }
+        [System.ComponentModel.DataAnnotations.Required(ErrorMessage = "Please Enter Student Name")]
         public string Name { get; set; }
-        [Required(ErrorMessage = "Please Enter Father Name")]
+        [System.ComponentModel.DataAnnotations.Required(ErrorMessage = "Please Enter Father Name")]
         public string FatherName { get; set; }
-        [Required(ErrorMessage = "Please Enter DOB")]
+        [System.ComponentModel.DataAnnotations.Required(ErrorMessage = "Please Enter DOB")]
 
         [DataType(DataType.Date)]
         public DateTime DateOfBirth { get; set; }
-        [Required(ErrorMessage = "Please Enter Gender")]
+        [System.ComponentModel.DataAnnotations.Required(ErrorMessage = "Please Enter Gender")]
         public string GenderId { get; set; }
-        [Required(ErrorMessage = "Please Enter Contact No")]
+        [System.ComponentModel.DataAnnotations.Required(ErrorMessage = "Please Enter Contact No")]
         public string ContactNo { get; set; }
         public string Email { get; set; }
         public int NationalityId { get; set; }
@@ -43,7 +44,7 @@ namespace SchoolManagementSystem.ViewModels
         public string AadharNo { get; set; }
         public IFormFile Photo { get; set; }
         [DataType(DataType.Date)]
-        [Required(ErrorMessage = "Please Enter Admission Date")]
+        [System.ComponentModel.DataAnnotations.Required(ErrorMessage = "Please Enter Admission Date")]
         public DateTime AdmissionDate { get; set; }
 
         //[Required(ErrorMessage = "Please Enter Previous School")]
@@ -52,7 +53,7 @@ namespace SchoolManagementSystem.ViewModels
         public float PreviousPercentage { get; set; }
         public Programe Programe { get; set; }
         public Session Session { get; set; }
-        public User User { get; set; }
+        public ApplicationUser ApplicationUser { get; set; }
         public ClassTbl ClassTbl { get; set; }
         public Gender Gender { get; set; }
         public Nationality Nationality { get; set; }

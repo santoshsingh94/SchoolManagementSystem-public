@@ -47,27 +47,17 @@ namespace SchoolManagementSystem.Controllers
         // GET: Attendances
         public async Task<IActionResult> Index()
         {
-            if (string.IsNullOrEmpty(HttpContext.Session.GetString("UserName")))
-            {
-                return RedirectToAction("Login", "Home");
-            }
-
             var appDbContext = _context.Attendances
                 .Include(a => a.ClassTbl)
                 .Include(a => a.Session)
                 .Include(a => a.Student)
-                .OrderByDescending(a=>a.AttendanceId);
+                .OrderByDescending(a => a.AttendanceId);
             return View(await appDbContext.ToListAsync());
         }
 
         // GET: Attendances/Details/5
         public async Task<IActionResult> Details(int? id)
         {
-            if (string.IsNullOrEmpty(HttpContext.Session.GetString("UserName")))
-            {
-                return RedirectToAction("Login", "Home");
-            }
-
             if (id == null)
             {
                 return NotFound();
@@ -89,11 +79,6 @@ namespace SchoolManagementSystem.Controllers
         // GET: Attendances/Create
         public IActionResult Create()
         {
-            if (string.IsNullOrEmpty(HttpContext.Session.GetString("UserName")))
-            {
-                return RedirectToAction("Login", "Home");
-            }
-
             ViewData["ClassTblId"] = new SelectList(_context.ClassTbls, "ClassTblId", "Name");
             ViewData["SessionId"] = new SelectList(_context.Sessions, "SessionId", "Name");
             ViewData["StudentId"] = new SelectList(_context.Students, "StudentId", "Name");
@@ -105,13 +90,8 @@ namespace SchoolManagementSystem.Controllers
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create( Attendance attendance)
+        public async Task<IActionResult> Create(Attendance attendance)
         {
-            if (string.IsNullOrEmpty(HttpContext.Session.GetString("UserName")))
-            {
-                return RedirectToAction("Login", "Home");
-            }
-
             if (ModelState.IsValid)
             {
                 _context.Add(attendance);
@@ -127,16 +107,6 @@ namespace SchoolManagementSystem.Controllers
         // GET: Attendances/Edit/5
         public async Task<IActionResult> Edit(int? id)
         {
-            if (string.IsNullOrEmpty(HttpContext.Session.GetString("UserName")))
-            {
-                return RedirectToAction("Login", "Home");
-            }
-
-            if (string.IsNullOrEmpty(HttpContext.Session.GetString("UserName")))
-            {
-                return RedirectToAction("Login", "Home");
-            }
-
             if (id == null)
             {
                 return NotFound();
@@ -160,11 +130,6 @@ namespace SchoolManagementSystem.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Edit(int id, Attendance attendance)
         {
-            if (string.IsNullOrEmpty(HttpContext.Session.GetString("UserName")))
-            {
-                return RedirectToAction("Login", "Home");
-            }
-
             if (id != attendance.AttendanceId)
             {
                 return NotFound();
@@ -199,11 +164,6 @@ namespace SchoolManagementSystem.Controllers
         // GET: Attendances/Delete/5
         public async Task<IActionResult> Delete(int? id)
         {
-            if (string.IsNullOrEmpty(HttpContext.Session.GetString("UserName")))
-            {
-                return RedirectToAction("Login", "Home");
-            }
-
             if (id == null)
             {
                 return NotFound();
@@ -227,11 +187,6 @@ namespace SchoolManagementSystem.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> DeleteConfirmed(int id)
         {
-            if (string.IsNullOrEmpty(HttpContext.Session.GetString("UserName")))
-            {
-                return RedirectToAction("Login", "Home");
-            }
-
             var attendance = await _context.Attendances.FindAsync(id);
             _context.Attendances.Remove(attendance);
             await _context.SaveChangesAsync();

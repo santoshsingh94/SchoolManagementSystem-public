@@ -27,7 +27,7 @@ namespace SchoolManagementSystem.Controllers
         // GET: ProgrameSessions
         public async Task<IActionResult> Index()
         {
-            
+
             var appDbContext = _context.ProgrameSessions.Include(p => p.Programe).Include(p => p.Session).Include(p => p.ApplicationUser);
             return View(await appDbContext.ToListAsync());
         }
@@ -39,7 +39,6 @@ namespace SchoolManagementSystem.Controllers
             {
                 return NotFound();
             }
-
             var programeSession = await _context.ProgrameSessions
                 .Include(p => p.Programe)
                 .Include(p => p.Session)
@@ -56,6 +55,8 @@ namespace SchoolManagementSystem.Controllers
         // GET: ProgrameSessions/Create
         public IActionResult Create()
         {
+            ViewData["SessionId"] = new SelectList(_context.Sessions, "SessionId", "Name");
+            ViewData["ProgrameId"] = new SelectList(_context.Programes, "ProgrameId", "Name");
             return View();
         }
 
@@ -74,23 +75,29 @@ namespace SchoolManagementSystem.Controllers
                 var programename = _context.Programes.Where(s => s.ProgrameId == programeSession.ProgrameId).SingleOrDefault();
                 if (sessionname != null)
                 {
-                    if (!programeSession.Details.Contains(sessionname.Name))
+                    var details = "(" + sessionname.Name + "-" + (programename != null ? programename.Name : "") + ")" + programeSession.Details;
+                    var model = _context.ProgrameSessions.Where(s => s.Details.Trim() == details.Trim()).FirstOrDefault();
+                    if (model != null)
                     {
-                        var details = "(" + sessionname.Name + "-" + (programename !=null ? programename.Name : "") + ")" + programeSession.Details;
-                        programeSession.Details = details;
+                        ViewData["SessionId"] = new SelectList(_context.Sessions, "SessionId", "Name");
+                        ViewData["ProgrameId"] = new SelectList(_context.Programes, "ProgrameId", "Name");
+                        ModelState.AddModelError(string.Empty, "Program-Session already exists.Please select another combination of Program-Session.");
+                        return View(programeSession);
                     }
-                }                
+                    programeSession.Details = details;
+                }
                 _context.Add(programeSession);
                 await _context.SaveChangesAsync();
                 return RedirectToAction(nameof(Index));
             }
+            ViewData["SessionId"] = new SelectList(_context.Sessions, "SessionId", "Name");
+            ViewData["ProgrameId"] = new SelectList(_context.Programes, "ProgrameId", "Name");
             return View(programeSession);
         }
 
         // GET: ProgrameSessions/Edit/5
         public async Task<IActionResult> Edit(int? id)
         {
-
             if (id == null)
             {
                 return NotFound();
@@ -101,6 +108,8 @@ namespace SchoolManagementSystem.Controllers
             {
                 return NotFound();
             }
+            ViewData["SessionId"] = new SelectList(_context.Sessions, "SessionId", "Name");
+            ViewData["ProgrameId"] = new SelectList(_context.Programes, "ProgrameId", "Name");
             return View(programeSession);
         }
 
@@ -124,11 +133,17 @@ namespace SchoolManagementSystem.Controllers
                 var programename = _context.Programes.Where(s => s.ProgrameId == programeSession.ProgrameId).SingleOrDefault();
                 if (sessionname != null)
                 {
-                    if (!programeSession.Details.Contains(sessionname.Name))
+                    var details = "(" + sessionname.Name + "-" + (programename != null ? programename.Name : "") + ")" + programeSession.Details;
+                    var model = _context.ProgrameSessions.Where(s => s.Details.Trim() == details.Trim() && s.ProgrameSessionId != id).ToList();
+                    if (model.Count != 0)
                     {
-                        var details = "(" + sessionname.Name + "-" + (programename != null ? programename.Name : "") + ")" + programeSession.Details;
-                        programeSession.Details = details;
+                        ViewData["SessionId"] = new SelectList(_context.Sessions, "SessionId", "Name");
+                        ViewData["ProgrameId"] = new SelectList(_context.Programes, "ProgrameId", "Name");
+                        ModelState.AddModelError(string.Empty, "Program-Session already exists.Please select another combination of Program-Session.");
+                        return View(programeSession);
                     }
+                    programeSession.Details = details;
+
                 }
                 try
                 {
@@ -148,6 +163,8 @@ namespace SchoolManagementSystem.Controllers
                 }
                 return RedirectToAction(nameof(Index));
             }
+            ViewData["SessionId"] = new SelectList(_context.Sessions, "SessionId", "Name");
+            ViewData["ProgrameId"] = new SelectList(_context.Programes, "ProgrameId", "Name");
             return View(programeSession);
         }
 
@@ -177,10 +194,6 @@ namespace SchoolManagementSystem.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> DeleteConfirmed(int id)
         {
-             if (string.IsNullOrEmpty(HttpContext.Session.GetString("UserName")))
-            {
-                return RedirectToAction("Login", "Home");
-            }
             var programeSession = await _context.ProgrameSessions.FindAsync(id);
             _context.ProgrameSessions.Remove(programeSession);
             await _context.SaveChangesAsync();

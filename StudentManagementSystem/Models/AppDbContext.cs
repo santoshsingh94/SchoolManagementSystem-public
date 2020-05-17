@@ -62,7 +62,7 @@ namespace StudentManagementSystem.Models
             base.OnModelCreating(modelBuilder);
 
             modelBuilder.Entity<Student>()
-                .HasOne(p => p.User)
+                .HasOne(p => p.ApplicationUser)
                 .WithMany(b => b.Students)
                 .OnDelete(DeleteBehavior.Restrict);
             modelBuilder.Entity<ProgrameSession>()
@@ -439,15 +439,15 @@ namespace StudentManagementSystem.Models
                 EndDate = Convert.ToDateTime("03-06-2021")
             });
             //ProgrameSession
-            modelBuilder.Entity<ProgrameSession>().HasData(new ProgrameSession()
-            {
-                ProgrameSessionId = 1,
-                SessionId = 1,
-                ProgrameId=1,
-                Details = "(2020-2021-Arts)LGK to 5th",
-                Description = "Annual Fee Same",
-                RegDate = Convert.ToDateTime("01-01-2018")
-            });
+            //modelBuilder.Entity<ProgrameSession>().HasData(new ProgrameSession()
+            //{
+            //    ProgrameSessionId = 1,
+            //    SessionId = 1,
+            //    ProgrameId=1,
+            //    Details = "(2020-2021-Arts)LGK to 5th",
+            //    Description = "Annual Fee Same",
+            //    RegDate = Convert.ToDateTime("01-01-2018")
+            //});
             //Adding class
             modelBuilder.Entity<ClassTbl>().HasData(new ClassTbl()
             {

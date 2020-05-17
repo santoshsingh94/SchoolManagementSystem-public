@@ -35,15 +35,10 @@ namespace StudentManagementSystem.Controllers
         // GET: Programes/Details/5
         public async Task<IActionResult> Details(int? id)
         {
-            if (string.IsNullOrEmpty(HttpContext.Session.GetString("UserName")))
-            {
-                return RedirectToAction("Login", "Home");
-            }
             if (id == null)
             {
                 return NotFound();
             }
-
             var programe = await _context.Programes
                 .Include(p => p.ApplicationUser)
                 .FirstOrDefaultAsync(m => m.ProgrameId == id);
@@ -68,14 +63,19 @@ namespace StudentManagementSystem.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Create(Programe programe)
         {
-            var user = await GetCurrentUserAsync();
-            programe.ApplicationUserId = user?.Id;
-            if (ModelState.IsValid)
+            var model = _context.Programes.Where(s => s.Name.Trim() == programe.Name.Trim()).FirstOrDefault();
+            if (model == null)
             {
-                _context.Add(programe);
-                await _context.SaveChangesAsync();
-                return RedirectToAction(nameof(Index));
+                var user = await GetCurrentUserAsync();
+                programe.ApplicationUserId = user?.Id;
+                if (ModelState.IsValid)
+                {
+                    _context.Add(programe);
+                    await _context.SaveChangesAsync();
+                    return RedirectToAction(nameof(Index));
+                }
             }
+            ModelState.AddModelError(string.Empty, "Programe already exists.");
             return View(programe);
         }
 
@@ -102,35 +102,37 @@ namespace StudentManagementSystem.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Edit(int id,Programe programe)
         {
-            var user = await GetCurrentUserAsync();
-            programe.ApplicationUserId = user?.Id;
-
             if (id != programe.ProgrameId)
             {
                 return NotFound();
             }
-
-            if (ModelState.IsValid)
+            var result = _context.Programes.Where(s => s.Name.Trim() == programe.Name.Trim() && s.ProgrameId != id).ToList();
+            if (result.Count == 0)
             {
-                try
+                var user = await GetCurrentUserAsync();
+                programe.ApplicationUserId = user?.Id;
+                if (ModelState.IsValid)
                 {
-                    _context.Update(programe);
-                    await _context.SaveChangesAsync();
-                }
-                catch (DbUpdateConcurrencyException)
-                {
-                    if (!ProgrameExists(programe.ProgrameId))
+                    try
                     {
-                        return NotFound();
+                        _context.Update(programe);
+                        await _context.SaveChangesAsync();
                     }
-                    else
+                    catch (DbUpdateConcurrencyException)
                     {
-                        throw;
+                        if (!ProgrameExists(programe.ProgrameId))
+                        {
+                            return NotFound();
+                        }
+                        else
+                        {
+                            throw;
+                        }
                     }
+                    return RedirectToAction(nameof(Index));
                 }
-                return RedirectToAction(nameof(Index));
             }
-            
+            ModelState.AddModelError(string.Empty, "Programe already exists.");
             return View(programe);
         }
 
@@ -159,10 +161,6 @@ namespace StudentManagementSystem.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> DeleteConfirmed(int id)
         {
-            if (string.IsNullOrEmpty(HttpContext.Session.GetString("UserName")))
-            {
-                return RedirectToAction("Login", "Home");
-            }
             var programe = await _context.Programes.FindAsync(id);
             _context.Programes.Remove(programe);
             await _context.SaveChangesAsync();

@@ -3,15 +3,17 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using StudentManagementSystem.Models;
 
 namespace SchoolManagementSystem.Migrations
 {
     [DbContext(typeof(AppDbContext))]
-    partial class AppDbContextModelSnapshot : ModelSnapshot
+    [Migration("20200517063828_ApplicationUserIntoAnnual")]
+    partial class ApplicationUserIntoAnnual
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -1024,6 +1026,17 @@ namespace SchoolManagementSystem.Migrations
                     b.HasIndex("UserId");
 
                     b.ToTable("ProgrameSessions");
+
+                    b.HasData(
+                        new
+                        {
+                            ProgrameSessionId = 1,
+                            Description = "Annual Fee Same",
+                            Details = "(2020-2021-Arts)LGK to 5th",
+                            ProgrameId = 1,
+                            RegDate = new DateTime(2018, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            SessionId = 1
+                        });
                 });
 
             modelBuilder.Entity("SchoolManagementSystem.Models.Entities.SchoolLeaving", b =>
@@ -1300,9 +1313,6 @@ namespace SchoolManagementSystem.Migrations
                     b.Property<DateTime>("AdmissionDate")
                         .HasColumnType("datetime2");
 
-                    b.Property<string>("ApplicationUserId")
-                        .HasColumnType("nvarchar(450)");
-
                     b.Property<string>("Cast")
                         .HasColumnType("nvarchar(max)");
 
@@ -1369,12 +1379,10 @@ namespace SchoolManagementSystem.Migrations
                     b.Property<int>("SessionId")
                         .HasColumnType("int");
 
-                    b.Property<int?>("UserId")
+                    b.Property<int>("UserId")
                         .HasColumnType("int");
 
                     b.HasKey("StudentId");
-
-                    b.HasIndex("ApplicationUserId");
 
                     b.HasIndex("CategoryId");
 
@@ -2297,11 +2305,6 @@ namespace SchoolManagementSystem.Migrations
 
             modelBuilder.Entity("SchoolManagementSystem.Models.Entities.Student", b =>
                 {
-                    b.HasOne("SchoolManagementSystem.Models.Identity.ApplicationUser", "ApplicationUser")
-                        .WithMany("Students")
-                        .HasForeignKey("ApplicationUserId")
-                        .OnDelete(DeleteBehavior.Restrict);
-
                     b.HasOne("SchoolManagementSystem.Models.Master.Category", "Category")
                         .WithMany("Students")
                         .HasForeignKey("CategoryId")
@@ -2342,9 +2345,11 @@ namespace SchoolManagementSystem.Migrations
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.HasOne("SchoolManagementSystem.Models.Entities.User", null)
+                    b.HasOne("SchoolManagementSystem.Models.Entities.User", "User")
                         .WithMany("Students")
-                        .HasForeignKey("UserId");
+                        .HasForeignKey("UserId")
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired();
                 });
 
             modelBuilder.Entity("SchoolManagementSystem.Models.Entities.StudentPromote", b =>

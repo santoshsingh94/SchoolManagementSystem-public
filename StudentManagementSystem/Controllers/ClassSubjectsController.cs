@@ -1,6 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
+﻿using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
@@ -23,10 +21,6 @@ namespace SchoolManagementSystem.Controllers
         // GET: ClassSubjects
         public async Task<IActionResult> Index()
         {
-            if (string.IsNullOrEmpty(HttpContext.Session.GetString("UserName")))
-            {
-                return RedirectToAction("Login", "Home");
-            }
             var appDbContext = _context.ClassSubjects.Include(c => c.ClassTbl).Include(c => c.Subject);
             return View(await appDbContext.ToListAsync());
         }
@@ -34,11 +28,6 @@ namespace SchoolManagementSystem.Controllers
         // GET: ClassSubjects/Details/5
         public async Task<IActionResult> Details(int? id)
         {
-            if (string.IsNullOrEmpty(HttpContext.Session.GetString("UserName")))
-            {
-                return RedirectToAction("Login", "Home");
-            }
-
             if (id == null)
             {
                 return NotFound();
@@ -59,12 +48,7 @@ namespace SchoolManagementSystem.Controllers
         // GET: ClassSubjects/Create
         public IActionResult Create()
         {
-            if (string.IsNullOrEmpty(HttpContext.Session.GetString("UserName")))
-            {
-                return RedirectToAction("Login", "Home");
-            }
-
-            ViewData["ClassTblId"] = new SelectList(_context.ClassTbls.Where(c=>c.IsActive==true), "ClassTblId", "Name");
+            ViewData["ClassTblId"] = new SelectList(_context.ClassTbls.Where(c => c.IsActive == true), "ClassTblId", "Name");
             ViewData["SubjectId"] = new SelectList(_context.Subjects, "SubjectId", "Name");
             return View();
         }
@@ -74,26 +58,27 @@ namespace SchoolManagementSystem.Controllers
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create( ClassSubject classSubject)
+        public async Task<IActionResult> Create(ClassSubject classSubject)
         {
-            if (string.IsNullOrEmpty(HttpContext.Session.GetString("UserName")))
-            {
-                return RedirectToAction("Login", "Home");
-            }
-
             if (ModelState.IsValid)
             {
                 var classname = _context.ClassTbls.Where(c => c.ClassTblId == classSubject.ClassTblId).SingleOrDefault();
-                if (classname!=null)
+                var subjectname = _context.Subjects.Where(c => c.SubjectId == classSubject.SubjectId).SingleOrDefault();
+                if (classname != null)
                 {
-                    if(!classSubject.Name.Contains(classname.Name))
+                    classSubject.Name = subjectname.Name + "-" + classname.Name;
+                    var model = _context.ClassSubjects.Where(s => s.Name.Trim() == classSubject.Name.Trim()).FirstOrDefault();
+                    if (model != null)
                     {
-                        classSubject.Name = classSubject.Name + "-" + classname.Name;
-                    }                   
-                }
-                _context.Add(classSubject);
-                await _context.SaveChangesAsync();
-                return RedirectToAction(nameof(Index));
+                        ViewData["ClassTblId"] = new SelectList(_context.ClassTbls, "ClassTblId", "Name", classSubject.ClassTblId);
+                        ViewData["SubjectId"] = new SelectList(_context.Subjects, "SubjectId", "Name", classSubject.SubjectId);
+                        ModelState.AddModelError(string.Empty, "Class-Subject already exists.Please select another Class-Subject Combination.");
+                        return View(classSubject);
+                    }
+                    _context.Add(classSubject);
+                    await _context.SaveChangesAsync();
+                    return RedirectToAction(nameof(Index));
+                }               
             }
             ViewData["ClassTblId"] = new SelectList(_context.ClassTbls.Where(c => c.IsActive == true), "ClassTblId", "ClassTblId", classSubject.ClassTblId);
             ViewData["SubjectId"] = new SelectList(_context.Subjects, "SubjectId", "SubjectId", classSubject.SubjectId);
@@ -103,11 +88,6 @@ namespace SchoolManagementSystem.Controllers
         // GET: ClassSubjects/Edit/5
         public async Task<IActionResult> Edit(int? id)
         {
-            if (string.IsNullOrEmpty(HttpContext.Session.GetString("UserName")))
-            {
-                return RedirectToAction("Login", "Home");
-            }
-
             if (id == null)
             {
                 return NotFound();
@@ -130,57 +110,53 @@ namespace SchoolManagementSystem.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Edit(int id, ClassSubject classSubject)
         {
-            if (string.IsNullOrEmpty(HttpContext.Session.GetString("UserName")))
-            {
-                return RedirectToAction("Login", "Home");
-            }
-
             if (id != classSubject.ClassSubjectId)
             {
                 return NotFound();
             }
-
             if (ModelState.IsValid)
             {
                 var classname = _context.ClassTbls.Where(c => c.ClassTblId == classSubject.ClassTblId).SingleOrDefault();
+                var subjectname = _context.Subjects.Where(c => c.SubjectId == classSubject.SubjectId).SingleOrDefault();
                 if (classname != null)
                 {
-                    if (!classSubject.Name.Contains(classname.Name))
+                    classSubject.Name = subjectname.Name + "-" + classname.Name;
+                    var model = _context.ClassSubjects.Where(s => s.Name.Trim() == classSubject.Name.Trim() && s.ClassSubjectId != id).ToList();
+                    if (model.Count != 0)
                     {
-                        classSubject.Name = classSubject.Name + "-" + classname.Name;
+                        ViewData["ClassTblId"] = new SelectList(_context.ClassTbls, "ClassTblId", "Name", classSubject.ClassTblId);
+                        ViewData["SubjectId"] = new SelectList(_context.Subjects, "SubjectId", "Name", classSubject.SubjectId);
+                        ModelState.AddModelError(string.Empty, "Class-Subject already exists.Please select another Class-Subject Combination.");
+                        return View(classSubject);
                     }
-                }
-                try
-                {
-                    _context.Update(classSubject);
-                    await _context.SaveChangesAsync();
-                }
-                catch (DbUpdateConcurrencyException)
-                {
-                    if (!ClassSubjectExists(classSubject.ClassSubjectId))
+                    try
                     {
-                        return NotFound();
+                        _context.Update(classSubject);
+                        await _context.SaveChangesAsync();
                     }
-                    else
+                    catch (DbUpdateConcurrencyException)
                     {
-                        throw;
+                        if (!ClassSubjectExists(classSubject.ClassSubjectId))
+                        {
+                            return NotFound();
+                        }
+                        else
+                        {
+                            throw;
+                        }
                     }
+                    return RedirectToAction(nameof(Index));
                 }
-                return RedirectToAction(nameof(Index));
+                
             }
-            ViewData["ClassTblId"] = new SelectList(_context.ClassTbls.Where(c => c.IsActive == true), "ClassTblId", "ClassTblId", classSubject.ClassTblId);
-            ViewData["SubjectId"] = new SelectList(_context.Subjects, "SubjectId", "SubjectId", classSubject.SubjectId);
+            ViewData["ClassTblId"] = new SelectList(_context.ClassTbls, "ClassTblId", "Name", classSubject.ClassTblId);
+            ViewData["SubjectId"] = new SelectList(_context.Subjects, "SubjectId", "Name", classSubject.SubjectId);
             return View(classSubject);
         }
 
         // GET: ClassSubjects/Delete/5
         public async Task<IActionResult> Delete(int? id)
         {
-            if (string.IsNullOrEmpty(HttpContext.Session.GetString("UserName")))
-            {
-                return RedirectToAction("Login", "Home");
-            }
-
             if (id == null)
             {
                 return NotFound();
@@ -203,11 +179,6 @@ namespace SchoolManagementSystem.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> DeleteConfirmed(int id)
         {
-            if (string.IsNullOrEmpty(HttpContext.Session.GetString("UserName")))
-            {
-                return RedirectToAction("Login", "Home");
-            }
-
             var classSubject = await _context.ClassSubjects.FindAsync(id);
             _context.ClassSubjects.Remove(classSubject);
             await _context.SaveChangesAsync();

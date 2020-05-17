@@ -12,6 +12,15 @@ namespace SchoolManagementSystem.Models.Identity
         public ApplicationUser()
         {
             this.Subjects = new List<Subject>();
+            this.Sessions = new List<Session>();
+            this.Annuals = new List<Annual>();
+            this.Staffs = new List<Staff>();
+            this.Sections = new List<Section>();
+            this.Expenses = new List<Expense>();
+            this.ExamMarks = new List<ExamMark>();
+            this.Programes = new List<Programe>();
+            this.ProgrameSessions = new List<ProgrameSession>();
+            this.Students = new List<Student>();
         }
         public string City { get; set; }
         public string Image { get; set; }
@@ -24,6 +33,7 @@ namespace SchoolManagementSystem.Models.Identity
         public ICollection<ExamMark> ExamMarks { get; set; }
         public ICollection<Programe> Programes { get; set; }
         public ICollection<ProgrameSession> ProgrameSessions { get; set; }
+        public ICollection<Student> Students { get; set; }
 
     }
 }

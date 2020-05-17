@@ -130,7 +130,7 @@ namespace SchoolManagementSystem.IdentityController
 
             foreach (var role in listRoles)
             {
-                var model = new EditRoleViewModel();
+                EditRoleViewModel model = new EditRoleViewModel();
                 model.Id = role.Id;
                 model.RoleName = role.RoleName;
                 foreach (var user in users)

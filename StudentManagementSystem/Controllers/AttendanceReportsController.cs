@@ -24,7 +24,7 @@ namespace SchoolManagementSystem.Controllers
             if (id == 0)
             {
                 int userid = Convert.ToInt32(HttpContext.Session.GetString("UserId"));
-                id = _context.Students.Where(s => s.UserId == userid).FirstOrDefault().StudentId;
+                //id = _context.Students.Where(s => s.UserId == userid).FirstOrDefault().StudentId;
                 string userName = HttpContext.Session.GetString("UserName");
                 Student student = _context.Students.Where(s => s.Email == userName).FirstOrDefault();
                 if (student != null)

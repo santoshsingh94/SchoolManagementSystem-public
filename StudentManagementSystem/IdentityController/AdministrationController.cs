@@ -55,7 +55,7 @@ namespace DotNetCoreIdentity_Venkat.Controllers
             var roles = roleManager.Roles;
             return View(roles);
         }
-        [Authorize(Roles ="Admin")]     //This method only accesed by Admin.
+        [Authorize]    //[Authorize(Roles ="Admin")]     //This method only accesed by Admin.
         [HttpGet]
         public async Task<IActionResult> EditRole(string id)
         {

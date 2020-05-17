@@ -5,29 +5,34 @@ using System.Threading.Tasks;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using SchoolManagementSystem.Models.Entities;
+using SchoolManagementSystem.Models.Identity;
 using SchoolManagementSystem.ViewModels;
 using StudentManagementSystem.Models;
 
 namespace SchoolManagementSystem.Controllers
 {
-    [Authorize(Roles = "Admin,Operator")]
+    [Authorize]
     public class StudentsController : Controller
     {
         private readonly AppDbContext _context;
         private readonly IHostingEnvironment hostingEnvironment;
-        
-        public StudentsController(AppDbContext context, IHostingEnvironment hostingEnvironment)
+        private readonly UserManager<ApplicationUser> _userManager;
+
+        public StudentsController(AppDbContext context, IHostingEnvironment hostingEnvironment, UserManager<ApplicationUser> userManager)
         {
             _context = context;
             this.hostingEnvironment = hostingEnvironment;
+            _userManager = userManager;
         }
-
+        //Finding Application User
+        private Task<ApplicationUser> GetCurrentUserAsync() => _userManager.GetUserAsync(HttpContext.User);
         // GET: Students
-        
+
         [HttpGet]
         public async Task<IActionResult> Index()
         {           
@@ -35,7 +40,7 @@ namespace SchoolManagementSystem.Controllers
                 .Include(s => s.ClassTbl)
                 .Include(s => s.Programe)
                 .Include(s => s.Session)
-                .Include(s => s.User)
+                .Include(s => s.ApplicationUser)
                 .OrderByDescending(s=>s.StudentId);
             return View(await appDbContext.ToListAsync());
         }
@@ -43,10 +48,6 @@ namespace SchoolManagementSystem.Controllers
         // GET: Students/Details/5
         public async Task<IActionResult> Details(int? id)
         {
-            if (string.IsNullOrEmpty(HttpContext.Session.GetString("UserName")))
-            {
-                return RedirectToAction("Login", "Home");
-            }
             if (id == null)
             {
                 return NotFound();
@@ -56,23 +57,18 @@ namespace SchoolManagementSystem.Controllers
                 .Include(s => s.ClassTbl)
                 .Include(s => s.Programe)
                 .Include(s => s.Session)
-                .Include(s => s.User)
+                .Include(s => s.ApplicationUser)
                 .FirstOrDefaultAsync(m => m.StudentId == id);
             if (student == null)
             {
                 return NotFound();
             }
-
             return View(student);
         }
 
         // GET: Students/Create
         public IActionResult Create()
         {
-            if (string.IsNullOrEmpty(HttpContext.Session.GetString("UserName")))
-            {
-                return RedirectToAction("Login", "Home");
-            }
             ViewData["ClassTblId"] = new SelectList(_context.ClassTbls, "ClassTblId", "Name");
             ViewData["ProgrameId"] = new SelectList(_context.Programes, "ProgrameId", "Name");
             ViewData["SessionId"] = new SelectList(_context.Sessions, "SessionId", "Name");
@@ -80,7 +76,6 @@ namespace SchoolManagementSystem.Controllers
             ViewData["NationalityId"] = new SelectList(_context.Nationalities, "NationalityId", "NationalityType");
             ViewData["ReligionId"] = new SelectList(_context.Religions, "ReligionId", "ReligionType");
             ViewData["CategoryId"] = new SelectList(_context.Categories, "CategoryId", "CategoryType");
-            ViewData["UserId"] = new SelectList(_context.Users, "UserId", "FullName");
             return View();
         }
 
@@ -90,32 +85,32 @@ namespace SchoolManagementSystem.Controllers
         [HttpPost]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Create(StudentViewModel model)
-        {           
-            int userid = Convert.ToInt32(HttpContext.Session.GetString("UserId"));
+        {
+            ApplicationUser user =await GetCurrentUserAsync(); 
             if (ModelState.IsValid)
             {
                 //Make the student a studentType User
                 try
                 {
-                    var userType = _context.UserTypes.Where(u => u.TypeName == "Student").FirstOrDefault();
-                    int userTypeId = 0;
-                    if (userType != null)
-                    {
-                        userTypeId = userType.UserTypeId;
-                    }
+                    //var userType = _context.UserTypes.Where(u => u.TypeName == "Student").FirstOrDefault();
+                    //int userTypeId = 0;
+                    //if (userType != null)
+                    //{
+                    //    userTypeId = userType.UserTypeId;
+                    //}
 
-                    var user = new User()
-                    {
-                        Address = model.Address,
-                        ContactNo = model.ContactNo,
-                        Email = model.Email,
-                        FullName = model.Name,
-                        UserName = model.Email,
-                        UserTypeId = userTypeId, //Check your Db To get usertypeid of Employeetype
-                        Password = "password" //default password for all the employee
-                    };
-                    _context.Users.Add(user);
-                    await _context.SaveChangesAsync();
+                    //var user = new User()
+                    //{
+                    //    Address = model.Address,
+                    //    ContactNo = model.ContactNo,
+                    //    Email = model.Email,
+                    //    FullName = model.Name,
+                    //    UserName = model.Email,
+                    //    UserTypeId = userTypeId, //Check your Db To get usertypeid of Employeetype
+                    //    Password = "password" //default password for all the employee
+                    //};
+                    //_context.Users.Add(user);
+                    //await _context.SaveChangesAsync();
                 }
                 catch(Exception)
                 {
@@ -132,7 +127,7 @@ namespace SchoolManagementSystem.Controllers
                 }
                 Student student = new Student
                 {
-                    UserId = userid,
+                    ApplicationUserId = user?.Id,
                     SessionId = model.SessionId,
                     ProgrameId = model.ProgrameId,
                     ClassTblId = model.ClassTblId,
@@ -169,13 +164,13 @@ namespace SchoolManagementSystem.Controllers
             ViewData["NationalityId"] = new SelectList(_context.Genders, "NationalityId", "NationalityType");
             ViewData["ReligionId"] = new SelectList(_context.Genders, "ReligionId", "ReligionType");
             ViewData["CategoryId"] = new SelectList(_context.Genders, "CategoryId", "CategoryType");
-            ViewData["UserId"] = new SelectList(_context.Users, "UserId", "FullName", model.UserId);
             return View(model);
         }
 
         // GET: Students/Edit/5
         public async Task<IActionResult> Edit(int? id)
         {
+            ApplicationUser user = await GetCurrentUserAsync();
             if (id == null)
             {
                 return NotFound();
@@ -189,7 +184,6 @@ namespace SchoolManagementSystem.Controllers
             ViewData["ClassTblId"] = new SelectList(_context.ClassTbls, "ClassTblId", "Name", student.ClassTblId);
             ViewData["ProgrameId"] = new SelectList(_context.Programes, "ProgrameId", "Name", student.ProgrameId);
             ViewData["SessionId"] = new SelectList(_context.Sessions, "SessionId", "Name", student.SessionId);
-            ViewData["UserId"] = new SelectList(_context.Users, "UserId", "UserId", student.UserId);
             ViewData["Photo"] = student.Photo;
             StudentViewModel viewStudent = new StudentViewModel()
             {
@@ -197,7 +191,7 @@ namespace SchoolManagementSystem.Controllers
                 SessionId = student.SessionId,
                 ProgrameId=student.ProgrameId,
                 ClassTblId=student.ClassTblId,
-                UserId = student.UserId,
+                ApplicationUserId = user?.Id,
                 FatherName=student.FatherName,
                 DateOfBirth=student.DateOfBirth,
                 GenderId=student.GenderId,
@@ -227,9 +221,8 @@ namespace SchoolManagementSystem.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Edit(int id, StudentViewModel model)
         {
-            int userid = Convert.ToInt32(HttpContext.Session.GetString("UserId"));
-            model.UserId = userid;
-            //var staff = await _context.Staffs.FindAsync(id);
+            ApplicationUser user = await GetCurrentUserAsync();
+            model.ApplicationUserId = user?.Id;
             if (ModelState.IsValid)
             {
                 string uniqueFileName = null;
@@ -247,7 +240,7 @@ namespace SchoolManagementSystem.Controllers
                     SessionId = model.SessionId,
                     ProgrameId = model.ProgrameId,
                     ClassTblId = model.ClassTblId,
-                    UserId = model.UserId,
+                    ApplicationUserId = model.ApplicationUserId,
                     FatherName = model.FatherName,
                     DateOfBirth = model.DateOfBirth,
                     GenderId = model.GenderId,
@@ -288,11 +281,11 @@ namespace SchoolManagementSystem.Controllers
             ViewData["ClassTblId"] = new SelectList(_context.ClassTbls, "ClassTblId", "ClassTblId", model.ClassTblId);
             ViewData["ProgrameId"] = new SelectList(_context.Programes, "ProgrameId", "ProgrameId", model.ProgrameId);
             ViewData["SessionId"] = new SelectList(_context.Sessions, "SessionId", "SessionId", model.SessionId);
-            ViewData["UserId"] = new SelectList(_context.Users, "UserId", "UserId", model.UserId);
             return View(model);
         }
 
         // GET: Students/Delete/5
+        [Authorize(Roles = "Admin,Operator")]
         public async Task<IActionResult> Delete(int? id)
         {
             if (id == null)
@@ -304,7 +297,7 @@ namespace SchoolManagementSystem.Controllers
                 .Include(s => s.ClassTbl)
                 .Include(s => s.Programe)
                 .Include(s => s.Session)
-                .Include(s => s.User)
+                .Include(s => s.ApplicationUser)
                 .FirstOrDefaultAsync(m => m.StudentId == id);
             if (student == null)
             {
@@ -315,6 +308,7 @@ namespace SchoolManagementSystem.Controllers
         }
 
         // POST: Students/Delete/5
+        [Authorize(Roles = "Admin,Operator")]
         [HttpPost, ActionName("Delete")]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> DeleteConfirmed(int id)

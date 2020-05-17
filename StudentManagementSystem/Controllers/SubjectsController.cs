@@ -1,7 +1,6 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
+﻿using System.Linq;
 using System.Threading.Tasks;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
@@ -23,7 +22,8 @@ namespace StudentManagementSystem.Controllers
             _context = context;
             this.userManager = userManager;
         }
-
+        //Finding Application User
+        private Task<ApplicationUser> GetCurrentUserAsync() => userManager.GetUserAsync(HttpContext.User);
         // GET: Subjects
         public async Task<IActionResult> Index()
         {
@@ -33,7 +33,7 @@ namespace StudentManagementSystem.Controllers
 
         // GET: Subjects/Details/5
         public async Task<IActionResult> Details(int? id)
-        {          
+        {
             if (id == null)
             {
                 return NotFound();
@@ -48,28 +48,30 @@ namespace StudentManagementSystem.Controllers
             }
             return View(subject);
         }
-        private Task<ApplicationUser> GetCurrentUserAsync() => userManager.GetUserAsync(HttpContext.User);
+        
         // GET: Subjects/Create
         public IActionResult Create()
         {
             return View();
         }
 
-        // POST: Subjects/Create
-        // To protect from overposting attacks, please enable the specific properties you want to bind to, for 
-        // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create(/*[Bind("SubjectId,UserId,Name,RegDate,Description,TotalMarks")]*/ Subject subject)
-        {            
-            var user = await GetCurrentUserAsync();
-            subject.ApplicationUserId = user?.Id;
-            if (ModelState.IsValid)
+        public async Task<IActionResult> Create(Subject subject)
+        {
+            var model = _context.Subjects.Where(s => s.Name.Trim() == subject.Name.Trim()).FirstOrDefault();
+            if (model==null)
             {
-                _context.Add(subject);
-                await _context.SaveChangesAsync();
-                return RedirectToAction(nameof(Index));
-            }           
+                var user = await GetCurrentUserAsync();
+                subject.ApplicationUserId = user?.Id;
+                if (ModelState.IsValid)
+                {
+                    _context.Add(subject);
+                    await _context.SaveChangesAsync();
+                    return RedirectToAction(nameof(Index));
+                }
+            }
+            ModelState.AddModelError(string.Empty, "Subject already exists.");
             return View(subject);
         }
 
@@ -86,57 +88,53 @@ namespace StudentManagementSystem.Controllers
             {
                 return NotFound();
             }
-            ViewData["UserId"] = new SelectList(_context.Users, "UserName", "UserName", subject.ApplicationUserId);
             return View(subject);
         }
-
-        // POST: Subjects/Edit/5
-        // To protect from overposting attacks, please enable the specific properties you want to bind to, for 
-        // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, /*[Bind("SubjectId,UserId,Name,RegDate,Description,TotalMarks")] */Subject subject)
-        {
-            //int userid = Convert.ToInt32(HttpContext.Session.GetString("UserId"));
-            //subject.UserId = userid;
-
+        public async Task<IActionResult> Edit(int id, Subject subject)
+        {            
             if (id != subject.SubjectId)
             {
                 return NotFound();
             }
-
-            if (ModelState.IsValid)
-            {
-                try
+            var result = _context.Subjects.Where(s => s.Name.Trim() == subject.Name.Trim() && s.SubjectId!=id).ToList();
+            if (result.Count==0)
+            {                
+                var user = await GetCurrentUserAsync();
+                subject.ApplicationUserId = user?.Id;
+                if (ModelState.IsValid)
                 {
-                    _context.Update(subject); 
-                    await _context.SaveChangesAsync();
-                }
-                catch (DbUpdateConcurrencyException)
-                {
-                    if (!SubjectExists(subject.SubjectId))
+                    try
                     {
-                        return NotFound();
+                        _context.Update(subject);
+                        await _context.SaveChangesAsync();
                     }
-                    else
+                    catch (DbUpdateConcurrencyException)
                     {
-                        throw;
+                        if (!SubjectExists(subject.SubjectId))
+                        {
+                            return NotFound();
+                        }
+                        else
+                        {
+                            throw;
+                        }
                     }
+                    return RedirectToAction(nameof(Index));
                 }
-                return RedirectToAction(nameof(Index));
             }
+            ModelState.AddModelError(string.Empty, "Subject already exists.");
             return View(subject);
         }
 
         // GET: Subjects/Delete/5
         public async Task<IActionResult> Delete(int? id)
         {
-           
             if (id == null)
             {
                 return NotFound();
             }
-
             var subject = await _context.Subjects
                 .Include(s => s.ApplicationUser)
                 .FirstOrDefaultAsync(m => m.SubjectId == id);
@@ -144,7 +142,6 @@ namespace StudentManagementSystem.Controllers
             {
                 return NotFound();
             }
-
             return View(subject);
         }
 
@@ -153,10 +150,6 @@ namespace StudentManagementSystem.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> DeleteConfirmed(int id)
         {
-            if (string.IsNullOrEmpty(HttpContext.Session.GetString("UserName")))
-            {
-                return RedirectToAction("Login", "Home");
-            } 
             var subject = await _context.Subjects.FindAsync(id);
             _context.Subjects.Remove(subject);
             await _context.SaveChangesAsync();

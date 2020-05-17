@@ -53,9 +53,10 @@
                                 @Html.DisplayFor(modelItem => item.ApplicationUser.UserName)
                             </td>
                             <td class="btn-group">
+
                                 <a asp-action="Edit" asp-route-id="@item.SubjectId" class="btn btn-primary">Edit</a>
-                                <a asp-action="Details" asp-route-id="@item.SubjectId" class="btn btn-info">Details</a>
-                                <a asp-action="Delete" asp-route-id="@item.SubjectId" class="btn btn-danger">Delete</a>
+                                <a asp-action="Details" asp-route-id="@item.SubjectId" class="btn btn-info" data-ajax-loading="#spinner">Details</a>
+                                <a asp-action="Delete" asp-route-id="@item.SubjectId" class="btn btn-danger" data-ajax-loading="#spinner">Delete</a>
                             </td>
                         </tr>
                     }

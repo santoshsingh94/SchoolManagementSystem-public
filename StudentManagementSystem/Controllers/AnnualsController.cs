@@ -28,10 +28,20 @@ namespace StudentManagementSystem.Controllers
         // GET: Annuals
         public async Task<IActionResult> Index()
         {
-            
-            //var appDbContext = _context.Annuals.Include(a => a.Programe).Include(a => a.User);
-            var appDbContext = _context.Annuals.Include(a => a.Programe).Include(a => a.ApplicationUser).Where(p=>p.IsActive==true);
-            return View(await appDbContext.ToListAsync());
+            var appDbContext = await _context.Annuals
+                                .Include(p=>p.Programe)
+                                .Include(u => u.ApplicationUser)
+                                .Where(a=>a.IsActive==true)
+                                .Where(a=>a.IsActive).ToListAsync();
+            foreach (var item in appDbContext)
+            {
+                if (item.ApllicationUserId != null)
+                {
+                    ApplicationUser applicationUser = userManager.Users.Where(u => u.Id == item.ApllicationUserId).First();
+                    item.ApplicationUser = applicationUser;
+                }
+            }           
+            return View(appDbContext);
         }
 
         // GET: Annuals/Details/5
@@ -58,8 +68,7 @@ namespace StudentManagementSystem.Controllers
         // GET: Annuals/Create
         public IActionResult Create()
         {
-            
-            
+            ViewData["ProgrameId"] = new SelectList(_context.Programes, "ProgrameId", "Name");
             return View();
         }
 
@@ -72,14 +81,13 @@ namespace StudentManagementSystem.Controllers
         {
             var user = await GetCurrentUserAsync();
             annual.ApllicationUserId = user?.Id;
-
             if (ModelState.IsValid)
             {
                 _context.Add(annual);
                 await _context.SaveChangesAsync();
                 return RedirectToAction(nameof(Index));
             }
-            
+            ViewData["ProgrameId"] = new SelectList(_context.Programes, "ProgrameId", "Name");
             return View(annual);
         }
 
@@ -97,7 +105,7 @@ namespace StudentManagementSystem.Controllers
             {
                 return NotFound();
             }
-            
+            ViewData["ProgrameId"] = new SelectList(_context.Programes, "ProgrameId", "Name");
             return View(annual);
         }
 
@@ -136,19 +144,17 @@ namespace StudentManagementSystem.Controllers
                 }
                 return RedirectToAction(nameof(Index));
             }
-            
+            ViewData["ProgrameId"] = new SelectList(_context.Programes, "ProgrameId", "Name");
             return View(annual);
         }
 
         // GET: Annuals/Delete/5
         public async Task<IActionResult> Delete(int? id)
         {
-            
             if (id == null)
             {
                 return NotFound();
             }
-
             var annual = await _context.Annuals
                 .Include(a => a.Programe)
                 .Include(a => a.ApplicationUser)
@@ -166,10 +172,6 @@ namespace StudentManagementSystem.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> DeleteConfirmed(int id)
         {
-            if (string.IsNullOrEmpty(HttpContext.Session.GetString("UserName")))
-            {
-                return RedirectToAction("Login", "Home");
-            }
             var annual = await _context.Annuals.FindAsync(id);
             _context.Annuals.Remove(annual);
             await _context.SaveChangesAsync();

@@ -11,6 +11,8 @@ using Microsoft.AspNetCore.Http;
 using SchoolManagementSystem.Models.Entities;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.AspNetCore.Authorization;
+using SchoolManagementSystem.Models.Identity;
+using Microsoft.AspNetCore.Identity;
 
 namespace StudentManagementSystem.Controllers
 {
@@ -19,14 +21,20 @@ namespace StudentManagementSystem.Controllers
     {
         private readonly ILogger<HomeController> _logger;
         private readonly AppDbContext _context;
+        private readonly UserManager<ApplicationUser> _userManager;
 
-        public HomeController(ILogger<HomeController> logger, AppDbContext context)
+        public HomeController(ILogger<HomeController> logger, AppDbContext context, UserManager<ApplicationUser> userManager)
         {
             _logger = logger;
             _context = context;
+            _userManager = userManager;
         }
         public IActionResult Index()
         {
+            if (User.Identity.IsAuthenticated)
+            {
+                return RedirectToAction("About", "Home");
+            }
             return View();
         }      
         public IActionResult About()

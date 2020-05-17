@@ -10,7 +10,6 @@ namespace SchoolManagementSystem.Models.Entities
     {
         [Required]
         public int AnnualId { get; set; }
-        [Required]
         public string ApllicationUserId { get; set; }
         [Required (ErrorMessage ="Please Select Programe")]
         public int ProgrameId { get; set; }

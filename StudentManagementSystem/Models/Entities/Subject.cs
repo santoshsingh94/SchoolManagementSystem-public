@@ -1,14 +1,11 @@
-﻿using SchoolManagementSystem.Models.Entities;
-using SchoolManagementSystem.Models.Identity;
+﻿using SchoolManagementSystem.Models.Identity;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
-using System.Linq;
-using System.Threading.Tasks;
 
 namespace SchoolManagementSystem.Models.Entities
 {
-    public class Subject
+    public class Subject 
     {
         public Subject()
         {
@@ -16,6 +13,7 @@ namespace SchoolManagementSystem.Models.Entities
         }
         public int SubjectId { get; set; }
         public string ApplicationUserId { get; set; }
+        [System.ComponentModel.DataAnnotations.Required]
         public string Name { get; set; }
         [DataType(DataType.Date)]
         public DateTime RegDate { get; set; }

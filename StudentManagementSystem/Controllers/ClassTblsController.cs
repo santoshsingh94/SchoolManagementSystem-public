@@ -23,21 +23,12 @@ namespace SchoolManagementSystem.Controllers
         // GET: ClassTbls
         public async Task<IActionResult> Index()
         {
-            if (string.IsNullOrEmpty(HttpContext.Session.GetString("UserName")))
-            {
-                return RedirectToAction("Login", "Home");
-            }
-
             return View(await _context.ClassTbls.ToListAsync());
         }
 
         // GET: ClassTbls/Details/5
         public async Task<IActionResult> Details(int? id)
         {
-            if (string.IsNullOrEmpty(HttpContext.Session.GetString("UserName")))
-            {
-                return RedirectToAction("Login", "Home");
-            }
             if (id == null)
             {
                 return NotFound();
@@ -56,11 +47,6 @@ namespace SchoolManagementSystem.Controllers
         // GET: ClassTbls/Create
         public IActionResult Create()
         {
-            if (string.IsNullOrEmpty(HttpContext.Session.GetString("UserName")))
-            {
-                return RedirectToAction("Login", "Home");
-            }
-
             return View();
         }
 
@@ -71,27 +57,23 @@ namespace SchoolManagementSystem.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Create(ClassTbl classTbl)
         {
-            if (string.IsNullOrEmpty(HttpContext.Session.GetString("UserName")))
+            var model = _context.ClassTbls.Where(s => s.Name.Trim() == classTbl.Name.Trim()).FirstOrDefault();
+            if (model == null)
             {
-                return RedirectToAction("Login", "Home");
+                if (ModelState.IsValid)
+                {
+                    _context.Add(classTbl);
+                    await _context.SaveChangesAsync();
+                    return RedirectToAction(nameof(Index));
+                }
             }
-            
-            if (ModelState.IsValid)
-            {
-                _context.Add(classTbl);
-                await _context.SaveChangesAsync();
-                return RedirectToAction(nameof(Index));
-            }
+            ModelState.AddModelError(string.Empty, "Class Name already exists.");
             return View(classTbl);
         }
 
         // GET: ClassTbls/Edit/5
         public async Task<IActionResult> Edit(int? id)
         {
-            if (string.IsNullOrEmpty(HttpContext.Session.GetString("UserName")))
-            {
-                return RedirectToAction("Login", "Home");
-            }
             if (id == null)
             {
                 return NotFound();
@@ -112,47 +94,41 @@ namespace SchoolManagementSystem.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Edit(int id, [Bind("ClassTblId,Name,IsActive")] ClassTbl classTbl)
         {
-            if (string.IsNullOrEmpty(HttpContext.Session.GetString("UserName")))
-            {
-                return RedirectToAction("Login", "Home");
-            }
-
             if (id != classTbl.ClassTblId)
             {
                 return NotFound();
             }
-
-            if (ModelState.IsValid)
+            var result = _context.ClassTbls.Where(s => s.Name.Trim() == classTbl.Name.Trim() && s.ClassTblId != id).ToList();
+            if (result.Count == 0)
             {
-                try
+                if (ModelState.IsValid)
                 {
-                    _context.Update(classTbl);
-                    await _context.SaveChangesAsync();
-                }
-                catch (DbUpdateConcurrencyException)
-                {
-                    if (!ClassTblExists(classTbl.ClassTblId))
+                    try
                     {
-                        return NotFound();
+                        _context.Update(classTbl);
+                        await _context.SaveChangesAsync();
                     }
-                    else
+                    catch (DbUpdateConcurrencyException)
                     {
-                        throw;
+                        if (!ClassTblExists(classTbl.ClassTblId))
+                        {
+                            return NotFound();
+                        }
+                        else
+                        {
+                            throw;
+                        }
                     }
+                    return RedirectToAction(nameof(Index));
                 }
-                return RedirectToAction(nameof(Index));
             }
+            ModelState.AddModelError(string.Empty, "Class Name already exists.");
             return View(classTbl);
         }
 
         // GET: ClassTbls/Delete/5
         public async Task<IActionResult> Delete(int? id)
         {
-            if (string.IsNullOrEmpty(HttpContext.Session.GetString("UserName")))
-            {
-                return RedirectToAction("Login", "Home");
-            }
-
             if (id == null)
             {
                 return NotFound();
@@ -173,11 +149,6 @@ namespace SchoolManagementSystem.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> DeleteConfirmed(int id)
         {
-            if (string.IsNullOrEmpty(HttpContext.Session.GetString("UserName")))
-            {
-                return RedirectToAction("Login", "Home");
-            }
-
             var classTbl = await _context.ClassTbls.FindAsync(id);
             _context.ClassTbls.Remove(classTbl);
             await _context.SaveChangesAsync();

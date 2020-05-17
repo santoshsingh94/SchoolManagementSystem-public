@@ -79,9 +79,9 @@
             <a class="sidebar-brand d-flex align-items-center justify-content-center" href="#">
                 <div class="sidebar-brand-icon rotate-n-15">
                     @{
-                       <img class="img-profile rounded-circle" style=" width:70px;height:70px;transform: rotate(15deg);" src="~/image/@Context.Session.GetString("Photo")" />
-                      }
-                    
+                        <img class="img-profile rounded-circle" style=" width:70px;height:70px;transform: rotate(15deg);" src="~/image/@Context.Session.GetString("Photo")" />
+                    }
+
                 </div>
                 <div class="sidebar-brand-text mx-3"><sup>@Context.Session.GetString("FullName")</sup></div>
             </a>
@@ -92,7 +92,7 @@
             <!-- Nav Item - Dashboard -->
             <li class="nav-item active">
                 @{
-                   // int userTypeId = Convert.ToInt32(@Context.Session.GetString("UserTypeId"));
+                    // int userTypeId = Convert.ToInt32(@Context.Session.GetString("UserTypeId"));
                 }
                 <a class="nav-link fas fa-fw fa-tachometer-alt" asp-area="" asp-controller="Home" asp-action="About">&nbsp;&nbsp;Dashboard</a>
 
@@ -101,320 +101,320 @@
             @*@{
                 if (userTypeId == 1 || userTypeId == 2 || userTypeId == 3)    //Admin,Operator or Teacher.
                 {*@
-                    <!-- Divider -->
-                    <hr class="sidebar-divider">
+            <!-- Divider -->
+            <hr class="sidebar-divider">
 
-                    <!-- Heading -->
-                    <div class="sidebar-heading">
-                        Student Registration
+            <!-- Heading -->
+            <div class="sidebar-heading">
+                Student Registration
+            </div>
+
+            <!-- Nav Item - Pages Collapse Menu -->
+            <li class="nav-item">
+                <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapseStudent" aria-expanded="true" aria-controls="collapseStudent">
+                    <i class="fas fa-fw fa-chart-area"></i>
+                    <span>Student's</span>
+                </a>
+                <div id="collapseStudent" class="collapse" aria-labelledby="headingStudent" data-parent="#accordionSidebar">
+                    <div class="bg-white py-2 collapse-inner rounded">
+
+                        <h6 class="collapse-header">Student Registration:</h6>
+                        @*@{
+                            if (userTypeId == 1)//Admin
+                            {*@
+                        <a class="collapse-item" asp-area="" asp-controller="Students" asp-action="Create">New Registration</a>
+                        <a class="collapse-item" asp-area="" asp-controller="Students" asp-action="Index">Student List</a>
+
+                        <div class="collapse-divider"></div>
+                        <h6 class="collapse-header">Promotions :</h6>
+                        <a class="collapse-item" asp-area="" asp-controller="StudentPromotes" asp-action="Create">Student Promote</a>
+                        <a class="collapse-item" asp-area="" asp-controller="StudentPromotes" asp-action="Index">Promote List</a>
+                        @*}
+                            }
+                            @{
+                                if (userTypeId == 1 || userTypeId == 5)//Admin,Accountant
+                                {*@
+                        <div class="collapse-divider"></div>
+                        <h6 class="collapse-header">Fee's:</h6>
+                        <a class="collapse-item" asp-area="" asp-controller="SubmissionFees" asp-action="Create">Submit Tution Fee</a>
+                        <a class="collapse-item" asp-area="" asp-controller="SubmissionFees" asp-action="Index">Tution Fee Records</a>
+                        <a class="collapse-item" asp-area="" asp-controller="Annuals" asp-action="Index">Annual Fee</a>
+                        @*}
+                            }
+                            @{
+                                if (userTypeId == 1 || userTypeId == 2)//Admin,Operator
+                                {*@
+                        <div class="collapse-divider"></div>
+                        <h6 class="collapse-header">Student Attendance:</h6>
+                        <a class="collapse-item" asp-area="" asp-controller="Attendances" asp-action="Create">Submit Attendance</a>
+                        <a class="collapse-item" asp-area="" asp-controller="Attendances" asp-action="Index">Attendance Record</a>
+                        <div class="collapse-divider"></div>
+                        <h6 class="collapse-header">Certificate:</h6>
+                        <a class="collapse-item" asp-area="" asp-controller="StudentCertificateReport" asp-action="LeavingC">Leaving Certificate</a>
+                        <a class="collapse-item" asp-area="" asp-controller="StudentCertificateReport" asp-action="ProvisionalC">Provisional Certificate</a>
+                        <a class="collapse-item" asp-area="" asp-controller="StudentCertificateReport" asp-action="CharacterC">Character Certificate</a>
+
+                        @*}
+                            }*@
                     </div>
+                </div>
+            </li>
+            @*}
+                }
+                @{
+                    if (userTypeId == 1 || userTypeId == 2)//Admin,Operator
+                    {*@
+            <!-- Divider -->
+            <hr class="sidebar-divider">
 
-                    <!-- Nav Item - Pages Collapse Menu -->
-                    <li class="nav-item">
-                        <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapseStudent" aria-expanded="true" aria-controls="collapseStudent">
-                            <i class="fas fa-fw fa-chart-area"></i>
-                            <span>Student's</span>
-                        </a>
-                        <div id="collapseStudent" class="collapse" aria-labelledby="headingStudent" data-parent="#accordionSidebar">
-                            <div class="bg-white py-2 collapse-inner rounded">
+            <!-- Heading -->
+            <div class="sidebar-heading">
+                Employee Registration
+            </div>
 
-                                <h6 class="collapse-header">Student Registration:</h6>
-                                @*@{
-                                    if (userTypeId == 1)//Admin
-                                    {*@
-                                        <a class="collapse-item" asp-area="" asp-controller="Students" asp-action="Create">New Registration</a>
-                                        <a class="collapse-item" asp-area="" asp-controller="Students" asp-action="Index">Student List</a>
-
-                                        <div class="collapse-divider"></div>
-                                        <h6 class="collapse-header">Promotions :</h6>
-                                        <a class="collapse-item" asp-area="" asp-controller="StudentPromotes" asp-action="Create">Student Promote</a>
-                                        <a class="collapse-item" asp-area="" asp-controller="StudentPromotes" asp-action="Index">Promote List</a>
-                                    @*}
-                                }
-                                @{
-                                    if (userTypeId == 1 || userTypeId == 5)//Admin,Accountant
-                                    {*@
-                                        <div class="collapse-divider"></div>
-                                        <h6 class="collapse-header">Fee's:</h6>
-                                        <a class="collapse-item" asp-area="" asp-controller="SubmissionFees" asp-action="Create">Submit Tution Fee</a>
-                                        <a class="collapse-item" asp-area="" asp-controller="SubmissionFees" asp-action="Index">Tution Fee Records</a>
-                                        <a class="collapse-item" asp-area="" asp-controller="Annuals" asp-action="Index">Annual Fee</a>
-                                    @*}
-                                }
-                                @{
-                                    if (userTypeId == 1 || userTypeId == 2)//Admin,Operator
-                                    {*@
-                                        <div class="collapse-divider"></div>
-                                        <h6 class="collapse-header">Student Attendance:</h6>
-                                        <a class="collapse-item" asp-area="" asp-controller="Attendances" asp-action="Create">Submit Attendance</a>
-                                        <a class="collapse-item" asp-area="" asp-controller="Attendances" asp-action="Index">Attendance Record</a>
-                                        <div class="collapse-divider"></div>
-                                        <h6 class="collapse-header">Certificate:</h6>
-                                        <a class="collapse-item" asp-area="" asp-controller="StudentCertificateReport" asp-action="LeavingC">Leaving Certificate</a>
-                                        <a class="collapse-item" asp-area="" asp-controller="StudentCertificateReport" asp-action="ProvisionalC">Provisional Certificate</a>
-                                        <a class="collapse-item" asp-area="" asp-controller="StudentCertificateReport" asp-action="CharacterC">Character Certificate</a>
-
-                                    @*}
-                                }*@
-                            </div>
-                        </div>
-                    </li>
-                @*}
-            }
-            @{
-                if (userTypeId == 1 || userTypeId == 2)//Admin,Operator
-                {*@
-                    <!-- Divider -->
-                    <hr class="sidebar-divider">
-
-                    <!-- Heading -->
-                    <div class="sidebar-heading">
-                        Employee Registration
+            <!-- Nav Item - Pages Collapse Menu -->
+            <li class="nav-item">
+                <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapseStaff" aria-expanded="true" aria-controls="collapseStaff">
+                    <i class="fas fa-fw fa-chart-area"></i>
+                    <span>Employee's</span>
+                </a>
+                <div id="collapseStaff" class="collapse" aria-labelledby="headingStaff" data-parent="#accordionSidebar">
+                    <div class="bg-white py-2 collapse-inner rounded">
+                        @*@{
+                            if (userTypeId == 1)  //Admin
+                            {*@
+                        <h6 class="collapse-header">Staff Registration:</h6>
+                        <a class="collapse-item" asp-area="" asp-controller="Staffs" asp-action="Create">Employee Registration</a>
+                        <a class="collapse-item" asp-area="" asp-controller="Staffs" asp-action="Index">Employee's Record</a>
+                        @*}
+                            }
+                            @{
+                                if (userTypeId == 1 || userTypeId == 2)  //Admin or operator
+                                {*@
+                        <div class="collapse-divider"></div>
+                        <h6 class="collapse-header">Attendance:</h6>
+                        <a class="collapse-item" asp-area="" asp-controller="StaffAttendances" asp-action="Create">Employee Attendance</a>
+                        <a class="collapse-item" asp-area="" asp-controller="StaffAttendances" asp-action="Index">Attendance Record</a>
+                        @*}
+                            }
+                            @{
+                                if (userTypeId == 1 || userTypeId == 5)  //Admin or Accountant
+                                {*@
+                        <div class="collapse-divider"></div>
+                        <h6 class="collapse-header">Salary:</h6>
+                        <a class="collapse-item" asp-area="" asp-controller="EmployeeSalaries" asp-action="Create">Employee Salary</a>
+                        <a class="collapse-item" asp-area="" asp-controller="EmployeeSalaries" asp-action="Index">Salaries Record</a>
+                        @*}
+                            }*@
                     </div>
+                </div>
+            </li>
+            @*}
+                }
+                @{
+                    if (userTypeId == 1)  //Admin
+                    {*@
+            <!-- Divider -->
+            <hr class="sidebar-divider">
 
-                    <!-- Nav Item - Pages Collapse Menu -->
-                    <li class="nav-item">
-                        <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapseStaff" aria-expanded="true" aria-controls="collapseStaff">
-                            <i class="fas fa-fw fa-chart-area"></i>
-                            <span>Employee's</span>
-                        </a>
-                        <div id="collapseStaff" class="collapse" aria-labelledby="headingStaff" data-parent="#accordionSidebar">
-                            <div class="bg-white py-2 collapse-inner rounded">
-                                @*@{
-                                    if (userTypeId == 1)  //Admin
-                                    {*@
-                                        <h6 class="collapse-header">Staff Registration:</h6>
-                                        <a class="collapse-item" asp-area="" asp-controller="Staffs" asp-action="Create">Employee Registration</a>
-                                        <a class="collapse-item" asp-area="" asp-controller="Staffs" asp-action="Index">Employee's Record</a>
-                                    @*}
-                                }
-                                @{
-                                    if (userTypeId == 1 || userTypeId == 2)  //Admin or operator
-                                    {*@
-                                        <div class="collapse-divider"></div>
-                                        <h6 class="collapse-header">Attendance:</h6>
-                                        <a class="collapse-item" asp-area="" asp-controller="StaffAttendances" asp-action="Create">Employee Attendance</a>
-                                        <a class="collapse-item" asp-area="" asp-controller="StaffAttendances" asp-action="Index">Attendance Record</a>
-                                    @*}
-                                }
-                                @{
-                                    if (userTypeId == 1 || userTypeId == 5)  //Admin or Accountant
-                                    {*@
-                                        <div class="collapse-divider"></div>
-                                        <h6 class="collapse-header">Salary:</h6>
-                                        <a class="collapse-item" asp-area="" asp-controller="EmployeeSalaries" asp-action="Create">Employee Salary</a>
-                                        <a class="collapse-item" asp-area="" asp-controller="EmployeeSalaries" asp-action="Index">Salaries Record</a>
-                                    @*}
-                                }*@
-                            </div>
-                        </div>
-                    </li>
-                @*}
-            }
-            @{
-                if (userTypeId == 1)  //Admin
-                {*@
-                    <!-- Divider -->
-                    <hr class="sidebar-divider">
+            <!-- Heading -->
+            <div class="sidebar-heading">
+                Interface
+            </div>
 
-                    <!-- Heading -->
-                    <div class="sidebar-heading">
-                        Interface
+            <!-- Nav Item - Pages Collapse Menu -->
+            <li class="nav-item">
+                <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapseTwo" aria-expanded="true" aria-controls="collapseTwo">
+                    <i class="fas fa-fw fa-cog"></i>
+                    <span>Settings</span>
+                </a>
+                <div id="collapseTwo" class="collapse" aria-labelledby="headingTwo" data-parent="#accordionSidebar">
+                    <div class="bg-white py-2 collapse-inner rounded">
+                        <h6 class="collapse-header">Custom Settting</h6>
+                        <a class="collapse-item" asp-area="" asp-controller="Account" asp-action="ListRoles">User Types</a>
+                        <a class="collapse-item" asp-area="" asp-controller="Account" asp-action="ListUsers">All User</a>
                     </div>
+                </div>
+            </li>
+            @*}
+                }
+                @{
+                    if (userTypeId == 1 || userTypeId == 2)   //Admin Or Operator
+                    {*@
 
-                    <!-- Nav Item - Pages Collapse Menu -->
-                    <li class="nav-item">
-                        <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapseTwo" aria-expanded="true" aria-controls="collapseTwo">
-                            <i class="fas fa-fw fa-cog"></i>
-                            <span>Settings</span>
-                        </a>
-                        <div id="collapseTwo" class="collapse" aria-labelledby="headingTwo" data-parent="#accordionSidebar">
-                            <div class="bg-white py-2 collapse-inner rounded">
-                                <h6 class="collapse-header">Custom Settting</h6>
-                                <a class="collapse-item" asp-area="" asp-controller="Account" asp-action="ListRoles">User Types</a>
-                                <a class="collapse-item" asp-area="" asp-controller="Account" asp-action="ListUsers">All User</a>
-                            </div>
-                        </div>
-                    </li>
-                @*}
-            }
-            @{
-                if (userTypeId == 1 || userTypeId == 2)   //Admin Or Operator
-                {*@
-
-                    <!-- Nav Item - Utilities Collapse Menu -->
-                    <li class="nav-item">
-                        <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapseUtilities" aria-expanded="true" aria-controls="collapseUtilities">
-                            <i class="fas fa-fw fa-wrench"></i>
-                            <span>Configuration</span>
-                        </a>
-                        <div id="collapseUtilities" class="collapse" aria-labelledby="headingUtilities" data-parent="#accordionSidebar">
-                            <div class="bg-white py-2 collapse-inner rounded">
-                                <h6 class="collapse-header">Custom Configuration:</h6>
-                                <a class="collapse-item" asp-area="" asp-controller="Subjects" asp-action="Index">Subjects</a>
-                                <a class="collapse-item" asp-area="" asp-controller="Programes" asp-action="Index">Programes</a>
-                                <a class="collapse-item" asp-area="" asp-controller="Designations" asp-action="Index">Designations</a>
-                                <a class="collapse-item" asp-area="" asp-controller="Annuals" asp-action="Index">Annual Fee/Promote Fee</a>
-                            </div>
-                        </div>
-                    </li>
-
-                    <!-- Nav Item - Session Collapse Menu -->
-                    <li class="nav-item">
-                        <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapseSession" aria-expanded="true" aria-controls="collapseSession">
-                            <i class="fas fa-fw fa-wrench"></i>
-                            <span>Session's</span>
-                        </a>
-                        <div id="collapseSession" class="collapse" aria-labelledby="headingSession" data-parent="#accordionSidebar">
-                            <div class="bg-white py-2 collapse-inner rounded">
-                                <h6 class="collapse-header">Configuration:</h6>
-                                <a class="collapse-item" asp-area="" asp-controller="Sessions" asp-action="Index">Session</a>
-                                <a class="collapse-item" asp-area="" asp-controller="ProgrameSessions" asp-action="Index">Programe Setting</a>
-                            </div>
-                        </div>
-                    </li>
-
-                    <li class="nav-item">
-                        <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapseClass" aria-expanded="true" aria-controls="collapseClass">
-                            <i class="fas fa-fw fa-wrench"></i>
-                            <span>Class's</span>
-                        </a>
-                        <div id="collapseClass" class="collapse" aria-labelledby="headingClass" data-parent="#accordionSidebar">
-                            <div class="bg-white py-2 collapse-inner rounded">
-                                <h6 class="collapse-header">Configuration:</h6>
-                                <a class="collapse-item" asp-area="" asp-controller="ClassTbls" asp-action="Index">Class</a>
-                                <a class="collapse-item" asp-area="" asp-controller="ClassSubjects" asp-action="Index">Class Subject Setting</a>
-                            </div>
-                        </div>
-                    </li>
-                @*}
-            }
-            @{
-                if (userTypeId == 1 || userTypeId == 2)  //Admin or operator
-                {*@
-
-                    <!-- Divider -->
-                    <hr class="sidebar-divider">
-
-                    <!-- Heading -->
-                    <div class="sidebar-heading">
-                        Examination
+            <!-- Nav Item - Utilities Collapse Menu -->
+            <li class="nav-item">
+                <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapseUtilities" aria-expanded="true" aria-controls="collapseUtilities">
+                    <i class="fas fa-fw fa-wrench"></i>
+                    <span>Configuration</span>
+                </a>
+                <div id="collapseUtilities" class="collapse" aria-labelledby="headingUtilities" data-parent="#accordionSidebar">
+                    <div class="bg-white py-2 collapse-inner rounded">
+                        <h6 class="collapse-header">Custom Configuration:</h6>
+                        <a class="collapse-item" asp-area="" asp-controller="Subjects" asp-action="Index">Subjects</a>
+                        <a class="collapse-item" asp-area="" asp-controller="Programes" asp-action="Index">Programes</a>
+                        <a class="collapse-item" asp-area="" asp-controller="Designations" asp-action="Index">Designations</a>
+                        <a class="collapse-item" asp-area="" asp-controller="Annuals" asp-action="Index">Annual Fee/Promote Fee</a>
                     </div>
+                </div>
+            </li>
 
-                    <!-- Nav Item - Pages Collapse Menu -->
-                    <li class="nav-item">
-                        <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapsePages" aria-expanded="true" aria-controls="collapsePages">
-                            <i class="fas fa-fw fa-folder"></i>
-                            <span>Exam Setting</span>
-                        </a>
-                        <div id="collapsePages" class="collapse" aria-labelledby="headingPages" data-parent="#accordionSidebar">
-                            <div class="bg-white py-2 collapse-inner rounded">
-                                <h6 class="collapse-header">Exam Setting:</h6>
-                                <a class="collapse-item" asp-area="" asp-controller="Exams" asp-action="Create">New Exam Types</a>
-                                <a class="collapse-item" asp-area="" asp-controller="Exams" asp-action="Index">Exam Types</a>
-
-                                <div class="collapse-divider"></div>
-                                <h6 class="collapse-header">Examination:</h6>
-                                <a class="collapse-item" asp-area="" asp-controller="ExamMarks" asp-action="Index">Add Marks Sheet</a>
-                                <a class="collapse-item" asp-area="" asp-controller="ExamMarks" asp-action="Index">Exam Marks Sheet</a>
-                            </div>
-                        </div>
-                    </li>
-                @*}
-            }
-
-            @{
-                if (userTypeId == 1 || userTypeId == 2)  //Admin or operator
-                {*@
-                    <!-- Divider -->
-                    <hr class="sidebar-divider">
-
-                    <!-- Heading -->
-                    <div class="sidebar-heading">
-                        School Event
+            <!-- Nav Item - Session Collapse Menu -->
+            <li class="nav-item">
+                <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapseSession" aria-expanded="true" aria-controls="collapseSession">
+                    <i class="fas fa-fw fa-wrench"></i>
+                    <span>Session's</span>
+                </a>
+                <div id="collapseSession" class="collapse" aria-labelledby="headingSession" data-parent="#accordionSidebar">
+                    <div class="bg-white py-2 collapse-inner rounded">
+                        <h6 class="collapse-header">Configuration:</h6>
+                        <a class="collapse-item" asp-area="" asp-controller="Sessions" asp-action="Index">Session</a>
+                        <a class="collapse-item" asp-area="" asp-controller="ProgrameSessions" asp-action="Index">Programe Setting</a>
                     </div>
+                </div>
+            </li>
 
-                    <!-- Nav Item - Pages Collapse Menu -->
-                    <li class="nav-item">
-                        <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapseEvent" aria-expanded="true" aria-controls="collapseEvent">
-                            <i class="fas fa-fw fa-folder"></i>
-                            <span>Event Setting</span>
-                        </a>
-                        <div id="collapseEvent" class="collapse" aria-labelledby="headingPages" data-parent="#accordionSidebar">
-                            <div class="bg-white py-2 collapse-inner rounded">
-                                <h6 class="collapse-header">Event Setting:</h6>
-                                <a class="collapse-item" asp-area="" asp-controller="EventTbls" asp-action="Create">New Events</a>
-
-                                <div class="collapse-divider"></div>
-                                <h6 class="collapse-header">Events:</h6>
-                                <a class="collapse-item" asp-area="" asp-controller="EventTbls" asp-action="Index">All Events</a>
-                            </div>
-                        </div>
-                    </li>
-                @*}
-            }
-            @{
-                if (userTypeId == 1 || userTypeId == 2)  //Admin or operator
-                {*@
-                    <!-- Divider -->
-                    <hr class="sidebar-divider">
-
-                    <!-- Heading -->
-                    <div class="sidebar-heading">
-                        Time Table
+            <li class="nav-item">
+                <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapseClass" aria-expanded="true" aria-controls="collapseClass">
+                    <i class="fas fa-fw fa-wrench"></i>
+                    <span>Class's</span>
+                </a>
+                <div id="collapseClass" class="collapse" aria-labelledby="headingClass" data-parent="#accordionSidebar">
+                    <div class="bg-white py-2 collapse-inner rounded">
+                        <h6 class="collapse-header">Configuration:</h6>
+                        <a class="collapse-item" asp-area="" asp-controller="ClassTbls" asp-action="Index">Class</a>
+                        <a class="collapse-item" asp-area="" asp-controller="ClassSubjects" asp-action="Index">Class Subject Setting</a>
                     </div>
+                </div>
+            </li>
+            @*}
+                }
+                @{
+                    if (userTypeId == 1 || userTypeId == 2)  //Admin or operator
+                    {*@
 
-                    <!-- Nav Item - Pages Collapse Menu -->
-                    <li class="nav-item">
-                        <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapseTimeTable" aria-expanded="true" aria-controls="collapseTimeTable">
-                            <i class="fas fa-fw fa-folder"></i>
-                            <span>Time Table Setting</span>
-                        </a>
-                        <div id="collapseTimeTable" class="collapse" aria-labelledby="headingTimeTable" data-parent="#accordionSidebar">
-                            <div class="bg-white py-2 collapse-inner rounded">
-                                <h6 class="collapse-header">Setting:</h6>
-                                <a class="collapse-item" asp-area="" asp-controller="TimeTables" asp-action="Create">Set Time Table</a>
+            <!-- Divider -->
+            <hr class="sidebar-divider">
 
-                                <div class="collapse-divider"></div>
-                                <h6 class="collapse-header">Class Wise:</h6>
-                                <a class="collapse-item" asp-area="" asp-controller="TimeTables" asp-action="Index">Time Table</a>
-                            </div>
-                        </div>
-                    </li>
-                @*}
-            }
-            @{
-                if (userTypeId == 1 || userTypeId == 2 || userTypeId == 5)  //Admin or operator or accountant
-                {*@
-                    <!-- Divider -->
-                    <hr class="sidebar-divider">
+            <!-- Heading -->
+            <div class="sidebar-heading">
+                Examination
+            </div>
 
-                    <!-- Heading -->
-                    <div class="sidebar-heading">
-                        Expenses
+            <!-- Nav Item - Pages Collapse Menu -->
+            <li class="nav-item">
+                <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapsePages" aria-expanded="true" aria-controls="collapsePages">
+                    <i class="fas fa-fw fa-folder"></i>
+                    <span>Exam Setting</span>
+                </a>
+                <div id="collapsePages" class="collapse" aria-labelledby="headingPages" data-parent="#accordionSidebar">
+                    <div class="bg-white py-2 collapse-inner rounded">
+                        <h6 class="collapse-header">Exam Setting:</h6>
+                        <a class="collapse-item" asp-area="" asp-controller="Exams" asp-action="Create">New Exam Types</a>
+                        <a class="collapse-item" asp-area="" asp-controller="Exams" asp-action="Index">Exam Types</a>
+
+                        <div class="collapse-divider"></div>
+                        <h6 class="collapse-header">Examination:</h6>
+                        <a class="collapse-item" asp-area="" asp-controller="ExamMarks" asp-action="Index">Add Marks Sheet</a>
+                        <a class="collapse-item" asp-area="" asp-controller="ExamMarks" asp-action="Index">Exam Marks Sheet</a>
                     </div>
+                </div>
+            </li>
+            @*}
+                }
 
-                    <!-- Nav Item - Pages Collapse Menu -->
-                    <li class="nav-item">
-                        <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapseExpenses" aria-expanded="true" aria-controls="collapseExpenses">
-                            <i class="fas fa-fw fa-folder"></i>
-                            <span>Expenses Setting</span>
-                        </a>
-                        <div id="collapseExpenses" class="collapse" aria-labelledby="headingExpenses" data-parent="#accordionSidebar">
-                            <div class="bg-white py-2 collapse-inner rounded">
-                                <h6 class="collapse-header">Expenses Type:</h6>
-                                <a class="collapse-item" asp-area="" asp-controller="ExpenseTypes" asp-action="Create">New Expense Type</a>
-                                <a class="collapse-item" asp-area="" asp-controller="ExpenseTypes" asp-action="Index">Expense Type List</a>
+                @{
+                    if (userTypeId == 1 || userTypeId == 2)  //Admin or operator
+                    {*@
+            <!-- Divider -->
+            <hr class="sidebar-divider">
 
-                                <div class="collapse-divider"></div>
-                                <h6 class="collapse-header">Expense:</h6>
-                                <a class="collapse-item" asp-area="" asp-controller="Expenses" asp-action="Create">Add Expense</a>
-                                <a class="collapse-item" asp-area="" asp-controller="Expenses" asp-action="Index">Expense List</a>
-                            </div>
-                        </div>
-                    </li>
-                @*}
-            }*@
+            <!-- Heading -->
+            <div class="sidebar-heading">
+                School Event
+            </div>
+
+            <!-- Nav Item - Pages Collapse Menu -->
+            <li class="nav-item">
+                <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapseEvent" aria-expanded="true" aria-controls="collapseEvent">
+                    <i class="fas fa-fw fa-folder"></i>
+                    <span>Event Setting</span>
+                </a>
+                <div id="collapseEvent" class="collapse" aria-labelledby="headingPages" data-parent="#accordionSidebar">
+                    <div class="bg-white py-2 collapse-inner rounded">
+                        <h6 class="collapse-header">Event Setting:</h6>
+                        <a class="collapse-item" asp-area="" asp-controller="EventTbls" asp-action="Create">New Events</a>
+
+                        <div class="collapse-divider"></div>
+                        <h6 class="collapse-header">Events:</h6>
+                        <a class="collapse-item" asp-area="" asp-controller="EventTbls" asp-action="Index">All Events</a>
+                    </div>
+                </div>
+            </li>
+            @*}
+                }
+                @{
+                    if (userTypeId == 1 || userTypeId == 2)  //Admin or operator
+                    {*@
+            <!-- Divider -->
+            <hr class="sidebar-divider">
+
+            <!-- Heading -->
+            <div class="sidebar-heading">
+                Time Table
+            </div>
+
+            <!-- Nav Item - Pages Collapse Menu -->
+            <li class="nav-item">
+                <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapseTimeTable" aria-expanded="true" aria-controls="collapseTimeTable">
+                    <i class="fas fa-fw fa-folder"></i>
+                    <span>Time Table Setting</span>
+                </a>
+                <div id="collapseTimeTable" class="collapse" aria-labelledby="headingTimeTable" data-parent="#accordionSidebar">
+                    <div class="bg-white py-2 collapse-inner rounded">
+                        <h6 class="collapse-header">Setting:</h6>
+                        <a class="collapse-item" asp-area="" asp-controller="TimeTables" asp-action="Create">Set Time Table</a>
+
+                        <div class="collapse-divider"></div>
+                        <h6 class="collapse-header">Class Wise:</h6>
+                        <a class="collapse-item" asp-area="" asp-controller="TimeTables" asp-action="Index">Time Table</a>
+                    </div>
+                </div>
+            </li>
+            @*}
+                }
+                @{
+                    if (userTypeId == 1 || userTypeId == 2 || userTypeId == 5)  //Admin or operator or accountant
+                    {*@
+            <!-- Divider -->
+            <hr class="sidebar-divider">
+
+            <!-- Heading -->
+            <div class="sidebar-heading">
+                Expenses
+            </div>
+
+            <!-- Nav Item - Pages Collapse Menu -->
+            <li class="nav-item">
+                <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapseExpenses" aria-expanded="true" aria-controls="collapseExpenses">
+                    <i class="fas fa-fw fa-folder"></i>
+                    <span>Expenses Setting</span>
+                </a>
+                <div id="collapseExpenses" class="collapse" aria-labelledby="headingExpenses" data-parent="#accordionSidebar">
+                    <div class="bg-white py-2 collapse-inner rounded">
+                        <h6 class="collapse-header">Expenses Type:</h6>
+                        <a class="collapse-item" asp-area="" asp-controller="ExpenseTypes" asp-action="Create">New Expense Type</a>
+                        <a class="collapse-item" asp-area="" asp-controller="ExpenseTypes" asp-action="Index">Expense Type List</a>
+
+                        <div class="collapse-divider"></div>
+                        <h6 class="collapse-header">Expense:</h6>
+                        <a class="collapse-item" asp-area="" asp-controller="Expenses" asp-action="Create">Add Expense</a>
+                        <a class="collapse-item" asp-area="" asp-controller="Expenses" asp-action="Index">Expense List</a>
+                    </div>
+                </div>
+            </li>
+            @*}
+                }*@
 
             <!-- Nav Item - Charts -->
             <!-- Divider -->
@@ -439,56 +439,56 @@
                             if (userTypeId == 1 || userTypeId == 2 || userTypeId == 3)//Admin Or Operator Or Teacher
                             {*@
 
-                                <a class="collapse-item" asp-area="" asp-controller="TimeTableReports" asp-action="TeacherWiseReport">Teacher Wise Time Table</a>
-                            @*}
-                        }*@
+                        <a class="collapse-item" asp-area="" asp-controller="TimeTableReports" asp-action="TeacherWiseReport">Teacher Wise Time Table</a>
+                        @*}
+                            }*@
                         <div class="collapse-divider"></div>
                         <h6 class="collapse-header">Administration Reports:</h6>
                         @*@{
                             if (userTypeId == 1 || userTypeId == 5) //Admin Or Accountant
                             {*@
-                                <a class="collapse-item" asp-area="" asp-controller="ExpenseReports" asp-action="AllExpenses">All Expenses</a>
-                                <a class="collapse-item" asp-area="" asp-controller="ExpenseReports" asp-action="CustomExpenses">Custom Expenses</a>
-                            @*}
-                        }*@
+                        <a class="collapse-item" asp-area="" asp-controller="ExpenseReports" asp-action="AllExpenses">All Expenses</a>
+                        <a class="collapse-item" asp-area="" asp-controller="ExpenseReports" asp-action="CustomExpenses">Custom Expenses</a>
+                        @*}
+                            }*@
                         <div class="collapse-divider"></div>
                         <h6 class="collapse-header">Examination Reports:</h6>
                         @*@{
                             if (userTypeId == 1 || userTypeId == 2) //Admin OR Operator
                             {*@
-                                <a class="collapse-item" asp-area="" asp-controller="ExamReports" asp-action="PrintMarkSheet">Print MarkSheet</a>
-                            @*}
-                        }*@
+                        <a class="collapse-item" asp-area="" asp-controller="ExamReports" asp-action="PrintMarkSheet">Print MarkSheet</a>
+                        @*}
+                            }*@
                         <div class="collapse-divider"></div>
                         <h6 class="collapse-header">Attendance Reports:</h6>
                         @*@{
                             if (userTypeId == 1 || userTypeId == 2) //Admin OR Operator
                             {*@
-                                <a class="collapse-item" asp-area="" asp-controller="AttendanceReports" asp-action="AllStudentAttendance">Student Attendance</a>
-                                <a class="collapse-item" asp-area="" asp-controller="AttendanceReports" asp-action="AllStaffAttendance">Staff Attendance</a>
-                            @*}
+                        <a class="collapse-item" asp-area="" asp-controller="AttendanceReports" asp-action="AllStudentAttendance">Student Attendance</a>
+                        <a class="collapse-item" asp-area="" asp-controller="AttendanceReports" asp-action="AllStaffAttendance">Staff Attendance</a>
+                        @*}
 
                             if (userTypeId == 1 || userTypeId == 2 || userTypeId == 3 || userTypeId == 5 || userTypeId == 6)// Not Student  >show emp attendance report
                             {*@
-                                <a class="collapse-item" asp-action="StaffAttendance" asp-controller="AttendanceReports" asp-route-id="0">Attendance Reports</a>
-                            @*}
+                        <a class="collapse-item" asp-action="StaffAttendance" asp-controller="AttendanceReports" asp-route-id="0">Attendance Reports</a>
+                        @*}
                             else    //Show Attendance Report
                             {*@
-                                <a class="collapse-item" asp-action="StudentAttendance" asp-controller="AttendanceReports" asp-route-id="0">Attendance Reports</a>
-                            @*}
+                        <a class="collapse-item" asp-action="StudentAttendance" asp-controller="AttendanceReports" asp-route-id="0">Attendance Reports</a>
+                        @*}
 
 
-                        }*@
+                            }*@
                         <div class="collapse-divider"></div>
 
                         <h6 class="collapse-header">Fee's Reports:</h6>
                         @*@{
                             if (userTypeId == 1 || userTypeId == 2) //Admin OR Operator
                             {*@
-                                <a class="collapse-item" asp-area="" asp-controller="FeeReports" asp-action="CustomAnnualFee">Annual Fee</a>
-                                <a class="collapse-item" asp-area="" asp-controller="FeeReports" asp-action="CustomTutionFee">Student Fee Report</a>
-                            @*}
-                        }*@
+                        <a class="collapse-item" asp-area="" asp-controller="FeeReports" asp-action="CustomAnnualFee">Annual Fee</a>
+                        <a class="collapse-item" asp-area="" asp-controller="FeeReports" asp-action="CustomTutionFee">Student Fee Report</a>
+                        @*}
+                            }*@
                     </div>
                 </div>
             </li>
@@ -571,12 +571,12 @@
                                 @* <i class="fas fa-user fa-sm fa-fw mr-2 text-gray-400"></i>*@
                                 <a class=" dropdown-item fas fa-user fa-sm fa-fw mr-2 text-gray-400" asp-area="" asp-controller="Home" asp-action="ChangePassword">Change Password</a>
 
-                                <div class="dropdown-divider"></div>                                
-                                    <a class="dropdown-item" data-toggle="modal" data-target="#logoutModal">
-                                        <i class="fas fa-sign-out-alt fa-sm fa-fw mr-2 text-gray-400"></i>
-                                        Logout
-                                    </a>
-                                 
+                                <div class="dropdown-divider"></div>
+                                <a class="dropdown-item" data-toggle="modal" data-target="#logoutModal">
+                                    <i class="fas fa-sign-out-alt fa-sm fa-fw mr-2 text-gray-400"></i>
+                                    Logout
+                                </a>
+
                             </div>
                         </li>
 
@@ -640,7 +640,8 @@
     <!-- Bootstrap core JavaScript-->
     <script src="~/AdminTemplate/vendor/jquery/jquery.min.js"></script>
     <script src="~/AdminTemplate/vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
-
+    <script src="~/lib/jquery-validation/dist/jquery.validate.min.js"></script>
+    <script src="~/lib/jquery-validation-unobtrusive/jquery.validate.unobtrusive.min.js"></script>
     <!-- Core plugin JavaScript-->
     <script src="~/AdminTemplate/vendor/jquery-easing/jquery.easing.min.js"></script>
 
