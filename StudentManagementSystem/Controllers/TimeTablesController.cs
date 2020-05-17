@@ -3,10 +3,12 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using SchoolManagementSystem.Models.Entities;
+using SchoolManagementSystem.Models.Identity;
 using StudentManagementSystem.Models;
 
 namespace SchoolManagementSystem.Controllers
@@ -14,30 +16,26 @@ namespace SchoolManagementSystem.Controllers
     public class TimeTablesController : Controller
     {
         private readonly AppDbContext _context;
+        private readonly UserManager<ApplicationUser> userManager;
 
-        public TimeTablesController(AppDbContext context)
+        public TimeTablesController(AppDbContext context, UserManager<ApplicationUser> userManager)
         {
             _context = context;
+            this.userManager = userManager;
         }
-
+        private Task<ApplicationUser> GetCurrentUserAsync() => userManager.GetUserAsync(HttpContext.User);
         // GET: TimeTables
         public async Task<IActionResult> Index()
         {
-            if (string.IsNullOrEmpty(HttpContext.Session.GetString("UserName")))
-            {
-                return RedirectToAction("Login", "Home");
-            }
-            var appDbContext = _context.TimeTables.Include(t => t.ClassSubject).Include(t => t.Staff).Include(t => t.User);
+            
+            var appDbContext = _context.TimeTables.Include(t => t.ClassSubject).Include(t => t.Staff).Include(t => t.ApplicationUser);
             return View(await appDbContext.ToListAsync());
         }
 
         // GET: TimeTables/Details/5
         public async Task<IActionResult> Details(int? id)
         {
-            if (string.IsNullOrEmpty(HttpContext.Session.GetString("UserName")))
-            {
-                return RedirectToAction("Login", "Home");
-            }
+            
             if (id == null)
             {
                 return NotFound();
@@ -46,7 +44,7 @@ namespace SchoolManagementSystem.Controllers
             var timeTable = await _context.TimeTables
                 .Include(t => t.ClassSubject)
                 .Include(t => t.Staff)
-                .Include(t => t.User)
+                .Include(t => t.ApplicationUser)
                 .FirstOrDefaultAsync(m => m.TimeTableId == id);
             if (timeTable == null)
             {
@@ -59,10 +57,7 @@ namespace SchoolManagementSystem.Controllers
         // GET: TimeTables/Create
         public IActionResult Create()
         {
-            if (string.IsNullOrEmpty(HttpContext.Session.GetString("UserName")))
-            {
-                return RedirectToAction("Login", "Home");
-            }
+           
             ViewData["ClassSubjectId"] = new SelectList(_context.ClassSubjects, "ClassSubjectId", "Name");
             ViewData["StaffId"] = new SelectList(_context.Staffs.Where(s=>s.IsActive==true), "StaffId", "Name");
             ViewData["UserId"] = new SelectList(_context.Users, "UserId", "FullName");
@@ -76,12 +71,8 @@ namespace SchoolManagementSystem.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Create(TimeTable timeTable)
         {
-            if (string.IsNullOrEmpty(HttpContext.Session.GetString("UserName")))
-            {
-                return RedirectToAction("Login", "Home");
-            }
-            int userid = Convert.ToInt32(HttpContext.Session.GetString("UserId"));
-            timeTable.UserId = userid;
+            var user = await GetCurrentUserAsync();
+            timeTable.ApplicationUserId = user?.Id;
 
             if (ModelState.IsValid)
             {
@@ -91,17 +82,13 @@ namespace SchoolManagementSystem.Controllers
             }
             ViewData["ClassSubjectId"] = new SelectList(_context.ClassSubjects, "ClassSubjectId", "ClassSubjectId", timeTable.ClassSubjectId);
             ViewData["StaffId"] = new SelectList(_context.Staffs, "StaffId", "StaffId", timeTable.StaffId);
-            ViewData["UserId"] = new SelectList(_context.Users, "UserId", "UserId", timeTable.UserId);
+            ViewData["UserId"] = new SelectList(_context.Users, "UserId", "UserId", timeTable.ApplicationUserId);
             return View(timeTable);
         }
 
         // GET: TimeTables/Edit/5
         public async Task<IActionResult> Edit(int? id)
         {
-            if (string.IsNullOrEmpty(HttpContext.Session.GetString("UserName")))
-            {
-                return RedirectToAction("Login", "Home");
-            }
 
             if (id == null)
             {
@@ -115,7 +102,7 @@ namespace SchoolManagementSystem.Controllers
             }
             ViewData["ClassSubjectId"] = new SelectList(_context.ClassSubjects, "ClassSubjectId", "Name", timeTable.ClassSubjectId);
             ViewData["StaffId"] = new SelectList(_context.Staffs, "StaffId", "Name", timeTable.StaffId);
-            ViewData["UserId"] = new SelectList(_context.Users, "UserId", "FullName", timeTable.UserId);
+            ViewData["UserId"] = new SelectList(_context.Users, "UserId", "FullName", timeTable.ApplicationUserId);
             return View(timeTable);
         }
 
@@ -126,12 +113,8 @@ namespace SchoolManagementSystem.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Edit(int id, TimeTable timeTable)
         {
-            if (string.IsNullOrEmpty(HttpContext.Session.GetString("UserName")))
-            {
-                return RedirectToAction("Login", "Home");
-            }
-            int userid = Convert.ToInt32(HttpContext.Session.GetString("UserId"));
-            timeTable.UserId = userid;
+            var user = await GetCurrentUserAsync();
+            timeTable.ApplicationUserId = user?.Id;
 
             if (id != timeTable.TimeTableId)
             {
@@ -160,18 +143,13 @@ namespace SchoolManagementSystem.Controllers
             }
             ViewData["ClassSubjectId"] = new SelectList(_context.ClassSubjects, "ClassSubjectId", "ClassSubjectId", timeTable.ClassSubjectId);
             ViewData["StaffId"] = new SelectList(_context.Staffs, "StaffId", "StaffId", timeTable.StaffId);
-            ViewData["UserId"] = new SelectList(_context.Users, "UserId", "UserId", timeTable.UserId);
+            ViewData["UserId"] = new SelectList(_context.Users, "UserId", "UserId", timeTable.ApplicationUserId);
             return View(timeTable);
         }
 
         // GET: TimeTables/Delete/5
         public async Task<IActionResult> Delete(int? id)
         {
-            if (string.IsNullOrEmpty(HttpContext.Session.GetString("UserName")))
-            {
-                return RedirectToAction("Login", "Home");
-            }
-
             if (id == null)
             {
                 return NotFound();
@@ -180,7 +158,7 @@ namespace SchoolManagementSystem.Controllers
             var timeTable = await _context.TimeTables
                 .Include(t => t.ClassSubject)
                 .Include(t => t.Staff)
-                .Include(t => t.User)
+                .Include(t => t.ApplicationUser)
                 .FirstOrDefaultAsync(m => m.TimeTableId == id);
             if (timeTable == null)
             {
@@ -195,11 +173,6 @@ namespace SchoolManagementSystem.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> DeleteConfirmed(int id)
         {
-            if (string.IsNullOrEmpty(HttpContext.Session.GetString("UserName")))
-            {
-                return RedirectToAction("Login", "Home");
-            }
-
             var timeTable = await _context.TimeTables.FindAsync(id);
             _context.TimeTables.Remove(timeTable);
             await _context.SaveChangesAsync();

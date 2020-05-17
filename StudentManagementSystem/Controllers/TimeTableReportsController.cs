@@ -21,7 +21,7 @@ namespace SchoolManagementSystem.Controllers
         {
             var teacherClass = _context.TimeTables.Where(t => t.StaffId == id)
                 .Include(e=>e.ClassSubject)
-                .Include(e=>e.User)
+                .Include(e=>e.ApplicationUser)
                 .OrderByDescending(e => e.TimeTableId);          
             return View(teacherClass);
         }
@@ -30,7 +30,7 @@ namespace SchoolManagementSystem.Controllers
             var teacherClass = _context.TimeTables.Where(t=>t.IsActive==true)
                 .Include(e => e.ClassSubject)
                 .Include(e=>e.Staff)
-                .Include(e => e.User)
+                .Include(e => e.ApplicationUser)
                 .OrderBy(e => e.StaffId);
             return View(teacherClass);
         }
@@ -47,7 +47,7 @@ namespace SchoolManagementSystem.Controllers
             //}
 
             var subjectTime = _context.TimeTables.Where(t => t.ClassSubject.ClassTblId == classId && t.IsActive == true)
-                            .Include(u=>u.User)
+                            .Include(u=>u.ApplicationUser)
                             .Include(u=>u.ClassSubject)
                             .Include(t=>t.Staff);
             return View(subjectTime);

@@ -3,10 +3,12 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using SchoolManagementSystem.Models.Entities;
+using SchoolManagementSystem.Models.Identity;
 using StudentManagementSystem.Models;
 
 namespace StudentManagementSystem.Controllers
@@ -14,12 +16,14 @@ namespace StudentManagementSystem.Controllers
     public class DesignationsController : Controller
     {
         private readonly AppDbContext _context;
+        private readonly UserManager<ApplicationUser> userManager;
 
-        public DesignationsController(AppDbContext context)
+        public DesignationsController(AppDbContext context, UserManager<ApplicationUser> userManager)
         {
             _context = context;
+            this.userManager = userManager;
         }
-
+        private Task<ApplicationUser> GetCurrentUserAsync() => userManager.GetUserAsync(HttpContext.User);
         // GET: Designations
         public async Task<IActionResult> Index()
         {
@@ -61,15 +65,21 @@ namespace StudentManagementSystem.Controllers
         [HttpPost]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Create([Bind("DesignationId,UserId,Title,IsActive")] Designation designation)
-        {     
-
-            if (ModelState.IsValid)
+        {
+            var model = _context.Designations.Where(s => s.Title.Trim() == designation.Title.Trim()).FirstOrDefault();
+            if (model == null)
             {
-                _context.Add(designation);
-                await _context.SaveChangesAsync();
-                return RedirectToAction(nameof(Index));
+                var user = await GetCurrentUserAsync();
+                designation.ApplicationUserId = user?.Id;
+
+                if (ModelState.IsValid)
+                {
+                    _context.Add(designation);
+                    await _context.SaveChangesAsync();
+                    return RedirectToAction(nameof(Index));
+                }
             }
-            
+            ModelState.AddModelError(string.Empty, "Designation already exists.");
             return View(designation);
         }
 
@@ -104,27 +114,34 @@ namespace StudentManagementSystem.Controllers
                 return NotFound();
             }
 
-            if (ModelState.IsValid)
+            var result = _context.Designations.Where(s => s.Title == designation.Title && s.DesignationId != id).ToList();
+            if (result.Count == 0)
             {
-                try
+                var user = await GetCurrentUserAsync();
+                designation.ApplicationUserId = user?.Id;
+
+                if (ModelState.IsValid)
                 {
-                    _context.Update(designation);
-                    await _context.SaveChangesAsync();
-                }
-                catch (DbUpdateConcurrencyException)
-                {
-                    if (!DesignationExists(designation.DesignationId))
+                    try
                     {
-                        return NotFound();
+                        _context.Update(designation);
+                        await _context.SaveChangesAsync();
                     }
-                    else
+                    catch (DbUpdateConcurrencyException)
                     {
-                        throw;
+                        if (!DesignationExists(designation.DesignationId))
+                        {
+                            return NotFound();
+                        }
+                        else
+                        {
+                            throw;
+                        }
                     }
+                    return RedirectToAction(nameof(Index));
                 }
-                return RedirectToAction(nameof(Index));
             }
-            
+            ModelState.AddModelError(string.Empty, "Designation already exists.");
             return View(designation);
         }
 

@@ -24,6 +24,7 @@ namespace SchoolManagementSystem.Models.Identity
         public ICollection<ExamMark> ExamMarks { get; set; }
         public ICollection<Programe> Programes { get; set; }
         public ICollection<ProgrameSession> ProgrameSessions { get; set; }
+        public ICollection<TimeTable> TimeTables { get; set; }
 
     }
 }

@@ -318,7 +318,7 @@ namespace StudentManagementSystem.Models
 
         public void UpdateTimeTable(TimeTable entity, TimeTable model)
         {
-            entity.UserId = model.UserId;
+            //entity.UserId = model.UserId;
             entity.StartTime= model.StartTime;
             entity.EndTime = model.EndTime;
             entity.Day = model.Day;
