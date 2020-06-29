@@ -20,3 +20,16 @@ document.getElementById('policeCheck').onchange = function () {
     document.getElementById('policeText').disabled = !this.checked;
     document.getElementById('policeText').focus();
 };
+
+//function Validator() {
+//    //  ...bla bla bla... the checks
+//    var validEmail = 'false';
+//    toastr.error('Please Enter the email');
+//    if (document.getElementById('email').value!='') {
+//        document.getElementById('theFormID').submit();
+//        return (true);
+//    }    
+//    else {
+//        return (false);
+//    }
+//}

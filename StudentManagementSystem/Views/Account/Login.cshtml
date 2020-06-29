@@ -1,6 +1,7 @@
-﻿@model SchoolManagementSystem.Models.Identity.LoginViewModel;
+﻿@using Microsoft.AspNetCore.Http;
 @using Microsoft.AspNetCore.Identity;
 @inject SignInManager<SchoolManagementSystem.Models.Identity.ApplicationUser> signInManager;
+@model SchoolManagementSystem.Models.Identity.LoginViewModel;
 @{
     Layout = null;
 }
@@ -15,9 +16,14 @@
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
     <meta name="description" content="">
     <meta name="author" content="">
+    <script src="~/lib/jquery/dist/jquery.js"></script>
+    <script src="~/lib/jquery-validation/dist/jquery.validate.js"></script>
+    <script src="~/lib/jquery-validation-unobtrusive/jquery.validate.unobtrusive.js"></script>
 
+    <link href="~/lib/bootstrap/dist/css/bootstrap.min.css" rel="stylesheet" />
+    <script src="~/lib/jquery/dist/jquery.js"></script>
     <title>Login</title>
-
+    <script src="~/js/site.js"></script>
     <!-- Custom fonts for this template-->
     <link href="~/AdminTemplate/vendor/fontawesome-free/css/all.min.css" rel="stylesheet" type="text/css">
     <link href="https://fonts.googleapis.com/css?family=Nunito:200,200i,300,300i,400,400i,600,600i,700,700i,800,800i,900,900i" rel="stylesheet">
@@ -53,9 +59,12 @@
                         }
                         else
                         {
-                            <li class="nav-item">
-                                <a class="nav-link text-dark" asp-area="" asp-controller="Account" asp-action="Register">Register</a>
-                            </li>
+                            if (@Context.Session.GetString("isUserCreated") != "true")
+                            {
+                                <li class="nav-item">
+                                    <a class="nav-link text-dark" asp-area="" asp-controller="Account" asp-action="Register">Register</a>
+                                </li>
+                            }
                             <li class="nav-item">
                                 <a class="nav-link text-dark" asp-area="" asp-controller="Account" asp-action="login">Login</a>
                             </li>
@@ -85,7 +94,7 @@
                                         <h1>Log In</h1>
                                         <h1 class="h4 text-gray-900 mb-4">Welcome To PRAISE-EL School!</h1>
                                     </div>
-                                    <form class="user" asp-controller="Account" asp-action="Login" method="post">
+                                    <form class="user" asp-controller="Account" asp-action="Login" method="post" id="theFormID">
                                         <div asp-validation-summary="All" class="text-danger"></div>
                                         <div class="form-group">
                                             <input asp-for="Email" class="form-control form-control-user" id="email" name="email" aria-describedby="emailHelp" placeholder="Enter Email Address...">
@@ -104,7 +113,7 @@
                                             </div>
                                         </div>
 
-                                        <input type="submit" value="Login" class="btn btn-primary btn-user btn-block" />
+                                        <input type="submit" value="Login" class="btn btn-primary btn-user btn-block" id="btnLogin" onclick="JavaScript:return Validator();" />
                                         <hr>
                                         @*<a href="index.html" class="btn btn-google btn-user btn-block">
                                                 <i class="fab fa-google fa-fw"></i> Login with Google
@@ -131,14 +140,40 @@
     </div>
 
     <!-- Bootstrap core JavaScript-->
-    <script src="~/AdminTemplate/vendor/jquery/jquery.min.js"></script>
-    <script src="~/AdminTemplate/vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
+    
+    <script src="~/js/site.js"></script>
 
+    <script src="~/AdminTemplate/vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
     <!-- Core plugin JavaScript-->
     <script src="~/AdminTemplate/vendor/jquery-easing/jquery.easing.min.js"></script>
 
     <!-- Custom scripts for all pages-->
     <script src="~/AdminTemplate/js/sb-admin-2.min.js"></script>
+    @section Scripts
+    {
+        <script>
+                    //$(document).ready(function () {
+                    //    $('#btnLogin').on("click", function () {
+                    //        var email = $('#email').value;
+                    //        if (email != null) {
+                    //            return true;
+                    //        }
+                    //        else {
+
+                    //        }
+                    //        console.log(email);
+                    //    });
+                    //});
+                    //function Validator() {
+                    //    if (document.getElementById('email') != '') {
+                    //        document.getElementById('theFormID').submit();
+                    //        return (true);
+                    //    } else {
+                    //        return (false);
+                    //    }
+                    //}
+        </script>
+    }
 
 </body>
 

@@ -1,4 +1,5 @@
 ﻿using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.Mvc;
 using SchoolManagementSystem.Models.Entities;
 using SchoolManagementSystem.Models.Identity;
 using SchoolManagementSystem.Models.Master;
@@ -12,44 +13,46 @@ namespace SchoolManagementSystem.ViewModels
 {
     public class StudentViewModel
     {
-        [System.ComponentModel.DataAnnotations.Required(ErrorMessage = "Please Select Session")]
+        [System.ComponentModel.DataAnnotations.Required(ErrorMessage = "*required!")]
         public int SessionId { get; set; }
-        [System.ComponentModel.DataAnnotations.Required(ErrorMessage = "Please Select Programe")]
+        [System.ComponentModel.DataAnnotations.Required(ErrorMessage = "*required!")]
         public int? ProgrameId { get; set; }
-        [System.ComponentModel.DataAnnotations.Required(ErrorMessage = "Please Select Current Class")]
+        [System.ComponentModel.DataAnnotations.Required(ErrorMessage = "*required!")]
         public int ClassTblId { get; set; }
         public string ApplicationUserId { get; set; }
-        [System.ComponentModel.DataAnnotations.Required(ErrorMessage = "Please Enter Student Name")]
+        [System.ComponentModel.DataAnnotations.Required(ErrorMessage = "*required!")]
         public string Name { get; set; }
-        [System.ComponentModel.DataAnnotations.Required(ErrorMessage = "Please Enter Father Name")]
+        [System.ComponentModel.DataAnnotations.Required(ErrorMessage = "*required!")]
         public string FatherName { get; set; }
-        [System.ComponentModel.DataAnnotations.Required(ErrorMessage = "Please Enter DOB")]
+        [System.ComponentModel.DataAnnotations.Required(ErrorMessage = "*required!")]
 
         [DataType(DataType.Date)]
         public DateTime DateOfBirth { get; set; }
-        [System.ComponentModel.DataAnnotations.Required(ErrorMessage = "Please Enter Gender")]
+        [System.ComponentModel.DataAnnotations.Required(ErrorMessage = "*required!")]
         public string GenderId { get; set; }
-        [System.ComponentModel.DataAnnotations.Required(ErrorMessage = "Please Enter Contact No")]
+        [System.ComponentModel.DataAnnotations.Required(ErrorMessage = "*required!")]
         public string ContactNo { get; set; }
+        [System.ComponentModel.DataAnnotations.Required(ErrorMessage = "*required!")]
+
+        [Remote(action: "IsEmailInUse", controller: "Account")]
         public string Email { get; set; }
         public int NationalityId { get; set; }
         public int ReligionId { get; set; }
+        [System.ComponentModel.DataAnnotations.Required(ErrorMessage = "*required!")]
         public int CategoryId { get; set; }
+        [System.ComponentModel.DataAnnotations.Required(ErrorMessage = "*required!")]
         public string GuardianName { get; set; }
         public string GuardianOccupation { get; set; }
+        [System.ComponentModel.DataAnnotations.Required(ErrorMessage = "*required!")]
         public string GuardianPhone { get; set; }
-
         public string Cast { get; set; }
         public string Address { get; set; }
         public string AadharNo { get; set; }
+        [System.ComponentModel.DataAnnotations.Required(ErrorMessage = "*required!")]
         public IFormFile Photo { get; set; }
         [DataType(DataType.Date)]
-        [System.ComponentModel.DataAnnotations.Required(ErrorMessage = "Please Enter Admission Date")]
         public DateTime AdmissionDate { get; set; }
-
-        //[Required(ErrorMessage = "Please Enter Previous School")]
         public string PreviousSchool { get; set; }
-        //[Required(ErrorMessage = "Please Enter Percentage")]
         public float PreviousPercentage { get; set; }
         public Programe Programe { get; set; }
         public Session Session { get; set; }

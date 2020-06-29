@@ -1,12 +1,8 @@
 ﻿using Microsoft.AspNetCore.Http;
 using SchoolManagementSystem.Models.Entities;
-using SchoolManagementSystem.Models.Entities;
 using SchoolManagementSystem.Models.Identity;
 using System;
 using System.Collections.Generic;
-using System.ComponentModel.DataAnnotations;
-using System.Linq;
-using System.Threading.Tasks;
 
 namespace SchoolManagementSystem.ViewModels
 {
@@ -14,25 +10,27 @@ namespace SchoolManagementSystem.ViewModels
     {
         public int StaffId { get; set; }
         public string ApplicationUserId { get; set; }
-        [System.ComponentModel.DataAnnotations.Required(ErrorMessage = "{0} Required Field!")]
+        [System.ComponentModel.DataAnnotations.Required(ErrorMessage = "*required!")]
         public string Name { get; set; }
-        [System.ComponentModel.DataAnnotations.Required(ErrorMessage = "{0} Required Field!")]
+        [System.ComponentModel.DataAnnotations.Required(ErrorMessage = "*required!")]
         public int DesignationId { get; set; }
-        [System.ComponentModel.DataAnnotations.Required(ErrorMessage = "{0} Required Field!")]
+        [System.ComponentModel.DataAnnotations.Required(ErrorMessage = "*required!")]
         public string ContactNo { get; set; }
-        [System.ComponentModel.DataAnnotations.Required(ErrorMessage = "{0} Required Field!")]
+        [System.ComponentModel.DataAnnotations.Required(ErrorMessage = "*required!")]
         public double BasicSalary { get; set; }
+        [System.ComponentModel.DataAnnotations.Required(ErrorMessage = "*required!")]
         public string Email { get; set; }
-        [System.ComponentModel.DataAnnotations.Required(ErrorMessage = "{0} Required Field!")]
+        [System.ComponentModel.DataAnnotations.Required(ErrorMessage = "*required!")]
         public string Address { get; set; }
-        [System.ComponentModel.DataAnnotations.Required(ErrorMessage = "{0} Required Field!")]
+        [System.ComponentModel.DataAnnotations.Required(ErrorMessage = "*required!")]
         public string Qualification { get; set; }
+        [System.ComponentModel.DataAnnotations.Required(ErrorMessage = "*required!")]
         public IFormFile photo { get; set; }
         public string Description { get; set; }
         public bool IsActive { get; set; }
-        [System.ComponentModel.DataAnnotations.Required(ErrorMessage = "{0} Required Field!")]
+        [System.ComponentModel.DataAnnotations.Required(ErrorMessage = "*required!")]
         public string Gender { get; set; }
-        [System.ComponentModel.DataAnnotations.Required(ErrorMessage = "{0} Required Field!")]
+        [System.ComponentModel.DataAnnotations.Required(ErrorMessage = "*required!")]
         public string HomePhone { get; set; }
         public bool DoYouHaveAnyDisability { get; set; }
         public string DisabilityDetails { get; set; }

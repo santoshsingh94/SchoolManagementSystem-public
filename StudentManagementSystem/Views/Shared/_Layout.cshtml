@@ -16,6 +16,10 @@
 
     <title>SB Admin 2 - Dashboard</title>
 
+    <script src="~/lib/jquery/dist/jquery.js"></script>
+    <script src="~/lib/jquery-validation/dist/jquery.validate.js"></script>
+    <script src="~/lib/jquery-validation-unobtrusive/jquery.validate.unobtrusive.js"></script>
+
     <!-- Custom fonts for this template-->
     <link href="~/AdminTemplate/vendor/fontawesome-free/css/all.min.css" rel="stylesheet" type="text/css">
     <link href="https://fonts.googleapis.com/css?family=Nunito:200,200i,300,300i,400,400i,600,600i,700,700i,800,800i,900,900i" rel="stylesheet">
@@ -79,11 +83,15 @@
             <a class="sidebar-brand d-flex align-items-center justify-content-center" href="#">
                 <div class="sidebar-brand-icon rotate-n-15">
                     @{
-                        <img class="img-profile rounded-circle" style=" width:70px;height:70px;transform: rotate(15deg);" src="~/image/@Context.Session.GetString("Photo")" />
+                        string photo = Context.Session.GetString("Photo");
+                        if (photo == null)
+                        {
+                            photo = "Admin.png";
+                        }
+                        <img class="img-profile rounded-circle" style=" width:90px;height:80px;transform: rotate(15deg);" src="~/image/@photo" asp-append-version="true" />
                     }
-
                 </div>
-                <div class="sidebar-brand-text mx-3"><sup>@Context.Session.GetString("FullName")</sup></div>
+                <div class="sidebar-brand-text mx-3"><sup>@Context.Session.GetString("Role")</sup></div>
             </a>
 
             <!-- Divider -->
@@ -564,7 +572,14 @@
                         <li class="nav-item dropdown no-arrow">
                             <a class="nav-link dropdown-toggle" href="#" id="userDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                                 <span class="mr-2 d-none d-lg-inline text-gray-600 small">@User.Identity.Name</span>
-                                <img class="img-profile rounded-circle" src="~/image/Admin.png" />
+                                @if (@Context.Session.GetString("Photo") != null)
+                                {
+                                    <img class="img-profile rounded-circle" src="~/image/@Context.Session.GetString("Photo")" asp-append-version="true" />
+                                }
+                                else
+                                {
+                                    <img class="img-profile rounded-circle" src="~/image/Admin.png" />
+                                }
                             </a>
                             <!-- Dropdown - User Information -->
                             <div class="dropdown-menu dropdown-menu-right shadow animated--grow-in" aria-labelledby="userDropdown">
@@ -642,15 +657,18 @@
     <script src="~/AdminTemplate/vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
     <script src="~/lib/jquery-validation/dist/jquery.validate.min.js"></script>
     <script src="~/lib/jquery-validation-unobtrusive/jquery.validate.unobtrusive.min.js"></script>
+    <link href="~/AdminTemplate/vendor/datatables/dataTables.bootstrap4.min.css" rel="stylesheet">
+    <script src="~/lib/bootstrap/dist/js/bootstrap.min.js"></script>
     <!-- Core plugin JavaScript-->
     <script src="~/AdminTemplate/vendor/jquery-easing/jquery.easing.min.js"></script>
 
     <!-- Custom scripts for all pages-->
     <script src="~/AdminTemplate/js/sb-admin-2.min.js"></script>
-
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/2.1.4/toastr.min.js"></script>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/2.1.4/toastr.min.css" rel="stylesheet" />
     <!-- Page level plugins -->
     <script src="~/AdminTemplate/vendor/chart.js/Chart.min.js"></script>
-
+    <script src="~/js/site.js"></script>
     <!-- Page level custom scripts -->
     <script src="~/AdminTemplate/js/demo/chart-area-demo.js"></script>
     <script src="~/AdminTemplate/js/demo/chart-pie-demo.js"></script>

@@ -6,6 +6,7 @@
 
 
   <ItemGroup>
+    <PackageReference Include="Magick.NET-Q16-AnyCPU" Version="7.19.0.1" />
     <PackageReference Include="Microsoft.AspNetCore.Identity.EntityFrameworkCore" Version="3.0.0" />
     <PackageReference Include="Microsoft.AspNetCore.Mvc.Razor.RuntimeCompilation" Version="3.0.0" />
     <PackageReference Include="Microsoft.AspNetCore.Session" Version="2.2.0" />
@@ -24,7 +25,6 @@
 
 
   <ItemGroup>
-    <Folder Include="Helper\" />
     <Folder Include="wwwroot\image\" />
   </ItemGroup>
 

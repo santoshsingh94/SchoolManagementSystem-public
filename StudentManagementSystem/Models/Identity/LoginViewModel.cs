@@ -8,10 +8,10 @@ namespace SchoolManagementSystem.Models.Identity
 {
     public class LoginViewModel
     {
-        [Required]
+        [System.ComponentModel.DataAnnotations.Required(ErrorMessage = "{0} Required!")]
         [EmailAddress]
         public string Email { get; set; }
-        [Required]
+        [System.ComponentModel.DataAnnotations.Required(ErrorMessage = "{0} Required!")]
         [DataType(DataType.Password)]
         public string Password { get; set; }
         [Display(Name = "Remember me")]

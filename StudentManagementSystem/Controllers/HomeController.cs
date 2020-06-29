@@ -29,8 +29,8 @@ namespace StudentManagementSystem.Controllers
             _context = context;
             _userManager = userManager;
         }
-        public IActionResult Index()
-        {
+        public async Task<IActionResult> Index()
+        {            
             if (User.Identity.IsAuthenticated)
             {
                 return RedirectToAction("About", "Home");

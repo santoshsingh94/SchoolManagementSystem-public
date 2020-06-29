@@ -9,7 +9,7 @@ using SchoolManagementSystem.Models.Identity;
 
 namespace DotNetCoreIdentity_Venkat.Controllers
 {
-    [Authorize]     //Means the entire method of this class can be accessed by Admin or User.
+    [Authorize(Roles ="Admin")]     //Means the entire method of this class can be accessed by Admin or User.
     public class AdministrationController : Controller
     {
         private readonly RoleManager<IdentityRole> roleManager;
@@ -55,7 +55,7 @@ namespace DotNetCoreIdentity_Venkat.Controllers
             var roles = roleManager.Roles;
             return View(roles);
         }
-        [Authorize]    //[Authorize(Roles ="Admin")]     //This method only accesed by Admin.
+        //[Authorize(Roles ="Admin")]     //This method only accesed by Admin.
         [HttpGet]
         public async Task<IActionResult> EditRole(string id)
         {

@@ -3,33 +3,17 @@
 @{
     ViewData["Title"] = "Create";
 }
+<script src="~/lib/jquery/dist/jquery.js"></script>
 <div class="card mb-4 shadow">
     <div class="card-header">Student Information</div>
     <div class="card-body">
         <form asp-action="Create" enctype="multipart/form-data">
             <div class="form-horizontal">
                 <div asp-validation-summary="ModelOnly" class="text-danger"></div>
-                <div class="row">
-                    <div class="col-md-6">
-                        <div class="form-group">
-                            <label asp-for="SessionId" class="control-label">Select Session</label>
-                            <select asp-for="SessionId" class="form-control" asp-items="ViewBag.SessionId"></select>
-                        </div>
-                    </div>
-                    <div class="col-md-6">
-                        <div class="form-group">
-                            <label asp-for="ProgrameId" class="control-label">Select Programe</label>
-                            <select asp-for="ProgrameId" class="form-control" asp-items="ViewBag.ProgrameId"></select>
-                        </div>
-                    </div>
+                <div class="col-md-6 text-xs-center bg-gradient-light p-y-1">
+                    <h4 style="color:#7FDBFF;font-weight:bold">Personal Info</h4>
                 </div>
                 <div class="row">
-                    <div class="col-md-6">
-                        <div class="form-group">
-                            <label asp-for="ClassTblId" class="control-label">Select Current Class</label>
-                            <select asp-for="ClassTblId" class="form-control" asp-items="ViewBag.ClassTblId"></select>
-                        </div>
-                    </div>
                     <div class="col-md-6">
                         <div class="form-group">
                             <label asp-for="Name" class="control-label">Student Name</label>
@@ -37,20 +21,11 @@
                             <span asp-validation-for="Name" class="text-danger"></span>
                         </div>
                     </div>
-                </div>
-                <div class="row">
                     <div class="col-md-6">
                         <div class="form-group">
                             <label asp-for="FatherName" class="control-label">Father Name</label>
                             <input asp-for="FatherName" class="form-control" />
                             <span asp-validation-for="FatherName" class="text-danger"></span>
-                        </div>
-                    </div>
-                    <div class="col-md-6">
-                        <div class="form-group">
-                            <label asp-for="DateOfBirth" class="control-label">Date of Birth</label>
-                            <input asp-for="DateOfBirth" class="form-control" />
-                            <span asp-validation-for="DateOfBirth" class="text-danger"></span>
                         </div>
                     </div>
                 </div>
@@ -64,20 +39,45 @@
                     </div>
                     <div class="col-md-6">
                         <div class="form-group">
-                            <label asp-for="ContactNo" class="control-label">Contact No</label>
-                            <input asp-for="ContactNo" class="form-control" />
-                            <span asp-validation-for="ContactNo" class="text-danger"></span>
+                            <label asp-for="DateOfBirth" class="control-label">Date of Birth</label>
+                            <input asp-for="DateOfBirth" class="form-control" />
+                            <span asp-validation-for="DateOfBirth" class="text-danger"></span>
                         </div>
                     </div>
                 </div>
                 <div class="row">
                     <div class="col-md-6">
                         <div class="form-group">
+                            <label asp-for="ContactNo" class="control-label">Contact No</label>
+                            <input id="contact" type="number" asp-for="ContactNo" class="form-control" />
+                            <span asp-validation-for="ContactNo" class="text-danger"></span>
+                        </div>
+                    </div>
+                    <div class="col-md-6">
+                        <div class="form-group">
                             <label asp-for="Email" class="control-label"></label>
-                            <input asp-for="Email" class="form-control" />
+                            <input type="email" asp-for="Email" class="form-control" />
                             <span asp-validation-for="Email" class="text-danger"></span>
                         </div>
                     </div>
+                </div>
+                <div class="row">
+                    <div class="col-md-6">
+                        <div class="form-group">
+                            <label asp-for="AadharNo" class="control-label"></label>
+                            <input asp-for="AadharNo" class="form-control" />
+                            <span asp-validation-for="AadharNo" class="text-danger"></span>
+                        </div>
+                    </div>
+                    <div class="col-md-6">
+                        <div class="form-group">
+                            <label asp-for="Address" class="control-label"></label>
+                            <input asp-for="Address" class="form-control" />
+                            <span asp-validation-for="Address" class="text-danger"></span>
+                        </div>
+                    </div>
+                </div>
+                <div class="row">
                     <div class="col-md-6">
                         <div class="form-group">
                             <label asp-for="NationalityId" class="control-label">Select Nationality</label>
@@ -85,8 +85,6 @@
                             <span asp-validation-for="NationalityId" class="text-danger"></span>
                         </div>
                     </div>
-                </div>
-                <div class="row">
                     <div class="col-md-6">
                         <div class="form-group">
                             <label asp-for="ReligionId" class="control-label">Select Religion</label>
@@ -94,6 +92,9 @@
                             <span asp-validation-for="ReligionId" class="text-danger"></span>
                         </div>
                     </div>
+                </div>
+                <div class="row">
+
                     <div class="col-md-6">
                         <div class="form-group">
                             <label asp-for="CategoryId" class="control-label">Select Category</label>
@@ -101,20 +102,30 @@
                             <span asp-validation-for="CategoryId" class="text-danger"></span>
                         </div>
                     </div>
-                </div>
-                <div class="row">
                     <div class="col-md-6">
                         <div class="form-group">
-                            <label asp-for="Cast" class="control-label"></label>
+                            <label asp-for="Cast" class="control-label">Sub-Category</label>
                             <input asp-for="Cast" class="form-control" />
                             <span asp-validation-for="Cast" class="text-danger"></span>
                         </div>
                     </div>
+                </div>
+                <div class="col-md-6 text-xs-center bg-gradient-light p-y-1">
+                    <h4 style="color:#7FDBFF;font-weight:bold">Guardian Info</h4>
+                </div>
+                <div class="row">
                     <div class="col-md-6">
                         <div class="form-group">
                             <label asp-for="GuardianName" class="control-label">Guardian Name</label>
                             <input asp-for="GuardianName" class="form-control" />
                             <span asp-validation-for="GuardianName" class="text-danger"></span>
+                        </div>
+                    </div>
+                    <div class="col-md-6">
+                        <div class="form-group">
+                            <label asp-for="GuardianPhone" class="control-label">Guardian Phone</label>
+                            <input id="contact" type="number" asp-for="GuardianPhone" class="form-control" />
+                            <span asp-validation-for="GuardianPhone" class="text-danger"></span>
                         </div>
                     </div>
                 </div>
@@ -126,31 +137,35 @@
                             <span asp-validation-for="GuardianOccupation" class="text-danger"></span>
                         </div>
                     </div>
+                </div>
+                <div class="col-md-6 text-xs-center bg-gradient-light p-y-1">
+                    <h4 style="color:#7FDBFF;font-weight:bold">Admission Course Info</h4>
+                </div>
+                <div class="row">
                     <div class="col-md-6">
                         <div class="form-group">
-                            <label asp-for="GuardianPhone" class="control-label">Guardian Phone</label>
-                            <input asp-for="GuardianPhone" class="form-control" />
-                            <span asp-validation-for="GuardianPhone" class="text-danger"></span>
+                            <label asp-for="ProgrameId" class="control-label">Select Programe</label>
+                            <select asp-for="ProgrameId" class="form-control" asp-items="ViewBag.ProgrameId"><option value="">Select</option></select>
+                            <span asp-validation-for="NationalityId" class="text-danger"></span>
+                        </div>
+                    </div>
+                    <div class="col-md-6">
+                        <div class="form-group">
+                            <label asp-for="ClassTblId" class="control-label">Select Current Class</label>
+                            <select asp-for="ClassTblId" class="form-control" asp-items="ViewBag.ClassTblId"><option value="">Select</option></select>
+                            <span asp-validation-for="ClassTblId" class="text-danger"></span>
                         </div>
                     </div>
                 </div>
                 <div class="row">
                     <div class="col-md-6">
                         <div class="form-group">
-                            <label asp-for="Address" class="control-label"></label>
-                            <input asp-for="Address" class="form-control" />
-                            <span asp-validation-for="Address" class="text-danger"></span>
+                            <label asp-for="SessionId" class="control-label">Select Session</label>
+                            <select asp-for="SessionId" class="form-control" asp-items="ViewBag.SessionId"><option value="">Select</option></select>
+                            <span asp-validation-for="SessionId" class="text-danger"></span>
                         </div>
                     </div>
-                    <div class="col-md-6">
-                        <div class="form-group">
-                            <label asp-for="AadharNo" class="control-label"></label>
-                            <input asp-for="AadharNo" class="form-control" />
-                            <span asp-validation-for="AadharNo" class="text-danger"></span>
-                        </div>
-                    </div>
-                </div>
-                <div class="row">
+
                     <div class="col-md-6">
                         <div class="form-group">
                             @*<label asp-for="Photo" class="control-label"></label>
@@ -159,29 +174,30 @@
 
                             <label asp-for="Photo" class="col-form-label">Upload Image</label>
                             <div class="custom-file">
-                                <input asp-for="Photo" class="form-control custom-file-input"><br />
+                                <input asp-for="Photo" class="form-control custom-file-input" id="studentPhoto"><br />
                                 <label class="custom-file-label">Choose File...</label>
                             </div>
-                        </div>
-                    </div>
-                    <div class="col-md-6">
-                        <div class="form-group">
-                            <label asp-for="AdmissionDate" class="control-label">Admission Date</label>
-                            <input asp-for="AdmissionDate" class="form-control" />
-                            <span asp-validation-for="AdmissionDate" class="text-danger"></span>
+                            <span asp-validation-for="Photo" class="text-danger"></span>
                         </div>
                     </div>
                 </div>
                 <div class="row">
+                    @*<div class="col-md-6">
+                            <div class="form-group">
+                                <label asp-for="AdmissionDate" class="control-label">Admission Date</label>
+                                <input asp-for="AdmissionDate" class="form-control" />
+                                <span asp-validation-for="AdmissionDate" class="text-danger"></span>
+                            </div>
+                        </div>*@
                     <div class="col-md-6">
                         <div class="form-group">
-                            <label asp-for="PreviousSchool" class="control-label">Previous School</label>
+                            <label asp-for="PreviousSchool" class="control-label">Previous School(optional)</label>
                             <input asp-for="PreviousSchool" class="form-control" />
                         </div>
                     </div>
                     <div class="col-md-6">
                         <div class="form-group">
-                            <label asp-for="PreviousPercentage" class="control-label">Percentage</label>
+                            <label asp-for="PreviousPercentage" class="control-label">Percentage(optional)</label>
                             <input asp-for="PreviousPercentage" class="form-control" />
                         </div>
                     </div>
@@ -207,6 +223,21 @@
                         $('.custom-file-input').on("change", function () {
                             var fileName = $(this).val().split("\\").pop();
                             $('.custom-file-label').html(fileName);
+                        });
+                        $('#studentPhoto').bind('input propertychange', () => {
+                            var formData = new FormData();
+                            var file = document.getElementById("studentPhoto").files[0];
+                            console.log(file);
+                            formData.append("Filedata", file);
+                            var t = file.type.split('/').pop().toLowerCase();
+                            if (t != "jpeg" && t != "jpg" && t != "png" && t != "bmp") {
+                                toastr.error('Invalid image file. Only jpeg, jpg, png, bmp are acceptable.');
+                                document.getElementById("studentPhoto").value = '';
+                            }
+                            if (file.size > 512000) {
+                                toastr.error('Image Size is too big. Max Upload size is 0.5MB only');
+                                document.getElementById("studentPhoto").value = '';
+                            }
                         });
                     });
                 </script>

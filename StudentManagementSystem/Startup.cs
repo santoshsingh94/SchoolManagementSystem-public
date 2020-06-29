@@ -5,6 +5,7 @@ using System.Threading.Tasks;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
+using Microsoft.AspNetCore.Http.Features;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc.Authorization;
 using Microsoft.EntityFrameworkCore;
@@ -34,16 +35,19 @@ namespace StudentManagementSystem
             services.AddScoped<IRepository, Repository>();
             services.AddControllersWithViews();
             //Adding session
-            services.AddSession(s => s.IdleTimeout = TimeSpan.FromMinutes(30));
+            services.AddSession(s => s.IdleTimeout = TimeSpan.FromMinutes(15));
             services.AddControllersWithViews().AddRazorRuntimeCompilation();
 
-            ////Identity Configuration
+            //Identity Configuration
             services.AddIdentity<ApplicationUser, IdentityRole>(options =>
             {
                 options.Password.RequiredLength = 10;
                 options.Password.RequiredUniqueChars = 3;
             }).AddEntityFrameworkStores<AppDbContext>();
-
+            services.ConfigureApplicationCookie(options =>
+            {
+                options.ExpireTimeSpan = TimeSpan.FromSeconds(300);
+            });
             //Authorization global setting
             services.AddMvc(config =>
             {

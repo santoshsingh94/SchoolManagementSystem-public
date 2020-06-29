@@ -18,7 +18,9 @@ namespace StudentManagementSystem.Models
         {
             _options = options;
             _config = config;
-        }
+            this.ChangeTracker.LazyLoadingEnabled = false;
+        }    
+        
         public DbSet<Student> Students { get; set; }
         public DbSet<User> Users { get; set; }
         public DbSet<Programe> Programes { get; set; }
@@ -230,7 +232,7 @@ namespace StudentManagementSystem.Models
             modelBuilder.Entity<Gender>().HasData(new Gender()
             {
                 GenderId = 3,
-                GenderType = "Transgender"
+                GenderType = "Other"
             });
             //Nationalities
             modelBuilder.Entity<Nationality>().HasData(new Nationality() { 

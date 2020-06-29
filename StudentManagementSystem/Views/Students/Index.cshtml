@@ -144,12 +144,10 @@
         <td>
             @Html.DisplayFor(modelItem => item.AadharNo)
         </td>*@
-                    <td>
-                        @{ string path = item.Photo;
-                        }  
-                        <img src="~/image/@item.Photo" width="80", height="80" />
-                                       
-                    </td>
+        <td>
+            @*string path = item.Photo;*@
+            <img src="~/image/@item.Photo" height="80" width="80"/>
+        </td>
                         @*<td>
             @Html.DisplayFor(modelItem => item.AdmissionDate)
         </td>

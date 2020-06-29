@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
@@ -26,8 +27,14 @@ namespace SchoolManagementSystem.IdentityController
         }
         [HttpGet]
         [AllowAnonymous]
-        public IActionResult Register()
+        public async Task<IActionResult> Register()
         {
+            var isUserCreated = await userManager.Users.FirstOrDefaultAsync();
+            if (isUserCreated != null)
+            {
+                ModelState.AddModelError("isUserCreated", "Admin User Already Exist!! Please Login");
+                return RedirectToAction("Login", "Account");
+            }
             return View();
         }
 
@@ -71,14 +78,20 @@ namespace SchoolManagementSystem.IdentityController
 
         public async Task<IActionResult> Logout()
         {
+            HttpContext.Session.Clear();
             await signInManager.SignOutAsync();
             return RedirectToAction("login", "account");
         }
 
         [HttpGet]
         [AllowAnonymous]
-        public IActionResult Login()
+        public async Task<IActionResult> Login()
         {
+            var isUserCreated =await userManager.Users.FirstOrDefaultAsync();
+            if(isUserCreated !=null)
+            {
+                HttpContext.Session.SetString("isUserCreated", "true");
+            }
             return View();
         }
         [HttpPost]
@@ -87,7 +100,7 @@ namespace SchoolManagementSystem.IdentityController
         {
             if (ModelState.IsValid)
             {
-                var result = await signInManager.PasswordSignInAsync(model.Email, model.Password, model.RememberMe, false);
+                var result = await signInManager.PasswordSignInAsync(model.Email, model.Password, model.RememberMe, false);                
                 if (result.Succeeded)
                 {
                     if (!string.IsNullOrEmpty(returnUrl) && Url.IsLocalUrl(returnUrl))
@@ -97,6 +110,25 @@ namespace SchoolManagementSystem.IdentityController
                     }
                     else
                     {
+                        ApplicationUser user = userManager.Users.Where(u => u.Email == model.Email).FirstOrDefault();
+                        if(user!=null)
+                        {
+                            var roles = roleManager.Roles;
+                            foreach (var role in roles)
+                            {
+                                var exist = await userManager.IsInRoleAsync(user, role.Name);
+                                if(exist)
+                                {
+                                    HttpContext.Session.SetString("Role", role.Name);
+                                    break;
+                                }
+                            }
+                            //HttpContext.Session.SetString("UserName", user.UserName);
+                        }
+                        if (user.Image != null)
+                        {
+                            HttpContext.Session.SetString("Photo", user.Image);
+                        }
                         return RedirectToAction("About", "Home");
                     }
                 }
@@ -150,6 +182,12 @@ namespace SchoolManagementSystem.IdentityController
         {
             var users =userManager.Users;
             return View(users);
+        }
+
+       public IActionResult AccessDenied()
+        {
+            //return RedirectToPage("Error.cshtml");
+            return View();
         }
     }
 }
