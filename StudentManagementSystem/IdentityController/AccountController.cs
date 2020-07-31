@@ -61,6 +61,15 @@ namespace SchoolManagementSystem.IdentityController
             {
                 var user = new ApplicationUser { UserName = model.Email, Email = model.Email, City = model.City };
                 var result = await userManager.CreateAsync(user, model.Password);
+                IdentityRole identityRole = new IdentityRole
+                {
+                    Name = "Admin"
+                };
+                IdentityResult roleResponse = await roleManager.CreateAsync(identityRole);
+                if (!(await userManager.IsInRoleAsync(user, "Admin")))
+                {
+                    result = await userManager.AddToRoleAsync(user, "Admin");
+                }
                 if (result.Succeeded)
                 {
                     await signInManager.SignInAsync(user, isPersistent: false);
@@ -87,8 +96,8 @@ namespace SchoolManagementSystem.IdentityController
         [AllowAnonymous]
         public async Task<IActionResult> Login()
         {
-            var isUserCreated =await userManager.Users.FirstOrDefaultAsync();
-            if(isUserCreated !=null)
+            var isUserCreated = await userManager.Users.FirstOrDefaultAsync();
+            if (isUserCreated != null)
             {
                 HttpContext.Session.SetString("isUserCreated", "true");
             }
@@ -100,7 +109,7 @@ namespace SchoolManagementSystem.IdentityController
         {
             if (ModelState.IsValid)
             {
-                var result = await signInManager.PasswordSignInAsync(model.Email, model.Password, model.RememberMe, false);                
+                var result = await signInManager.PasswordSignInAsync(model.Email, model.Password, model.RememberMe, false);
                 if (result.Succeeded)
                 {
                     if (!string.IsNullOrEmpty(returnUrl) && Url.IsLocalUrl(returnUrl))
@@ -111,13 +120,13 @@ namespace SchoolManagementSystem.IdentityController
                     else
                     {
                         ApplicationUser user = userManager.Users.Where(u => u.Email == model.Email).FirstOrDefault();
-                        if(user!=null)
+                        if (user != null)
                         {
                             var roles = roleManager.Roles;
                             foreach (var role in roles)
                             {
                                 var exist = await userManager.IsInRoleAsync(user, role.Name);
-                                if(exist)
+                                if (exist)
                                 {
                                     HttpContext.Session.SetString("Role", role.Name);
                                     break;
@@ -180,11 +189,11 @@ namespace SchoolManagementSystem.IdentityController
 
         public async Task<IActionResult> ListUsers()
         {
-            var users =userManager.Users;
+            var users = userManager.Users;
             return View(users);
         }
 
-       public IActionResult AccessDenied()
+        public IActionResult AccessDenied()
         {
             //return RedirectToPage("Error.cshtml");
             return View();
