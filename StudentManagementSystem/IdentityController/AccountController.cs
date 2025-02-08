@@ -7,6 +7,7 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
+using SchoolManagementSystem.Models.Entities;
 using SchoolManagementSystem.Models.Identity;
 
 namespace SchoolManagementSystem.IdentityController
@@ -57,34 +58,49 @@ namespace SchoolManagementSystem.IdentityController
         [AllowAnonymous]
         public async Task<IActionResult> Register(RegisterViewModel model)
         {
-            if (ModelState.IsValid)
+            if (!ModelState.IsValid)
             {
-                var user = new ApplicationUser { UserName = model.Email, Email = model.Email, City = model.City };
-                var result = await userManager.CreateAsync(user, model.Password);
-                IdentityRole identityRole = new IdentityRole
-                {
-                    Name = "Admin"
-                };
-                IdentityResult roleResponse = await roleManager.CreateAsync(identityRole);
-                if (!(await userManager.IsInRoleAsync(user, "Admin")))
-                {
-                    result = await userManager.AddToRoleAsync(user, "Admin");
-                }
-                if (result.Succeeded)
-                {
-                    await signInManager.SignInAsync(user, isPersistent: false);
-                    return RedirectToAction("about", "home");
-                }
+                return View(model);
+            }
+
+            var user = new ApplicationUser
+            {
+                UserName = model.Email,
+                Email = model.Email,
+                City = model.City
+            };
+
+            var result = await userManager.CreateAsync(user, model.Password);
+
+            if (!result.Succeeded)
+            {
                 foreach (var error in result.Errors)
+                {
+                    Console.WriteLine($"Error: {error.Description}");
+                    ModelState.AddModelError("", error.Description);
+                }
+                return View(model);
+            }
+
+            Console.WriteLine("User created successfully.");
+
+            // Assign Role to the User
+            var roleAssignmentResult = await AssignRoleToUser(user);
+            if (!roleAssignmentResult.Succeeded)
+            {
+                foreach (var error in roleAssignmentResult.Errors)
                 {
                     ModelState.AddModelError("", error.Description);
                 }
+                return View(model);
             }
 
-            return View();
+            // Sign in user after successful registration
+            await signInManager.SignInAsync(user, isPersistent: false);
+            return RedirectToAction("About", "Home");
         }
-        [HttpPost]
 
+        [HttpPost]
         public async Task<IActionResult> Logout()
         {
             HttpContext.Session.Clear();
@@ -197,6 +213,30 @@ namespace SchoolManagementSystem.IdentityController
         {
             //return RedirectToPage("Error.cshtml");
             return View();
+        }
+
+        private async Task<IdentityResult> AssignRoleToUser(ApplicationUser user)
+        {
+            string roleName = "Admin";
+
+            // Check if role exists, otherwise create it
+            var roleExists = await roleManager.RoleExistsAsync(roleName);
+            if (!roleExists)
+            {
+                var roleResult = await roleManager.CreateAsync(new IdentityRole(roleName));
+                if (!roleResult.Succeeded)
+                {
+                    return roleResult; // Return failure if role creation fails
+                }
+            }
+
+            // Assign role to user
+            if (!await userManager.IsInRoleAsync(user, roleName))
+            {
+                return await userManager.AddToRoleAsync(user, roleName);
+            }
+
+            return IdentityResult.Success;
         }
     }
 }
